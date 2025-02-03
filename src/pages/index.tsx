@@ -1,6 +1,5 @@
 import { Layout } from "@/components";
-import { Button, Typography } from "@mui/material";
-import { signOut } from "next-auth/react";
+import { Typography } from "@mui/material";
 
 export default function Home() {
   return (
@@ -13,8 +12,6 @@ export default function Home() {
         <Typography variant="h2" className="app-text">
           Space Traders
         </Typography>
-
-        <Button onClick={() => signOut()}>signup</Button>
       </div>
     </Layout>
   );

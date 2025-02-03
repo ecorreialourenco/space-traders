@@ -1,9 +1,11 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 
 export const Header = () => {
   const router = useRouter();
+  const { status } = useSession();
 
   const handleRoute = (url: string) => {
     router.push(url);
@@ -17,12 +19,20 @@ export const Header = () => {
         </Button>
       </div>
       <div>
-        <Button variant="text" onClick={() => handleRoute("/login")}>
-          Login
-        </Button>
-        <Button variant="text" onClick={() => handleRoute("/signup")}>
-          Signup
-        </Button>
+        {status === "authenticated" ? (
+          <Button variant="text" onClick={() => signOut()}>
+            Logout
+          </Button>
+        ) : (
+          <>
+            <Button variant="text" onClick={() => handleRoute("/login")}>
+              Login
+            </Button>
+            <Button variant="text" onClick={() => handleRoute("/signup")}>
+              Signup
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
