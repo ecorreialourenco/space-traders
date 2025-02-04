@@ -1,13 +1,19 @@
 import React, { FormEvent, useState } from "react";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getFactions } from "@/utils/getFactions";
 import { FactionModel } from "@/models";
-import { Dropdown, Feedback, Input, InputPassword, Layout } from "@/components";
-import { useRouter } from "next/router";
+import {
+  Button,
+  Dropdown,
+  Feedback,
+  Input,
+  InputPassword,
+  Layout,
+} from "@/components";
+import { signIn } from "next-auth/react";
 
 export const Signup = () => {
-  const router = useRouter();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [password2, setPassword2] = useState<string>("");
@@ -47,9 +53,16 @@ export const Signup = () => {
 
       if (resJson.error) {
         setError(resJson.error);
-      } else if (error) {
-        setError("");
-        router.push("/");
+      } else {
+        if (error) {
+          setError("");
+        }
+        await signIn("credentials", {
+          username,
+          password,
+          redirect: true,
+          callbackUrl: "http://localhost:3000",
+        });
       }
     } else {
       setError("Passwords doesn't match!");
@@ -70,46 +83,31 @@ export const Signup = () => {
             onClose={() => setError("")}
           />
           <form onSubmit={handleSubmit} className="flex flex-col">
-            <div className="m-2">
-              <Input
-                label="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required={true}
-                className="w-full"
-              />
-            </div>
-            <div className="m-2">
-              <InputPassword
-                label="Password"
-                value={password2}
-                onChange={(e) => setPassword2(e.target.value)}
-                required={true}
-                className="w-full"
-              />
-            </div>
-            <div className="m-2">
-              <InputPassword
-                label="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required={true}
-                className="w-full"
-              />
-            </div>
-            <div className="m-2">
-              <Dropdown
-                value={faction}
-                label="Faction"
-                options={formatedList}
-                onChange={(faction) => setFaction(faction.target.value)}
-              />
-            </div>
-            <div className="m-2">
-              <Button variant="contained" className="w-full" type="submit">
-                Signup
-              </Button>
-            </div>
+            <Input
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required={true}
+            />
+            <InputPassword
+              label="Password"
+              value={password2}
+              onChange={(e) => setPassword2(e.target.value)}
+              required={true}
+            />
+            <InputPassword
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required={true}
+            />
+            <Dropdown
+              value={faction}
+              label="Faction"
+              options={formatedList}
+              onChange={(faction) => setFaction(faction.target.value)}
+            />
+            <Button type="submit" label="Signup" />
           </form>
         </div>
       </div>

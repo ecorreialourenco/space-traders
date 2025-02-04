@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import bcrypt from "bcrypt";
-import { USER_URL } from "@/constants";
+import { BASER_URL, USER_URL } from "@/constants";
 
 type Data = {
   token: string;
@@ -25,10 +25,7 @@ export default async function handler(
     }),
   };
 
-  const response = await fetch(
-    "https://api.spacetraders.io/v2/register",
-    options
-  );
+  const response = await fetch(`${BASER_URL}/register`, options);
 
   const newPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const { data, error } = await response.json();
@@ -48,7 +45,7 @@ export default async function handler(
     const parsedPreviousContent =
       previousContent && JSON.parse(previousContent);
     const newContent = parsedPreviousContent
-      ? [parsedPreviousContent, newUser]
+      ? [...parsedPreviousContent, newUser]
       : [newUser];
 
     fs.writeFileSync(USER_URL, JSON.stringify(newContent));

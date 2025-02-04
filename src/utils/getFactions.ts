@@ -1,7 +1,7 @@
+import { BASER_URL } from "@/constants";
+
 export const getFactions = async ({ page }: { page: number }) => {
-  const response = await fetch(
-    `https://api.spacetraders.io/v2/factions?page=${page}&limit=20`
-  );
+  const response = await fetch(`${BASER_URL}/factions?page=${page}&limit=20`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

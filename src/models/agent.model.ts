@@ -6,3 +6,11 @@ export interface AgentModel {
   startingFaction: string;
   shipCount: number;
 }
+
+export interface WaypointModel {
+  orbitals: [];
+  symbol: string;
+  type: string;
+  x: number;
+  y: number;
+}

@@ -1,8 +1,12 @@
 export interface PointsModel {
   x: number;
   y: number;
-  z: number;
   type: string;
-  color?: number;
-  size?:number
+  color: string;
+  size: number;
+  orbitals: OrbitalsModel[];
+}
+
+export interface OrbitalsModel {
+  symbol: string;
 }

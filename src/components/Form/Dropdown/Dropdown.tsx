@@ -26,18 +26,22 @@ export const Dropdown = ({
   onChange,
 }: DropdownProps) => {
   return (
-    <FormControl
-      variant="filled"
-      className="w-full" /* sx={{ m: 1, minWidth: 120 }} */
-    >
-      <InputLabel>{label}</InputLabel>
-      <Select value={value} label={label} onChange={onChange} variant="filled">
-        {options.map((option: Option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <div className="m-2">
+      <FormControl variant="filled" className="w-full bg-white">
+        <InputLabel>{label}</InputLabel>
+        <Select
+          value={value}
+          label={label}
+          onChange={onChange}
+          variant="filled"
+        >
+          {options.map((option: Option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
   );
 };

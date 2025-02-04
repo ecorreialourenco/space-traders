@@ -1,13 +1,14 @@
+import { AgentModel } from "@/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 interface UiState {
-  token: string;
+  agent: AgentModel | null;
 }
 
 // Define the initial state using that type
 const initialState: UiState = {
-  token: "",
+  agent: null,
 };
 
 export const uiSlice = createSlice({
@@ -15,12 +16,12 @@ export const uiSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setToken: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
+    setAgent: (state, action: PayloadAction<AgentModel>) => {
+      state.agent = action.payload;
     },
   },
 });
 
-export const { setToken } = uiSlice.actions;
+export const { setAgent } = uiSlice.actions;
 
 export default uiSlice.reducer;
