@@ -1,6 +1,10 @@
 import { BASE_URL } from "@/constants";
 
-export const getAgent = async ({ token }: { token: string }) => {
+interface GetContractProps {
+  token: string;
+}
+
+export const myShips = async ({ token }: GetContractProps) => {
   const options = {
     headers: {
       "Content-Type": "application/json",
@@ -8,7 +12,7 @@ export const getAgent = async ({ token }: { token: string }) => {
     },
   };
 
-  const response = await fetch(`${BASE_URL}/my/agent`, options);
+  const response = await fetch(`${BASE_URL}/my/ships`, options);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

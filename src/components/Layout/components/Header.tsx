@@ -20,9 +20,17 @@ export const Header = () => {
       </div>
       <div>
         {status === "authenticated" ? (
-          <Button variant="text" onClick={() => signOut()}>
-            Logout
-          </Button>
+          <>
+            <Button variant="text" onClick={() => handleRoute("/ships")}>
+              Ships
+            </Button>
+            <Button variant="text" onClick={() => handleRoute("/contracts")}>
+              Contracts
+            </Button>
+            <Button variant="text" onClick={() => signOut()}>
+              Logout
+            </Button>
+          </>
         ) : (
           <>
             <Button variant="text" onClick={() => handleRoute("/login")}>

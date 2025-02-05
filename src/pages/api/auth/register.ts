@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import bcrypt from "bcrypt";
-import { BASER_URL, USER_URL } from "@/constants";
+import { BASE_URL, USER_URL } from "@/constants";
 
 type Data = {
   token: string;
@@ -25,8 +25,7 @@ export default async function handler(
     }),
   };
 
-  const response = await fetch(`${BASER_URL}/register`, options);
-
+  const response = await fetch(`${BASE_URL}/register`, options);
   const newPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const { data, error } = await response.json();
 

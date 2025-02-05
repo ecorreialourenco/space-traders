@@ -1,7 +1,15 @@
-export interface PointsModel {
+import { TypeEnum } from "@/enums/Types.enum";
+
+export interface SimplePointModel {
   x: number;
   y: number;
-  type: string;
+}
+
+export interface PointsModel {
+  symbol: string;
+  x: number;
+  y: number;
+  type: TypeEnum;
   color: string;
   size: number;
   orbitals: OrbitalsModel[];

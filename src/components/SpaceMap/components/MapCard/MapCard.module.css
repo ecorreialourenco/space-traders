@@ -1,0 +1,26 @@
+.mapCardWrapper {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 5px;
+}
+
+.symbol {
+  font-size: 12px;
+}
+
+.closeButton {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.coords {
+  font-size: 10px;
+}
+
+.traitsGroup {
+  border: 1px solid black;
+}
+
+.traits {
+  font-size: 8px;
+}

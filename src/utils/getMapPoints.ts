@@ -1,6 +1,11 @@
 import { BASE_URL } from "@/constants";
 
-export const getAgent = async ({ token }: { token: string }) => {
+interface WaypointProps {
+  token: string;
+  systems: string;
+}
+
+export const getMapPoints = async ({ token, systems }: WaypointProps) => {
   const options = {
     headers: {
       "Content-Type": "application/json",
@@ -8,7 +13,7 @@ export const getAgent = async ({ token }: { token: string }) => {
     },
   };
 
-  const response = await fetch(`${BASE_URL}/my/agent`, options);
+  const response = await fetch(`${BASE_URL}/systems/${systems}`, options);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

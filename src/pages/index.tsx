@@ -1,61 +1,27 @@
-import { Layout } from "@/components";
-import SpatialMap from "@/components/SpatialMap/SpatialMap";
+import { Layout, SpaceMap } from "@/components";
+import { TypeColorEnum, TypeEnum } from "@/enums/Types.enum";
 import { PointsModel, WaypointModel } from "@/models";
-import { getAgent, getWaypoints } from "@/utils";
+import { setMapCenter, setSystems } from "@/store/slices/uiSlice";
+import { getAgent, getMapPoints } from "@/utils";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
-  const [center, setCenter] = useState<PointsModel>({
-    x: 0,
-    y: 0,
-    type: "",
-    color: "red",
-    size: 1,
-    orbitals: [],
-  });
   const [points, setPoints] = useState<PointsModel[]>([]);
+  const dispatch = useDispatch();
   const { data } = useSession();
 
-  const getColor = ({ type }: { type: string }) => {
-    switch (type) {
-      case "FUEL_STATION":
-        return "gray";
-      case "ASTEROID":
-        return "red";
-      case "PLANET":
-        return "burlywood";
-      case "ORBITAL_STATION":
-        return "chocolate";
-      case "JUMP_GATE":
-        return "slateblue";
-      case "MOON":
-        return "white";
-      case "ASTEROID_BASE":
-        return "lemonchiffon";
-      case "ENGINEERED_ASTEROID":
-        return "mediumaquamarine";
-      default:
-        return "cornflowerblue";
-    }
-  };
   const getSize = ({ type }: { type: string }) => {
     switch (type) {
-      case "FUEL_STATION":
-        return 1;
-      case "ASTEROID":
-        return 1;
-      case "PLANET":
+      case TypeEnum.HEADQUARTER:
+      case TypeEnum.JUMP_GATE:
+        return 4;
+      case TypeEnum.PLANET:
+      case TypeEnum.ASTEROID_BASE:
         return 3;
-      case "ORBITAL_STATION":
-        return 2;
-      case "JUMP_GATE":
-        return 5;
-      case "MOON":
-        return 2;
-      case "ASTEROID_BASE":
-        return 3;
-      case "ENGINEERED_ASTEROID":
+      case TypeEnum.GAS_GIANT:
+      case TypeEnum.ENGINEERED_ASTEROID:
         return 2;
       default:
         return 1;
@@ -63,34 +29,38 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const handleAgent = async () => {
-      const { data: agentData } = await getAgent({ token: data?.token ?? "" });
+    const handleAgent = async (token: string) => {
+      const { data: agentData } = await getAgent({ token });
 
       if (agentData.headquarters) {
+        const splitedString = agentData.headquarters.split("-");
+        const systems = `${splitedString[0]}-${splitedString[1]}`;
+
         const newPoints: PointsModel[] = [];
-        const { data: headquarters } = await getWaypoints({
-          token: data?.token ?? "",
-          headquarters: agentData.headquarters,
+        const { data: headquarters } = await getMapPoints({
+          token,
+          systems,
         });
 
+        dispatch(setSystems(systems));
+
         headquarters.waypoints.forEach((point: WaypointModel) => {
-          if (point.symbol === agentData.headquarters) {
-            setCenter({
-              x: point.x,
-              y: point.y,
-              type: point.type,
-              size: 5,
-              color: "red",
-              orbitals: point.orbitals,
-            });
+          const isHeadquarter = point.symbol === agentData.headquarters;
+          if (isHeadquarter) {
+            dispatch(setMapCenter({ x: point.x, y: point.y }));
           }
 
           newPoints.push({
+            symbol: point.symbol,
             x: point.x,
             y: point.y,
             type: point.type,
-            color: getColor({ type: point.type }),
-            size: getSize({ type: point.type }),
+            color: isHeadquarter
+              ? TypeColorEnum.HEADQUARTER
+              : TypeColorEnum[point.type],
+            size: getSize({
+              type: isHeadquarter ? TypeEnum.HEADQUARTER : point.type,
+            }),
             orbitals: point.orbitals,
           });
         });
@@ -100,14 +70,14 @@ export default function Home() {
     };
 
     if (data?.token) {
-      handleAgent();
+      handleAgent(data.token);
     }
-  }, [data?.token]);
+  }, [data?.token, dispatch]);
 
   return (
     <Layout>
       <div className="flex flex-col h-full justify-center items-center">
-        <SpatialMap points={points} center={center} />
+        <SpaceMap points={points} />
       </div>
     </Layout>
   );
