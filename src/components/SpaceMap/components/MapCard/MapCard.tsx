@@ -49,7 +49,7 @@ export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
             <div>
               <div className={styles.symbol}>{selectedPoint.symbol}</div>
               <div className={styles.coords}>
-                Coords: {selectedPoint.x}, {selectedPoint.y}
+                Coords: {Math.ceil(selectedPoint.x)}, {Math.ceil(selectedPoint.y)}
               </div>
             </div>
             <IconButton className={styles.closeButton} onClick={onClose}>

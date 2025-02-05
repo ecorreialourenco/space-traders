@@ -1,4 +1,5 @@
 import { TypeEnum } from "@/enums/Types.enum";
+import { OrbitalModel } from "./waypoint.model";
 
 export interface SimplePointModel {
   x: number;
@@ -12,9 +13,5 @@ export interface PointsModel {
   type: TypeEnum;
   color: string;
   size: number;
-  orbitals: OrbitalsModel[];
-}
-
-export interface OrbitalsModel {
-  symbol: string;
+  orbitals: OrbitalModel[];
 }

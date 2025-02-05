@@ -54,10 +54,7 @@ export interface ShipModel {
     fuelCapacity: number;
     condition: number;
     integrity: number;
-    requirements: {
-      power: number;
-      crew: number;
-    };
+    requirements: CrewRequirementModel;
   };
   reactor: {
     symbol: string;
@@ -77,10 +74,7 @@ export interface ShipModel {
     condition: number;
     integrity: number;
     speed: number;
-    requirements: {
-      power: 6;
-      crew: number;
-    };
+    requirements: CrewRequirementModel;
   };
   modules: ModuleModel[];
   mounts: MountModel[];
@@ -117,4 +111,9 @@ interface MountModel {
     crew: number;
     power: number;
   };
+}
+
+interface CrewRequirementModel {
+  power: number;
+  crew: number;
 }
