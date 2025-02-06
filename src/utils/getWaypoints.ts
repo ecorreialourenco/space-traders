@@ -4,7 +4,7 @@ import { options } from "./requestOptions";
 
 interface WaypointProps {
   token: string;
-  systems: string;
+  system: string;
   planet: string;
 }
 
@@ -14,11 +14,11 @@ interface WaypointResponse {
 
 export const getWaypoint = async ({
   token,
-  systems,
+  system,
   planet,
 }: WaypointProps): Promise<WaypointResponse> => {
   const response = await fetch(
-    `${BASE_URL}/systems/${systems}/waypoints/${planet}`,
+    `${BASE_URL}/systems/${system}/waypoints/${planet}`,
     options(token)
   );
   if (!response.ok) {

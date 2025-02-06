@@ -1,16 +1,19 @@
 import { Layout, SpaceMap } from "@/components";
 import { TypeColorEnum, TypeEnum } from "@/enums/Types.enum";
 import { PointsModel, WaypointModel } from "@/models";
-import { setMapCenter, setSystems } from "@/store/slices/uiSlice";
-import { getAgent, getMapPoints, handleSystemString } from "@/utils";
+import { setCenter } from "@/store/slices/mapSlice";
+import { RootState } from "@/store/store";
+import { getMapPoints } from "@/utils";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  const [points, setPoints] = useState<PointsModel[]>([]);
   const dispatch = useDispatch();
+  const [points, setPoints] = useState<PointsModel[]>([]);
+  const { agent, system } = useSelector((state: RootState) => state.ui);
   const { data } = useSession();
+  const token = data?.token ?? "";
 
   const getSize = ({ type }: { type: string }) => {
     switch (type) {
@@ -29,38 +32,25 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const handleAgent = async (token: string) => {
-      const { data: agentData } = await getAgent({ token });
-
-      if (agentData.headquarters) {
-        const systems = handleSystemString(agentData.headquarters);
-
+    const handleAgent = async () => {
+      if (agent?.headquarters) {
+        const { data: headquarters } = await getMapPoints({ token, system });
         const newPoints: PointsModel[] = [];
-        const { data: headquarters } = await getMapPoints({
-          token,
-          systems,
-        });
-
-        dispatch(setSystems(systems));
 
         headquarters.waypoints.forEach((point: WaypointModel) => {
-          const isHeadquarter = point.symbol === agentData.headquarters;
+          const isHeadquarter = point.symbol === agent.headquarters;
           if (isHeadquarter) {
-            dispatch(setMapCenter({ x: point.x, y: point.y }));
+            dispatch(setCenter({ x: point.x, y: point.y }));
           }
 
           newPoints.push({
-            symbol: point.symbol,
-            x: point.x,
-            y: point.y,
-            type: point.type,
+            ...point,
             color: isHeadquarter
               ? TypeColorEnum.HEADQUARTER
               : TypeColorEnum[point.type],
             size: getSize({
               type: isHeadquarter ? TypeEnum.HEADQUARTER : point.type,
             }),
-            orbitals: point.orbitals,
           });
         });
 
@@ -68,10 +58,10 @@ export default function Home() {
       }
     };
 
-    if (data?.token) {
-      handleAgent(data.token);
+    if (token) {
+      handleAgent();
     }
-  }, [data?.token, dispatch]);
+  }, [token, dispatch, agent, system]);
 
   return (
     <Layout>

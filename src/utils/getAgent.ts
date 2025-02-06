@@ -1,7 +1,12 @@
 import { BASE_URL } from "@/constants";
 import { options } from "./requestOptions";
+import { AgentModel } from "@/models";
 
-export const getAgent = async ({ token }: { token: string }) => {
+export const getAgent = async ({
+  token,
+}: {
+  token: string;
+}): Promise<{ data: AgentModel }> => {
   const response = await fetch(`${BASE_URL}/my/agent`, options(token));
   if (!response.ok) {
     throw new Error("Network response was not ok");

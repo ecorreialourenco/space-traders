@@ -3,29 +3,36 @@ import Konva from "konva";
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Circle, Group, Text } from "react-konva";
 import { Grid, Legend, MapCard, Orbitals } from "./components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { TypeEnum } from "@/enums";
 import { handleText } from "@/utils";
+import { setSelectedPoint } from "@/store/slices/mapSlice";
 
 interface SpaceMapProps {
   points: PointsModel[];
 }
 
 export const SpaceMap = ({ points }: SpaceMapProps) => {
-  const { mapCenter } = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch();
+  const { center, selectedPoint } = useSelector(
+    (state: RootState) => state.map
+  );
   const stageRef = useRef<Konva.Stage | null>(null);
-  const [offset, setOffset] = useState({ x: mapCenter.x, y: mapCenter.y });
-  const scale = 3;
-  const [selectedPoint, setSelectedPoint] = useState<PointsModel | null>(null);
+  const [offset, setOffset] = useState({ x: center.x, y: center.y });
   const [size, setSize] = useState({
     width: 0,
     height: 0,
   });
+  const scale = 3;
+
+  const handleSelect = (point: PointsModel | null) => {
+    dispatch(setSelectedPoint(point));
+  };
 
   const handleClick = () => {
     if (selectedPoint) {
-      setSelectedPoint(null);
+      handleSelect(null);
     }
   };
 
@@ -54,8 +61,8 @@ export const SpaceMap = ({ points }: SpaceMapProps) => {
       setOffset({ x: newOffsetX, y: newOffsetY });
     };
 
-    centerOnPoint({ x: mapCenter.x, y: mapCenter.y });
-  }, [mapCenter, scale]);
+    centerOnPoint({ x: center.x, y: center.y });
+  }, [center, scale]);
 
   return (
     <Stage
@@ -88,12 +95,12 @@ export const SpaceMap = ({ points }: SpaceMapProps) => {
                   y={point.y}
                   radius={point.size}
                   fill={point.color}
-                  onClick={() => setSelectedPoint(point)}
+                  onClick={() => handleSelect(point)}
                 />
                 <Orbitals
                   point={point}
                   points={points}
-                  setSelectedPoint={setSelectedPoint}
+                  setSelectedPoint={handleSelect}
                 />
                 <Text
                   x={point.x + 5}

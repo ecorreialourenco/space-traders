@@ -1,16 +1,14 @@
-import { AgentModel, SimplePointModel } from "@/models";
+import { AgentModel } from "@/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UiState {
   agent: AgentModel | null;
-  systems: string;
-  mapCenter: SimplePointModel;
+  system: string;
 }
 
 const initialState: UiState = {
   agent: null,
-  systems: "",
-  mapCenter: { x: 0, y: 0 },
+  system: "",
 };
 
 export const uiSlice = createSlice({
@@ -20,15 +18,12 @@ export const uiSlice = createSlice({
     setAgent: (state, action: PayloadAction<AgentModel>) => {
       state.agent = action.payload;
     },
-    setSystems: (state, action: PayloadAction<string>) => {
-      state.systems = action.payload;
-    },
-    setMapCenter: (state, action: PayloadAction<SimplePointModel>) => {
-      state.mapCenter = action.payload;
+    setSystem: (state, action: PayloadAction<string>) => {
+      state.system = action.payload;
     },
   },
 });
 
-export const { setAgent, setSystems, setMapCenter } = uiSlice.actions;
+export const { setAgent, setSystem } = uiSlice.actions;
 
 export default uiSlice.reducer;

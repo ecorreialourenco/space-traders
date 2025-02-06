@@ -15,3 +15,9 @@ export interface PointsModel {
   size: number;
   orbitals: OrbitalModel[];
 }
+
+export interface PaginationModel {
+  total: number;
+  page: number;
+  limit: number;
+}

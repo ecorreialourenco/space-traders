@@ -19,14 +19,15 @@ interface MapCardProps {
 
 export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
   const { data } = useSession();
-  const { systems } = useSelector((state: RootState) => state.ui);
+  const { system } = useSelector((state: RootState) => state.ui);
   const [traits, setTraits] = useState<TraitModel[]>([]);
+  const token = data?.token ?? "";
 
   useEffect(() => {
-    const handleWaypoint = async (token: string) => {
+    const handleWaypoint = async () => {
       const { data: waypointData } = await getWaypoint({
         token,
-        systems,
+        system,
         planet: selectedPoint.symbol,
       });
 
@@ -35,10 +36,10 @@ export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
       }
     };
 
-    if (data?.token) {
-      handleWaypoint(data.token);
+    if (token) {
+      handleWaypoint();
     }
-  }, [data?.token, selectedPoint.symbol, systems]);
+  }, [token, selectedPoint.symbol, system]);
 
   return (
     <Label

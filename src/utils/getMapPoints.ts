@@ -3,12 +3,12 @@ import { options } from "./requestOptions";
 
 interface WaypointProps {
   token: string;
-  systems: string;
+  system: string;
 }
 
-export const getMapPoints = async ({ token, systems }: WaypointProps) => {
+export const getMapPoints = async ({ token, system }: WaypointProps) => {
   const response = await fetch(
-    `${BASE_URL}/systems/${systems}`,
+    `${BASE_URL}/systems/${system}`,
     options(token)
   );
   if (!response.ok) {

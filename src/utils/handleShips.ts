@@ -1,6 +1,7 @@
-import { BASE_URL } from "@/constants";
+import { BASE_URL, LIMIT } from "@/constants";
 import {
   MyShipModel,
+  PaginationModel,
   PurchaseShipModel,
   ShipyardModel,
   ShipyardShopModel,
@@ -9,6 +10,7 @@ import { options } from "./requestOptions";
 
 interface MyShipProps {
   token: string;
+  page: number;
 }
 
 interface FindShipyardsProps {
@@ -37,10 +39,19 @@ interface PurchaseShipError {
   };
 }
 
+interface MyShipsResponse {
+  data: MyShipModel[];
+  meta: PaginationModel;
+}
+
 export const myShips = async ({
   token,
-}: MyShipProps): Promise<{ data: MyShipModel[] }> => {
-  const response = await fetch(`${BASE_URL}/my/ships`, options(token));
+  page,
+}: MyShipProps): Promise<MyShipsResponse> => {
+  const response = await fetch(
+    `${BASE_URL}/my/ships?page=${page}&limit=${LIMIT}`,
+    options(token)
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
