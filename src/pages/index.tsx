@@ -2,7 +2,7 @@ import { Layout, SpaceMap } from "@/components";
 import { TypeColorEnum, TypeEnum } from "@/enums/Types.enum";
 import { PointsModel, WaypointModel } from "@/models";
 import { setMapCenter, setSystems } from "@/store/slices/uiSlice";
-import { getAgent, getMapPoints } from "@/utils";
+import { getAgent, getMapPoints, handleSystemString } from "@/utils";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -33,8 +33,7 @@ export default function Home() {
       const { data: agentData } = await getAgent({ token });
 
       if (agentData.headquarters) {
-        const splitedString = agentData.headquarters.split("-");
-        const systems = `${splitedString[0]}-${splitedString[1]}`;
+        const systems = handleSystemString(agentData.headquarters);
 
         const newPoints: PointsModel[] = [];
         const { data: headquarters } = await getMapPoints({

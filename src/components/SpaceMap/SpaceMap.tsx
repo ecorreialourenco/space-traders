@@ -1,11 +1,12 @@
 import { PointsModel } from "@/models";
 import Konva from "konva";
 import React, { useEffect, useRef, useState } from "react";
-import { Stage, Layer, Circle } from "react-konva";
+import { Stage, Layer, Circle, Group, Text } from "react-konva";
 import { Grid, Legend, MapCard, Orbitals } from "./components";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { TypeEnum } from "@/enums";
+import { handleText } from "@/utils";
 
 interface SpaceMapProps {
   points: PointsModel[];
@@ -72,6 +73,7 @@ export const SpaceMap = ({ points }: SpaceMapProps) => {
         onClick={handleClick}
       >
         <Grid points={points} />
+        <Circle x={0} y={0} radius={5} fill="yellow" />
         {points
           .filter(
             (point) =>
@@ -80,18 +82,28 @@ export const SpaceMap = ({ points }: SpaceMapProps) => {
           )
           .map((point) => (
             <React.Fragment key={`${point.type}-${point.x}-${point.y}`}>
-              <Circle
-                x={point.x}
-                y={point.y}
-                radius={point.size}
-                fill={point.color}
-                onClick={() => setSelectedPoint(point)}
-              />
-              <Orbitals
-                point={point}
-                points={points}
-                setSelectedPoint={setSelectedPoint}
-              />
+              <Group x={point.x} y={point.y}>
+                <Circle
+                  x={point.x}
+                  y={point.y}
+                  radius={point.size}
+                  fill={point.color}
+                  onClick={() => setSelectedPoint(point)}
+                />
+                <Orbitals
+                  point={point}
+                  points={points}
+                  setSelectedPoint={setSelectedPoint}
+                />
+                <Text
+                  x={point.x + 5}
+                  y={point.y + 5}
+                  text={handleText(point.symbol)}
+                  scaleX={0.2}
+                  scaleY={0.2}
+                  fill={point.color}
+                />
+              </Group>
             </React.Fragment>
           ))}
 

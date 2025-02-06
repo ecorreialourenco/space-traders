@@ -1,8 +1,10 @@
 import { BASE_URL } from "@/constants";
 import { WaypointModel } from "@/models";
+import { options } from "./requestOptions";
 
 interface WaypointProps {
   token: string;
+  systems: string;
   planet: string;
 }
 
@@ -12,21 +14,12 @@ interface WaypointResponse {
 
 export const getWaypoint = async ({
   token,
+  systems,
   planet,
 }: WaypointProps): Promise<WaypointResponse> => {
-  const splitedString = planet.split("-");
-  const systems = `${splitedString[0]}-${splitedString[1]}`;
-
-  const options = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
   const response = await fetch(
     `${BASE_URL}/systems/${systems}/waypoints/${planet}`,
-    options
+    options(token)
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");

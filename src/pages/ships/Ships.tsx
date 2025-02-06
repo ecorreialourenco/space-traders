@@ -1,7 +1,8 @@
 import { Layout } from "@/components";
-import { ShipModel } from "@/models/ship.model";
+import { MyShipModel } from "@/models/ship.model";
 import { myShips } from "@/utils";
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -12,29 +13,33 @@ import {
   Typography,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { BuyShipModal } from "./components/BuyShipModal";
 
 export const Ships = () => {
   const { data } = useSession();
-  const [shipsList, setShipsList] = useState<ShipModel[]>([]);
+  const [shipsList, setShipsList] = useState<MyShipModel[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const token = data?.token ?? "";
+
+  const handleShips = useCallback(async () => {
+    const { data: shipsData } = await myShips({ token });
+    setShipsList(shipsData);
+  }, [token]);
 
   useEffect(() => {
-    const handleShips = async () => {
-      const { data: shipsData } = await myShips({ token: data?.token ?? "" });
-      setShipsList(shipsData);
-    };
-
-    if (data?.token) {
+    if (token) {
       handleShips();
     }
-  }, [data?.token]);
+  }, [handleShips, token]);
 
   return (
     <Layout>
       <div className="flex flex-col h-full items-center">
         <Typography variant="h3" style={{ textAlign: "center" }}>
-          Ships
+          My Ships
         </Typography>
+        <Button onClick={() => setIsModalOpen(true)}>Buy Ship</Button>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -46,7 +51,7 @@ export const Ships = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {shipsList.map((ship: ShipModel) => (
+              {shipsList.map((ship: MyShipModel) => (
                 <TableRow key={ship.registration.name}>
                   <TableCell>{ship.registration.name}</TableCell>
                   <TableCell>{ship.registration.role}</TableCell>
@@ -59,6 +64,13 @@ export const Ships = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
+        {isModalOpen && (
+          <BuyShipModal
+            onClose={() => setIsModalOpen(false)}
+            updateList={handleShips}
+          />
+        )}
       </div>
     </Layout>
   );

@@ -1,92 +1,97 @@
+import { TypeEnum } from "@/enums";
+import { TraitModel } from "./waypoint.model";
+
 export interface ShipModel {
-  symbol: string;
-  nav: {
-    systemSymbol: string;
-    waypointSymbol: string;
-    route: {
-      origin: {
-        symbol: string;
-        type: string;
-        systemSymbol: string;
-        x: number;
-        y: number;
-      };
-      destination: {
-        symbol: string;
-        type: string;
-        systemSymbol: string;
-        x: number;
-        y: number;
-      };
-      arrival: Date;
-      departureTime: Date;
-    };
-    status: string;
-    flightMode: string;
-  };
-  crew: {
-    current: number;
-    capacity: number;
-    required: number;
-    rotation: string;
-    morale: number;
-    wages: number;
-  };
-  fuel: {
-    current: number;
-    capacity: number;
-    consumed: {
-      amount: number;
-      timestamp: Date;
-    };
-  };
-  cooldown: {
-    shipSymbol: string;
-    totalSeconds: number;
-    remainingSeconds: number;
-  };
-  frame: {
-    symbol: string;
-    name: string;
-    description: string;
-    moduleSlots: number;
-    mountingPoints: number;
-    fuelCapacity: number;
-    condition: number;
-    integrity: number;
-    requirements: CrewRequirementModel;
-  };
-  reactor: {
-    symbol: string;
-    name: string;
-    description: string;
-    condition: number;
-    integrity: number;
-    powerOutput: number;
-    requirements: {
-      crew: number;
-    };
-  };
-  engine: {
-    symbol: string;
-    name: string;
-    description: string;
-    condition: number;
-    integrity: number;
-    speed: number;
-    requirements: CrewRequirementModel;
-  };
+  type: string;
+  name: string;
+  description: string;
+  supply: string;
+  activity: string;
+  purchasePrice: number;
+  frame: FrameModel;
+  reactor: ReactorModel;
+  engine: EngineModel;
   modules: ModuleModel[];
   mounts: MountModel[];
-  registration: {
-    name: string;
-    factionSymbol: string;
-    role: string;
-  };
-  cargo: {
+  crew: {
+    required: number;
     capacity: number;
-    units: number;
-    inventory: [];
+  };
+}
+
+export interface MyShipModel {
+  symbol: string;
+  nav: NavigationModel;
+  crew: CrewModel;
+  fuel: FuelModel;
+  cooldown: CooldownModel;
+  frame: FrameModel;
+  reactor: ReactorModel;
+  engine: EngineModel;
+  modules: ModuleModel[];
+  mounts: MountModel[];
+  registration: RegistrationModel;
+  cargo: CargoModel;
+}
+
+export interface ShipyardModel {
+  systemSymbol: string;
+  symbol: string;
+  type: TypeEnum;
+  x: number;
+  y: number;
+  orbitals: [];
+  traits: TraitModel[];
+  modifiers: [];
+  chart: {
+    submittedBy: string;
+    submittedOn: string;
+  };
+  faction: {
+    symbol: string;
+  };
+  orbits: string;
+  isUnderConstruction: false;
+}
+
+export interface ShipyardShopModel {
+  symbol: string;
+  shipTypes: ShipTypeModel[];
+  transactions: [];
+  ships: ShipModel[];
+  modificationsFee: number;
+}
+
+export interface PurchaseShipModel {
+  agent: {
+    accountId: string;
+    symbol: string;
+    headquarters: string;
+    credits: number;
+    startingFaction: string;
+    shipCount: number;
+  };
+  ship: {
+    symbol: string;
+    nav: NavigationModel;
+    crew: CrewModel;
+    fuel: FuelModel;
+    cooldown: CooldownModel;
+    frame: FrameModel;
+    reactor: ReactorModel;
+    engine: EngineModel;
+    modules: [];
+    mounts: [];
+    registration: RegistrationModel;
+    cargo: CargoModel;
+  };
+  transaction: {
+    shipSymbol: string;
+    shipType: string;
+    waypointSymbol: string;
+    agentSymbol: string;
+    price: number;
+    timestamp: string;
   };
 }
 
@@ -116,4 +121,101 @@ interface MountModel {
 interface CrewRequirementModel {
   power: number;
   crew: number;
+}
+
+interface ShipTypeModel {
+  type: string;
+}
+
+interface FrameModel {
+  symbol: string;
+  name: string;
+  description: string;
+  moduleSlots: number;
+  mountingPoints: number;
+  fuelCapacity: number;
+  condition: number;
+  integrity: number;
+  requirements: CrewRequirementModel;
+}
+
+interface ReactorModel {
+  symbol: string;
+  name: string;
+  description: string;
+  condition: number;
+  integrity: number;
+  powerOutput: number;
+  requirements: {
+    crew: number;
+  };
+}
+
+interface EngineModel {
+  symbol: string;
+  name: string;
+  description: string;
+  condition: number;
+  integrity: number;
+  speed: number;
+  requirements: CrewRequirementModel;
+}
+
+interface CargoModel {
+  capacity: number;
+  units: number;
+  inventory: [];
+}
+
+interface CrewModel {
+  current: number;
+  capacity: number;
+  required: number;
+  rotation: string;
+  morale: number;
+  wages: number;
+}
+
+interface FuelModel {
+  current: number;
+  capacity: number;
+  consumed: {
+    amount: number;
+    timestamp: Date;
+  };
+}
+
+interface RegistrationModel {
+  name: string;
+  factionSymbol: string;
+  role: string;
+}
+
+interface CooldownModel {
+  shipSymbol: string;
+  totalSeconds: number;
+  remainingSeconds: number;
+}
+
+interface NavigationModel {
+  systemSymbol: string;
+  waypointSymbol: string;
+  route: RouteModel;
+  status: string;
+  flightMode: string;
+}
+
+interface RouteModel {
+  origin: LocalModel;
+  destination: LocalModel;
+  arrival: Date;
+  departureTime: Date;
+}
+
+interface LocalModel {
+  symbol: string;
+  type: string;
+  systemSymbol: string;
+  x: number;
+  y: number;
 }

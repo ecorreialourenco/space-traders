@@ -1,6 +1,7 @@
 import { PointsModel } from "@/models";
+import { handleText } from "@/utils";
 import React, { useEffect, useState } from "react";
-import { Circle } from "react-konva";
+import { Circle, Text } from "react-konva";
 
 interface OrbitalsProps {
   point: PointsModel;
@@ -41,13 +42,22 @@ export const Orbitals = ({
   }, [point, points]);
 
   return orbitals.map((orbital) => (
-    <Circle
-      key={`${orbital.type}-${orbital.x}-${orbital.y}`}
-      x={orbital.x}
-      y={orbital.y}
-      radius={1}
-      fill={orbital.color}
-      onClick={() => setSelectedPoint(orbital)}
-    />
+    <React.Fragment key={`${orbital.type}-${orbital.x}-${orbital.y}`}>
+      <Circle
+        x={orbital.x}
+        y={orbital.y}
+        radius={1}
+        fill={orbital.color}
+        onClick={() => setSelectedPoint(orbital)}
+      />
+      <Text
+        x={orbital.x + 2}
+        y={orbital.y - 1}
+        text={handleText(orbital.symbol)}
+        scaleX={0.2}
+        scaleY={0.2}
+        fill={orbital.color}
+      />
+    </React.Fragment>
   ));
 };

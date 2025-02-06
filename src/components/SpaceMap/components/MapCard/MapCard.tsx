@@ -4,7 +4,9 @@ import { Html } from "react-konva-utils";
 import { useSession } from "next-auth/react";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
 
+import { RootState } from "@/store/store";
 import { PointsModel, TraitModel } from "@/models";
 import { getWaypoint } from "@/utils";
 
@@ -17,12 +19,14 @@ interface MapCardProps {
 
 export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
   const { data } = useSession();
+  const { systems } = useSelector((state: RootState) => state.ui);
   const [traits, setTraits] = useState<TraitModel[]>([]);
 
   useEffect(() => {
     const handleWaypoint = async (token: string) => {
       const { data: waypointData } = await getWaypoint({
         token,
+        systems,
         planet: selectedPoint.symbol,
       });
 
@@ -34,7 +38,7 @@ export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
     if (data?.token) {
       handleWaypoint(data.token);
     }
-  }, [data?.token, selectedPoint.symbol]);
+  }, [data?.token, selectedPoint.symbol, systems]);
 
   return (
     <Label
@@ -49,7 +53,8 @@ export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
             <div>
               <div className={styles.symbol}>{selectedPoint.symbol}</div>
               <div className={styles.coords}>
-                Coords: {Math.ceil(selectedPoint.x)}, {Math.ceil(selectedPoint.y)}
+                Coords: {Math.ceil(selectedPoint.x)},{" "}
+                {Math.ceil(selectedPoint.y)}
               </div>
             </div>
             <IconButton className={styles.closeButton} onClick={onClose}>
