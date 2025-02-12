@@ -75,9 +75,7 @@ export const myShips = async ({
     `${BASE_URL}/my/ships?page=${page}&limit=${LIMIT}`,
     options(token)
   );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+
   return response.json();
 };
 
@@ -89,9 +87,7 @@ export const findShipyards = async ({
     `${BASE_URL}/systems/${system}/waypoints?traits=SHIPYARD`,
     options(token)
   );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+
   return response.json();
 };
 

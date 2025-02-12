@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import { Typography } from "@mui/material";
-import { Button, Feedback, Input, InputPassword, Layout } from "@/components";
+import { Button, Feedback, Input, InputPassword } from "@/components";
 import { signIn } from "next-auth/react";
 
 export const Login = () => {
@@ -22,7 +22,7 @@ export const Login = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Feedback
         isOpen={!!error}
         severity="error"
@@ -55,6 +55,6 @@ export const Login = () => {
           </form>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };

@@ -2,7 +2,14 @@ import { PointsModel } from "@/models";
 import Konva from "konva";
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Circle, Text } from "react-konva";
-import { Grid, Legend, MapCard, Orbitals, PointFinder } from "./components";
+import {
+  Grid,
+  Legend,
+  MapCard,
+  Orbitals,
+  PointFinder,
+  ZoomButton,
+} from "./components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { TypeEnum } from "@/enums";
@@ -15,13 +22,12 @@ export const SpaceMap = () => {
     (state: RootState) => state.map
   );
   const stageRef = useRef<Konva.Stage | null>(null);
-
+  const [scale, setScale] = useState<number>(3);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [size, setSize] = useState({
     width: 0,
     height: 0,
   });
-  const scale = 3;
 
   const handleSelect = (point: PointsModel | null) => {
     dispatch(setSelectedPoint(point));
@@ -64,6 +70,7 @@ export const SpaceMap = () => {
   return (
     <Stage ref={stageRef} width={size.width} height={size.height - 104}>
       <PointFinder width={size.width} />
+      <ZoomButton width={size.width} zoom={scale} changeZoom={setScale} />
       <Layer
         offsetX={offset.x}
         offsetY={offset.y}
@@ -109,7 +116,7 @@ export const SpaceMap = () => {
         {selectedPoint && (
           <MapCard
             selectedPoint={selectedPoint}
-            onClose={() => setSelectedPoint(null)}
+            onClose={() => dispatch(setSelectedPoint(null))}
           />
         )}
       </Layer>

@@ -8,9 +8,7 @@ export const getAgent = async ({
   token: string;
 }): Promise<{ data: AgentModel }> => {
   const response = await fetch(`${BASE_URL}/my/agent`, options(token));
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+
   return response.json();
 };
 

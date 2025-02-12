@@ -3,3 +3,4 @@ export * from "./Legend";
 export * from "./MapCard";
 export * from "./PointFinder";
 export * from "./Orbitals";
+export * from "./ZoomButton";

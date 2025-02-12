@@ -6,6 +6,7 @@ import type { AppProps } from "next/app";
 import { Poller_One } from "next/font/google";
 import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react";
+import { Layout } from "@/components";
 
 const pollerOne = Poller_One({
   subsets: ["latin"],
@@ -20,7 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <main className={pollerOne.className}>
-            <Component {...pageProps} />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
             <ReactQueryDevtools initialIsOpen={false} />
           </main>
         </Provider>

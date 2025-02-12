@@ -3,14 +3,7 @@ import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getFactions } from "@/utils/getFactions";
 import { FactionModel } from "@/models";
-import {
-  Button,
-  Dropdown,
-  Feedback,
-  Input,
-  InputPassword,
-  Layout,
-} from "@/components";
+import { Button, Dropdown, Feedback, Input, InputPassword } from "@/components";
 import { signIn } from "next-auth/react";
 
 export const Signup = () => {
@@ -70,47 +63,45 @@ export const Signup = () => {
   };
 
   return (
-    <Layout>
-      <div className="h-full flex justify-center items-center">
-        <div>
-          <Typography variant="h3" style={{ textAlign: "center" }}>
-            Signup
-          </Typography>
-          <Feedback
-            isOpen={!!error}
-            severity="error"
-            message={error}
-            onClose={() => setError("")}
+    <div className="h-full flex justify-center items-center">
+      <div>
+        <Typography variant="h3" style={{ textAlign: "center" }}>
+          Signup
+        </Typography>
+        <Feedback
+          isOpen={!!error}
+          severity="error"
+          message={error}
+          onClose={() => setError("")}
+        />
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <Input
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required={true}
           />
-          <form onSubmit={handleSubmit} className="flex flex-col">
-            <Input
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required={true}
-            />
-            <InputPassword
-              label="Password"
-              value={password2}
-              onChange={(e) => setPassword2(e.target.value)}
-              required={true}
-            />
-            <InputPassword
-              label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required={true}
-            />
-            <Dropdown
-              value={faction}
-              label="Faction"
-              options={formatedList}
-              onChange={(faction) => setFaction(faction.target.value)}
-            />
-            <Button type="submit" label="Signup" />
-          </form>
-        </div>
+          <InputPassword
+            label="Password"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+            required={true}
+          />
+          <InputPassword
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required={true}
+          />
+          <Dropdown
+            value={faction}
+            label="Faction"
+            options={formatedList}
+            onChange={(faction) => setFaction(faction.target.value)}
+          />
+          <Button type="submit" label="Signup" />
+        </form>
       </div>
-    </Layout>
+    </div>
   );
 };

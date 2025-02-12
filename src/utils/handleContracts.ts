@@ -18,9 +18,7 @@ export const getContracts = async ({ token }: GetContractProps) => {
   };
 
   const response = await fetch(`${BASE_URL}/my/contracts`, options);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+
   return response.json();
 };
 

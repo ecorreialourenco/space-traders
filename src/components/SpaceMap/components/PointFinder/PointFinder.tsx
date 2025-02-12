@@ -67,8 +67,8 @@ export const PointFinder = ({ width }: PointFinderProps) => {
   }, [center]);
 
   return (
-    <Layer>
-      <Label offsetX={-width / 2} offsetY={-20} scaleX={0.7} scaleY={0.7}>
+    <Layer offsetX={-width / 2 + 100} offsetY={-20}>
+      <Label scaleX={0.7} scaleY={0.7}>
         <Html>
           <div className={styles.wrapper}>
             <form

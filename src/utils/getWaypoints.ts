@@ -21,9 +21,7 @@ export const getWaypoint = async ({
     `${BASE_URL}/systems/${system}/waypoints/${planet}`,
     options(token)
   );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+
   return response.json();
 };
 
@@ -49,8 +47,6 @@ export const listWaypoints = async ({
     `${BASE_URL}/systems/${system}/waypoints?page=${page}&limit=${limit}`,
     options(token)
   );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+
   return response.json();
 };

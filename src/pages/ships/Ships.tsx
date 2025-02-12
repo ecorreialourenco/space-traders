@@ -1,4 +1,4 @@
-import { BuyShipModal, Layout, NavShipModal } from "@/components";
+import { BuyShipModal, NavShipModal } from "@/components";
 import { MyShipModel, RouteModel } from "@/models/ship.model";
 import { handleShipStatus, myShips, refuelShip } from "@/utils";
 import {
@@ -116,144 +116,142 @@ export const Ships = () => {
   }, [handleShips, token]);
 
   return (
-    <Layout>
-      <div className="flex flex-col h-full items-center mx-4">
-        <Typography variant="h3" style={{ textAlign: "center" }}>
-          My Ships
-        </Typography>
-        <Button onClick={() => setIsModalOpen(true)}>Buy Ship</Button>
-        <TableContainer component={Paper}>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell className={styles.headerCell}>Name</TableCell>
-                <TableCell className={styles.headerCell}>Role</TableCell>
-                <TableCell className={styles.headerCell}>Location</TableCell>
-                <TableCell className={styles.headerCell}>Status</TableCell>
-                <TableCell className={styles.headerCell}>Capacity</TableCell>
-                <TableCell className={styles.headerCell}>Fuel</TableCell>
-                <TableCell className={styles.headerCell}>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {shipsList.map((ship: MyShipModel) => (
-                <TableRow key={ship.registration.name}>
-                  <TableCell>{ship.registration.name}</TableCell>
-                  <TableCell>{ship.registration.role}</TableCell>
-                  <TableCell>{ship.nav.waypointSymbol}</TableCell>
-                  <TableCell>{ship.nav.status}</TableCell>
-                  <TableCell>
-                    {ship.cargo.units} / {ship.cargo.capacity}
-                  </TableCell>
-                  <TableCell>
-                    {ship.fuel.current} / {ship.fuel.capacity}
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title="Refuel">
+    <div className="flex flex-col h-full items-center mx-4">
+      <Typography variant="h3" style={{ textAlign: "center" }}>
+        My Ships
+      </Typography>
+      <Button onClick={() => setIsModalOpen(true)}>Buy Ship</Button>
+      <TableContainer component={Paper}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell className={styles.headerCell}>Name</TableCell>
+              <TableCell className={styles.headerCell}>Role</TableCell>
+              <TableCell className={styles.headerCell}>Location</TableCell>
+              <TableCell className={styles.headerCell}>Status</TableCell>
+              <TableCell className={styles.headerCell}>Capacity</TableCell>
+              <TableCell className={styles.headerCell}>Fuel</TableCell>
+              <TableCell className={styles.headerCell}>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {shipsList.map((ship: MyShipModel) => (
+              <TableRow key={ship.registration.name}>
+                <TableCell>{ship.registration.name}</TableCell>
+                <TableCell>{ship.registration.role}</TableCell>
+                <TableCell>{ship.nav.waypointSymbol}</TableCell>
+                <TableCell>{ship.nav.status}</TableCell>
+                <TableCell>
+                  {ship.cargo.units} / {ship.cargo.capacity}
+                </TableCell>
+                <TableCell>
+                  {ship.fuel.current} / {ship.fuel.capacity}
+                </TableCell>
+                <TableCell>
+                  <Tooltip title="Refuel">
+                    <span>
+                      <IconButton
+                        onClick={() =>
+                          handleRefuelShip({
+                            miningShipSymbol: ship.symbol,
+                            status: ship.nav.status,
+                          })
+                        }
+                      >
+                        <LocalGasStationIcon />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                  {ship.nav.status === NavStatusEnum.DOCKED ? (
+                    <Tooltip title="Orbit">
                       <span>
                         <IconButton
                           onClick={() =>
-                            handleRefuelShip({
-                              miningShipSymbol: ship.symbol,
-                              status: ship.nav.status,
-                            })
-                          }
-                        >
-                          <LocalGasStationIcon />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                    {ship.nav.status === NavStatusEnum.DOCKED ? (
-                      <Tooltip title="Orbit">
-                        <span>
-                          <IconButton
-                            onClick={() =>
-                              handleChangeShipStatus({
-                                miningShipSymbol: ship.symbol,
-                                status: NavActionStatusEnum.IN_ORBIT,
-                              })
-                            }
-                          >
-                            <PublicIcon />
-                          </IconButton>
-                        </span>
-                      </Tooltip>
-                    ) : (
-                      <Tooltip title="Dock">
-                        <span>
-                          <IconButton
-                            onClick={() =>
-                              handleChangeShipStatus({
-                                miningShipSymbol: ship.symbol,
-                                status: NavActionStatusEnum.DOCKED,
-                              })
-                            }
-                          >
-                            <FlightLandIcon />
-                          </IconButton>
-                        </span>
-                      </Tooltip>
-                    )}
-
-                    <Tooltip title="Navigate">
-                      <span>
-                        <IconButton
-                          onClick={() => {
                             handleChangeShipStatus({
                               miningShipSymbol: ship.symbol,
                               status: NavActionStatusEnum.IN_ORBIT,
-                            });
-                            setIsNavModalOpen(true);
-                            setSelectedShip(ship);
-                          }}
+                            })
+                          }
                         >
-                          <FlightTakeoffIcon />
+                          <PublicIcon />
                         </IconButton>
                       </span>
                     </Tooltip>
-
-                    <Tooltip title="Go to location">
+                  ) : (
+                    <Tooltip title="Dock">
                       <span>
                         <IconButton
-                          onClick={() => handleLocation(ship.nav.route)}
+                          onClick={() =>
+                            handleChangeShipStatus({
+                              miningShipSymbol: ship.symbol,
+                              status: NavActionStatusEnum.DOCKED,
+                            })
+                          }
                         >
-                          <MyLocationIcon />
+                          <FlightLandIcon />
                         </IconButton>
                       </span>
                     </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  )}
 
-          {total > LIMIT && (
-            <TablePagination
-              component="div"
-              rowsPerPageOptions={[]}
-              count={total}
-              rowsPerPage={LIMIT}
-              page={page - 1}
-              onPageChange={handleChangePage}
-            />
-          )}
-        </TableContainer>
+                  <Tooltip title="Navigate">
+                    <span>
+                      <IconButton
+                        onClick={() => {
+                          handleChangeShipStatus({
+                            miningShipSymbol: ship.symbol,
+                            status: NavActionStatusEnum.IN_ORBIT,
+                          });
+                          setIsNavModalOpen(true);
+                          setSelectedShip(ship);
+                        }}
+                      >
+                        <FlightTakeoffIcon />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
 
-        <BuyShipModal
-          open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          updateList={handleShips}
-        />
+                  <Tooltip title="Go to location">
+                    <span>
+                      <IconButton
+                        onClick={() => handleLocation(ship.nav.route)}
+                      >
+                        <MyLocationIcon />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
 
-        {selectedShip && (
-          <NavShipModal
-            open={isNavModalOpen}
-            ship={selectedShip}
-            onClose={() => setIsNavModalOpen(false)}
-            updateList={handleShips}
+        {total > LIMIT && (
+          <TablePagination
+            component="div"
+            rowsPerPageOptions={[]}
+            count={total}
+            rowsPerPage={LIMIT}
+            page={page - 1}
+            onPageChange={handleChangePage}
           />
         )}
-      </div>
-    </Layout>
+      </TableContainer>
+
+      <BuyShipModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        updateList={handleShips}
+      />
+
+      {selectedShip && (
+        <NavShipModal
+          open={isNavModalOpen}
+          ship={selectedShip}
+          onClose={() => setIsNavModalOpen(false)}
+          updateList={handleShips}
+        />
+      )}
+    </div>
   );
 };

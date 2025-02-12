@@ -1,11 +1,9 @@
-import { Layout, SpaceMap } from "@/components";
+import { SpaceMap } from "@/components";
 
 export default function Home() {
   return (
-    <Layout>
-      <div className="flex flex-col h-full justify-center items-center">
-        <SpaceMap />
-      </div>
-    </Layout>
+    <div className="flex flex-col h-full justify-center items-center">
+      <SpaceMap />
+    </div>
   );
 }

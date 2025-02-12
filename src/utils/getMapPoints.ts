@@ -11,8 +11,6 @@ export const getMapPoints = async ({ token, system }: WaypointProps) => {
     `${BASE_URL}/systems/${system}`,
     options(token)
   );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+
   return response.json();
 };
