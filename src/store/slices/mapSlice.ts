@@ -4,11 +4,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface MapState {
   center: SimplePointModel;
   selectedPoint: PointsModel | null;
+  waypoints: PointsModel[];
 }
 
 const initialState: MapState = {
   center: { x: 0, y: 0 },
   selectedPoint: null,
+  waypoints: [],
 };
 
 export const mapSlice = createSlice({
@@ -21,9 +23,12 @@ export const mapSlice = createSlice({
     setSelectedPoint: (state, action: PayloadAction<PointsModel | null>) => {
       state.selectedPoint = action.payload;
     },
+    setWaypoints: (state, action: PayloadAction<PointsModel[]>) => {
+      state.waypoints = action.payload;
+    },
   },
 });
 
-export const { setCenter, setSelectedPoint } = mapSlice.actions;
+export const { setCenter, setSelectedPoint, setWaypoints } = mapSlice.actions;
 
 export default mapSlice.reducer;

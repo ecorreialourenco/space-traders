@@ -14,7 +14,7 @@ export const Legend = () => {
 
   return (
     <Layer>
-      <Label scaleX={0.7} scaleY={0.7}>
+      <Label offsetY={-20} scaleX={0.7} scaleY={0.7}>
         <Html>
           <div className={styles.legendContainer}>
             {expanded ? "Hide legend" : "Show legend"}

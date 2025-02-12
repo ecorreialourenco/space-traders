@@ -8,7 +8,7 @@ import {
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal } from "@/components/Modal/Modal";
+import { Modal } from "@/components";
 import { ShipyardModel, ShipyardShopModel, TraitModel } from "@/models";
 import { setSystem } from "@/store/slices/uiSlice";
 import { BuyShipTable } from "./BuyShipTable";

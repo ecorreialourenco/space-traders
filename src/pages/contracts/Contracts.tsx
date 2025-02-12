@@ -2,7 +2,7 @@ import { Layout } from "@/components";
 import { ContractModel } from "@/models/contract.model";
 import { acceptContract, getContracts } from "@/utils/handleContracts";
 import {
-  Button,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -10,10 +10,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+
+import styles from "./Contracts.module.css";
 
 export const Contracts = () => {
   const { data } = useSession();
@@ -38,20 +43,20 @@ export const Contracts = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col h-full items-center">
+      <div className="flex flex-col h-full items-center mx-4">
         <Typography variant="h3" style={{ textAlign: "center" }}>
           Contracts
         </Typography>
         <TableContainer component={Paper}>
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>Type</TableCell>
-                <TableCell>Deadline</TableCell>
-                <TableCell>Terms</TableCell>
-                <TableCell>Payment</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Action</TableCell>
+                <TableCell className={styles.headerCell}>Type</TableCell>
+                <TableCell className={styles.headerCell}>Deadline</TableCell>
+                <TableCell className={styles.headerCell}>Terms</TableCell>
+                <TableCell className={styles.headerCell}>Payment</TableCell>
+                <TableCell className={styles.headerCell}>Status</TableCell>
+                <TableCell className={styles.headerCell}>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -92,9 +97,13 @@ export const Contracts = () => {
                   </TableCell>
                   <TableCell>
                     {!contract.accepted && (
-                      <Button onClick={() => handleClick(contract.id)}>
-                        Accept
-                      </Button>
+                      <Tooltip title="Accept contract">
+                        <span>
+                          <IconButton onClick={() => handleClick(contract.id)}>
+                            <AssignmentTurnedInIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
                     )}
                   </TableCell>
                 </TableRow>

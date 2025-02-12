@@ -1,25 +1,22 @@
 import { PointsModel } from "@/models";
 import Konva from "konva";
 import React, { useEffect, useRef, useState } from "react";
-import { Stage, Layer, Circle, Group, Text } from "react-konva";
-import { Grid, Legend, MapCard, Orbitals } from "./components";
+import { Stage, Layer, Circle, Text } from "react-konva";
+import { Grid, Legend, MapCard, Orbitals, PointFinder } from "./components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { TypeEnum } from "@/enums";
 import { handleText } from "@/utils";
 import { setSelectedPoint } from "@/store/slices/mapSlice";
 
-interface SpaceMapProps {
-  points: PointsModel[];
-}
-
-export const SpaceMap = ({ points }: SpaceMapProps) => {
+export const SpaceMap = () => {
   const dispatch = useDispatch();
-  const { center, selectedPoint } = useSelector(
+  const { center, selectedPoint, waypoints } = useSelector(
     (state: RootState) => state.map
   );
   const stageRef = useRef<Konva.Stage | null>(null);
-  const [offset, setOffset] = useState({ x: center.x, y: center.y });
+
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [size, setSize] = useState({
     width: 0,
     height: 0,
@@ -48,29 +45,25 @@ export const SpaceMap = ({ points }: SpaceMapProps) => {
   }, []);
 
   useEffect(() => {
-    const centerOnPoint = ({ x, y }: { x: number; y: number }) => {
+    const centerOnPoint = () => {
       const stage = stageRef.current;
       if (!stage) return;
 
       const centerX = stage.width() / 2;
       const centerY = stage.height() / 2;
 
-      const newOffsetX = x - centerX / scale;
-      const newOffsetY = y - centerY / scale;
+      const newOffsetX = -centerX / scale + center.x;
+      const newOffsetY = -centerY / scale + center.y;
 
       setOffset({ x: newOffsetX, y: newOffsetY });
     };
 
-    centerOnPoint({ x: center.x, y: center.y });
-  }, [center, scale]);
+    centerOnPoint();
+  }, [stageRef, center, scale]);
 
   return (
-    <Stage
-      ref={stageRef}
-      width={size.width}
-      height={size.height - 104}
-      draggable
-    >
+    <Stage ref={stageRef} width={size.width} height={size.height - 104}>
+      <PointFinder width={size.width} />
       <Layer
         offsetX={offset.x}
         offsetY={offset.y}
@@ -79,9 +72,10 @@ export const SpaceMap = ({ points }: SpaceMapProps) => {
         draggable
         onClick={handleClick}
       >
-        <Grid points={points} />
+        <Grid points={waypoints} />
         <Circle x={0} y={0} radius={5} fill="yellow" />
-        {points
+
+        {waypoints
           .filter(
             (point) =>
               point.type !== TypeEnum.MOON &&
@@ -89,28 +83,26 @@ export const SpaceMap = ({ points }: SpaceMapProps) => {
           )
           .map((point) => (
             <React.Fragment key={`${point.type}-${point.x}-${point.y}`}>
-              <Group x={point.x} y={point.y}>
-                <Circle
-                  x={point.x}
-                  y={point.y}
-                  radius={point.size}
-                  fill={point.color}
-                  onClick={() => handleSelect(point)}
-                />
-                <Orbitals
-                  point={point}
-                  points={points}
-                  setSelectedPoint={handleSelect}
-                />
-                <Text
-                  x={point.x + 5}
-                  y={point.y + 5}
-                  text={handleText(point.symbol)}
-                  scaleX={0.2}
-                  scaleY={0.2}
-                  fill={point.color}
-                />
-              </Group>
+              <Circle
+                x={point.x}
+                y={point.y}
+                radius={point.size}
+                fill={point.color}
+                onClick={() => handleSelect(point)}
+              />
+              <Orbitals
+                point={point}
+                points={waypoints}
+                setSelectedPoint={handleSelect}
+              />
+              <Text
+                x={point.x + 5}
+                y={point.y + 5}
+                text={handleText(point.symbol)}
+                scaleX={0.2}
+                scaleY={0.2}
+                fill={point.color}
+              />
             </React.Fragment>
           ))}
 

@@ -1,4 +1,4 @@
-import { TypeEnum } from "@/enums";
+import { FlightModeEnum, NavStatusEnum, TypeEnum } from "@/enums";
 import { TraitModel } from "./waypoint.model";
 
 export interface ShipModel {
@@ -176,7 +176,7 @@ interface CrewModel {
   wages: number;
 }
 
-interface FuelModel {
+export interface FuelModel {
   current: number;
   capacity: number;
   consumed: {
@@ -197,15 +197,15 @@ interface CooldownModel {
   remainingSeconds: number;
 }
 
-interface NavigationModel {
+export interface NavigationModel {
   systemSymbol: string;
   waypointSymbol: string;
   route: RouteModel;
-  status: string;
-  flightMode: string;
+  status: NavStatusEnum;
+  flightMode: FlightModeEnum;
 }
 
-interface RouteModel {
+export interface RouteModel {
   origin: LocalModel;
   destination: LocalModel;
   arrival: Date;

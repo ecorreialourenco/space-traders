@@ -1,12 +1,14 @@
 import { BASE_URL, LIMIT } from "@/constants";
 import {
   MyShipModel,
+  NavigationModel,
   PaginationModel,
   PurchaseShipModel,
   ShipyardModel,
   ShipyardShopModel,
 } from "@/models";
 import { options } from "./requestOptions";
+import { NavActionStatusEnum } from "@/enums";
 
 interface MyShipProps {
   token: string;
@@ -30,6 +32,23 @@ interface PurchaseShipProps {
   waypoint: string;
 }
 
+interface HandleShipStatusProps {
+  token: string;
+  miningShipSymbol: string;
+  status: NavActionStatusEnum;
+}
+
+interface RefuelShipProps {
+  token: string;
+  miningShipSymbol: string;
+}
+
+interface HandleNavigateProps {
+  token: string;
+  miningShipSymbol: string;
+  waypoint: string;
+}
+
 interface PurchaseShipError {
   message: string;
   code: number;
@@ -42,6 +61,10 @@ interface PurchaseShipError {
 interface MyShipsResponse {
   data: MyShipModel[];
   meta: PaginationModel;
+}
+
+interface DockShipResonse {
+  nav: NavigationModel;
 }
 
 export const myShips = async ({
@@ -107,10 +130,76 @@ export const purchaseShip = async ({
     }),
   };
 
-  fetch("https://api.spacetraders.io/v2/my/ships", options).then((response) =>
-    response.json()
+  const response = await fetch(`${BASE_URL}/my/ships`, options);
+  return response.json();
+};
+
+export const handleShipStatus = async ({
+  token,
+  miningShipSymbol,
+  status,
+}: HandleShipStatusProps): Promise<{
+  data: DockShipResonse | null;
+  error: PurchaseShipError | null;
+}> => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await fetch(
+    `${BASE_URL}/my/ships/${miningShipSymbol}/${status}`,
+    options
   );
 
-  const response = await fetch(`${BASE_URL}/my/ships`, options);
+  return response.json();
+};
+
+export const refuelShip = async ({
+  token,
+  miningShipSymbol,
+}: RefuelShipProps): Promise<{
+  data: PurchaseShipModel | null;
+  error: PurchaseShipError | null;
+}> => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await fetch(
+    `${BASE_URL}/my/ships/${miningShipSymbol}/refuel`,
+    options
+  );
+  return response.json();
+};
+
+export const handleNavigate = async ({
+  token,
+  waypoint,
+  miningShipSymbol,
+}: HandleNavigateProps) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      waypointSymbol: waypoint,
+    }),
+  };
+
+  const response = await fetch(
+    `${BASE_URL}/my/ships/${miningShipSymbol}/navigate`,
+    options
+  );
+
   return response.json();
 };
