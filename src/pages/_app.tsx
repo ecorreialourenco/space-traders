@@ -1,7 +1,11 @@
 import store from "@/store/store";
 import "@/styles/globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+  HydrationBoundary,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { useState } from "react";
 import type { AppProps } from "next/app";
 import { Poller_One } from "next/font/google";
 import { Provider } from "react-redux";
@@ -14,19 +18,20 @@ const pollerOne = Poller_One({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-          <main className={pollerOne.className}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </main>
-        </Provider>
+        <HydrationBoundary state={pageProps.dehydratedState}>
+          <Provider store={store}>
+            <main className={pollerOne.className}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </main>
+          </Provider>
+        </HydrationBoundary>
       </QueryClientProvider>
     </SessionProvider>
   );

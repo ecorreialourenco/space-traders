@@ -71,6 +71,7 @@ export const myShips = async ({
   token,
   page,
 }: MyShipProps): Promise<MyShipsResponse> => {
+  console.log("🚀 ~ page:", page)
   const response = await fetch(
     `${BASE_URL}/my/ships?page=${page}&limit=${LIMIT}`,
     options(token)

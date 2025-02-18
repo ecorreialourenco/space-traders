@@ -7,7 +7,9 @@ const pollerOne = Poller_One({
   weight: ["400"],
 });
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={pollerOne.variable}>
       <body>{children}</body>

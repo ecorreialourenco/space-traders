@@ -120,7 +120,7 @@ export const PointFinder = ({ width }: PointFinderProps) => {
                 }
                 edge="end"
               >
-                <KeyboardArrowDownIcon />
+                <KeyboardArrowDownIcon className="fill-white" />
               </IconButton>
             </Tooltip>
           </div>

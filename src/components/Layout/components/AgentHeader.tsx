@@ -1,11 +1,5 @@
 import { AgentModel, PointsModel, WaypointModel } from "@/models";
-import {
-  formatCredits,
-  getAgent,
-  getMapPoints,
-  getSize,
-  handleSystemString,
-} from "@/utils";
+import { formatCredits, getSize, handleSystemString } from "@/utils";
 import React, { useEffect, useState } from "react";
 import { AgentHeaderItem } from "./AgentHeaderItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +9,7 @@ import { setCenter, setWaypoints } from "@/store/slices/mapSlice";
 
 import styles from "./AgentHeader.module.css";
 import { RootState } from "@/store/store";
+import { useAgent, useHeadquarters } from "@/hooks";
 
 interface AgentHeader {
   token: string;
@@ -24,10 +19,14 @@ export const AgentHeader = ({ token }: AgentHeader) => {
   const [agent, setAgent] = useState<AgentModel>();
   const dispatch = useDispatch();
   const { center } = useSelector((state: RootState) => state.map);
+  const { system } = useSelector((state: RootState) => state.ui);
+
+  const { data } = useAgent(token);
+  const { data: headquarters } = useHeadquarters({ token, system });
 
   useEffect(() => {
     const getAgentData = async () => {
-      const { data } = await getAgent({ token });
+      const waypoints: WaypointModel[] = headquarters?.waypoints ?? [];
 
       if (data) {
         const system = handleSystemString(data.headquarters);
@@ -37,11 +36,10 @@ export const AgentHeader = ({ token }: AgentHeader) => {
         dispatch(setAgentStore(data));
         dispatch(setSystem(system));
 
-        const { data: headquarters } = await getMapPoints({ token, system });
         const newPoints: PointsModel[] = [];
         const isCentered = center.x !== 0 && center.y !== 0;
 
-        headquarters.waypoints.forEach((point: WaypointModel) => {
+        waypoints.forEach((point: WaypointModel) => {
           const isHeadquarter = point.symbol === data.headquarters;
 
           if (isHeadquarter && !isCentered) {
@@ -64,7 +62,7 @@ export const AgentHeader = ({ token }: AgentHeader) => {
     };
 
     getAgentData();
-  }, [dispatch, token]);
+  }, [center, data, dispatch, headquarters, token]);
 
   if (!agent) {
     return null;

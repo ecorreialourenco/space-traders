@@ -1,5 +1,6 @@
 import { FlightModeEnum, NavStatusEnum, TypeEnum } from "@/enums";
 import { TraitModel } from "./waypoint.model";
+import { PaginationModel } from ".";
 
 export interface ShipModel {
   type: string;
@@ -218,4 +219,9 @@ interface LocalModel {
   systemSymbol: string;
   x: number;
   y: number;
+}
+
+export interface MyShipsResponse {
+  data: MyShipModel[];
+  meta: PaginationModel;
 }

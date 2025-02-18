@@ -18,6 +18,7 @@ export default async function handler(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.ACCOUNT_TOKEN}`,
     },
     body: JSON.stringify({
       symbol: username,
@@ -27,8 +28,10 @@ export default async function handler(
 
   const response = await fetch(`${BASE_URL}/register`, options);
   const newPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+  console.log("🚀 ~ response:", response.status);
   const { data, error } = await response.json();
 
+  console.log("🚀 ~ data:", data);
   if (data?.token) {
     let previousContent: string | null = null;
     try {
