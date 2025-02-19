@@ -1,5 +1,5 @@
 import { ContractModel } from "@/models/contract.model";
-import { acceptContract, getContracts } from "@/utils/handleContracts";
+import { acceptContract } from "@/utils/handleContracts";
 import {
   IconButton,
   Paper,
@@ -8,6 +8,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   Tooltip,
   Typography,
@@ -16,29 +17,41 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import { useContracts } from "@/hooks";
+import { LIMIT } from "@/constants";
 
 import styles from "./Contracts.module.css";
 
 export const Contracts = () => {
   const { data } = useSession();
   const [contractList, setContractList] = useState<ContractModel[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [total, setTotal] = useState<number>(0);
+  const { data: contractsData, refetch } = useContracts({ page });
 
   const handleClick = async (id: string) => {
-    await acceptContract({ token: data?.token ?? "", id });
+    await acceptContract({ token: data?.token ?? "", id }).then(() =>
+      refetch()
+    );
+  };
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    page: number
+  ) => {
+    if (contractsData && page + 1 > contractsData?.meta.page) {
+      setPage((prevPage) => prevPage + 1);
+    } else {
+      setPage((prevPage) => prevPage - 1);
+    }
   };
 
   useEffect(() => {
-    const handleContracts = async () => {
-      const { data: contractData } = await getContracts({
-        token: data?.token ?? "",
-      });
-      setContractList(contractData);
-    };
-
-    if (data?.token) {
-      handleContracts();
+    if (contractsData) {
+      setContractList(contractsData.data);
+      setTotal(contractsData.meta.total);
     }
-  }, [data]);
+  }, [contractsData]);
 
   return (
     <div className="flex flex-col h-full items-center mx-4">
@@ -106,6 +119,18 @@ export const Contracts = () => {
             ))}
           </TableBody>
         </Table>
+
+        {total > LIMIT && (
+          <TablePagination
+            component="div"
+            rowsPerPageOptions={[]}
+            count={total}
+            rowsPerPage={LIMIT}
+            page={page - 1}
+            labelDisplayedRows={() => `${page} of ${Math.ceil(total / LIMIT)}`}
+            onPageChange={handleChangePage}
+          />
+        )}
       </TableContainer>
     </div>
   );

@@ -25,7 +25,7 @@ import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import { Navigation, NavStatus, ShipRefuel } from "./components";
 
 import styles from "./ShipTable.module.css";
-import { useShips } from "@/hooks/useShips";
+import { useShips } from "@/hooks";
 import { TableRef } from "@/pages/ships/Ships";
 
 interface ShipTableProps {

@@ -6,7 +6,6 @@ import { BuyShipModal, NavShipModal, ShipTable } from "@/components";
 
 export interface TableRef {
   refetch: () => void;
-  // Outras funções que você queira expor
 }
 
 export const Ships = () => {
