@@ -16,6 +16,7 @@ import {
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
+import { Button, NegociateContractModal } from "@/components";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { useContracts } from "@/hooks";
 import { LIMIT } from "@/constants";
@@ -27,6 +28,8 @@ export const Contracts = () => {
   const [contractList, setContractList] = useState<ContractModel[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const { data: contractsData, refetch } = useContracts({ page });
 
   const handleClick = async (id: string) => {
@@ -58,6 +61,14 @@ export const Contracts = () => {
       <Typography variant="h3" style={{ textAlign: "center" }}>
         Contracts
       </Typography>
+
+      {contractList.length !== 0 && (
+        <Button
+          label="Negociate contract"
+          onClick={() => setIsModalOpen(true)}
+        />
+      )}
+
       <TableContainer component={Paper}>
         <Table stickyHeader>
           <TableHead>
@@ -132,6 +143,12 @@ export const Contracts = () => {
           />
         )}
       </TableContainer>
+
+      <NegociateContractModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        updateList={() => refetch()}
+      />
     </div>
   );
 };

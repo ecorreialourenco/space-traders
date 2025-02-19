@@ -19,7 +19,7 @@ export const NavStatus = ({
   status: NavActionStatusEnum;
   miningShipSymbol: string;
   children: ReactNode;
-  refetch: (
+  refetch?: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
   onClick?: () => void;
@@ -38,7 +38,7 @@ export const NavStatus = ({
     });
 
     if (dockResponse.data?.nav) {
-      refetch();
+      refetch?.();
     }
   };
 

@@ -1,7 +1,8 @@
 import { BASE_URL } from "@/constants";
 
-interface GetContractProps {
+interface NegociateContractProps {
   token: string;
+  shipSymbol: string;
 }
 
 interface AcceptContractProps {
@@ -9,15 +10,22 @@ interface AcceptContractProps {
   id: string;
 }
 
-export const getContracts = async ({ token }: GetContractProps) => {
+export const negociateContract = async ({
+  token,
+  shipSymbol,
+}: NegociateContractProps) => {
   const options = {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   };
 
-  const response = await fetch(`${BASE_URL}/my/contracts`, options);
+  const response = await fetch(
+    `${BASE_URL}/ships/${shipSymbol}/negotiate/contract`,
+    options
+  );
 
   return response.json();
 };
