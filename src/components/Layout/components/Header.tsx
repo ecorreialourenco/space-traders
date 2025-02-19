@@ -6,7 +6,7 @@ import { AgentHeader } from "./AgentHeader";
 
 export const Header = () => {
   const router = useRouter();
-  const { status, data } = useSession();
+  const { status } = useSession();
 
   const isAuthenticated = status === "authenticated";
 
@@ -49,7 +49,7 @@ export const Header = () => {
       </div>
       {isAuthenticated && (
         <div className="w-full flex justify-between h-10">
-          <AgentHeader token={data.token ?? ""} />
+          <AgentHeader />
         </div>
       )}
     </>

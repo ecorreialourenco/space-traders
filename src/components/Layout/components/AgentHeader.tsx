@@ -1,6 +1,6 @@
-import { AgentModel, PointsModel, WaypointModel } from "@/models";
-import { formatCredits, getSize, handleSystemString } from "@/utils";
-import React, { useEffect, useState } from "react";
+import { PointsModel, WaypointModel } from "@/models";
+import { formatCredits, getSize } from "@/utils";
+import React, { useEffect } from "react";
 import { AgentHeaderItem } from "./AgentHeaderItem";
 import { useDispatch, useSelector } from "react-redux";
 import { setAgent as setAgentStore, setSystem } from "@/store/slices/uiSlice";
@@ -11,18 +11,18 @@ import styles from "./AgentHeader.module.css";
 import { RootState } from "@/store/store";
 import { useAgent, useHeadquarters } from "@/hooks";
 
-interface AgentHeader {
-  token: string;
-}
-
-export const AgentHeader = ({ token }: AgentHeader) => {
-  const [agent, setAgent] = useState<AgentModel>();
+export const AgentHeader = () => {
   const dispatch = useDispatch();
   const { center } = useSelector((state: RootState) => state.map);
-  const { system } = useSelector((state: RootState) => state.ui);
+  const { agent } = useSelector((state: RootState) => state.ui);
 
-  const { data } = useAgent(token);
-  const { data: headquarters } = useHeadquarters({ token, system });
+  const { data } = useAgent();
+  const { data: headquarters } = useHeadquarters();
+
+  const handleSystemString = (headquarters: string) => {
+    const splitedString = headquarters.split("-");
+    return `${splitedString[0]}-${splitedString[1]}`;
+  };
 
   useEffect(() => {
     const getAgentData = async () => {
@@ -30,8 +30,6 @@ export const AgentHeader = ({ token }: AgentHeader) => {
 
       if (data) {
         const system = handleSystemString(data.headquarters);
-
-        setAgent(data);
 
         dispatch(setAgentStore(data));
         dispatch(setSystem(system));
@@ -62,7 +60,7 @@ export const AgentHeader = ({ token }: AgentHeader) => {
     };
 
     getAgentData();
-  }, [center, data, dispatch, headquarters, token]);
+  }, [center, data, dispatch, headquarters]);
 
   if (!agent) {
     return null;

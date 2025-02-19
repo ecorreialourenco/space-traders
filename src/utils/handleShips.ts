@@ -1,19 +1,12 @@
-import { BASE_URL, LIMIT } from "@/constants";
+import { BASE_URL } from "@/constants";
 import {
-  MyShipModel,
   NavigationModel,
-  PaginationModel,
   PurchaseShipModel,
   ShipyardModel,
   ShipyardShopModel,
 } from "@/models";
 import { options } from "./requestOptions";
 import { NavActionStatusEnum } from "@/enums";
-
-interface MyShipProps {
-  token: string;
-  page: number;
-}
 
 interface FindShipyardsProps {
   token: string;
@@ -58,27 +51,9 @@ interface PurchaseShipError {
   };
 }
 
-interface MyShipsResponse {
-  data: MyShipModel[];
-  meta: PaginationModel;
-}
-
 interface DockShipResonse {
   nav: NavigationModel;
 }
-
-export const myShips = async ({
-  token,
-  page,
-}: MyShipProps): Promise<MyShipsResponse> => {
-  console.log("🚀 ~ page:", page)
-  const response = await fetch(
-    `${BASE_URL}/my/ships?page=${page}&limit=${LIMIT}`,
-    options(token)
-  );
-
-  return response.json();
-};
 
 export const findShipyards = async ({
   token,

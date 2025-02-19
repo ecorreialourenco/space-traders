@@ -1,5 +1,6 @@
-import { Dialog, DialogTitle } from "@mui/material";
+import { Dialog, DialogTitle, IconButton, Tooltip } from "@mui/material";
 import React, { ReactNode } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface ModalProps {
   title: string;
@@ -10,7 +11,14 @@ interface ModalProps {
 
 export const Modal = ({ title, open, children, onClose }: ModalProps) => (
   <Dialog onClose={onClose} open={open}>
-    <DialogTitle>{title}</DialogTitle>
+    <DialogTitle className="flex justify-between">
+      {title}
+      <Tooltip title="Close">
+        <IconButton onClick={onClose} edge="end">
+          <CloseIcon />
+        </IconButton>
+      </Tooltip>
+    </DialogTitle>
     {children}
   </Dialog>
 );

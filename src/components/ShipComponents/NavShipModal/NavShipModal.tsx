@@ -107,7 +107,18 @@ export const NavShipModal = ({
             options={options}
             onChange={(op) => setSpeed(op.target.value as FlightModeEnum)}
           />
-          <Button label="Navigate" type="submit" />
+          <div className="flex justify-between gap-2">
+            <div className="w-full">
+              <Button
+                label="Cancel"
+                className="bg-gray-400 hover:bg-gray-600"
+                onClick={onClose}
+              />
+            </div>
+            <div className="w-full">
+              <Button label="Navigate" type="submit" />
+            </div>
+          </div>
         </form>
       </div>
     </Modal>

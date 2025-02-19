@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 export const useShips = ({ page }: { page: number }) => {
   const { data } = useSession();
   const token = data?.token ?? "";
-console.log("🚀 ~ useShips ~ page:", page)
 
   const getShips = async () => {
     const response = await fetch(

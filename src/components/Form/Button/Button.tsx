@@ -1,5 +1,8 @@
 import React from "react";
-import { ButtonOwnProps, Button as MButton } from "@mui/material";
+import {
+  Button as MButton,
+  ButtonProps as ButtonOwnProps,
+} from "@mui/material";
 import cn from "classnames";
 
 interface ButtonProps extends ButtonOwnProps {
