@@ -1,5 +1,3 @@
-import { ContractModel } from "@/models/contract.model";
-import { acceptContract } from "@/utils/handleContracts";
 import {
   IconButton,
   Paper,
@@ -12,14 +10,17 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  Button,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
-import { Button, NegociateContractModal } from "@/components";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import { ContractModel } from "@/models/contract.model";
+import { acceptContract } from "@/utils/handleContracts";
+import { NegociateContractModal } from "@/components";
 import { useContracts } from "@/hooks";
 import { LIMIT } from "@/constants";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 import styles from "./Contracts.module.css";
 
@@ -62,11 +63,8 @@ export const Contracts = () => {
         Contracts
       </Typography>
 
-      {contractList.length !== 0 && (
-        <Button
-          label="Negociate contract"
-          onClick={() => setIsModalOpen(true)}
-        />
+      {contractList.length === 0 && (
+        <Button onClick={() => setIsModalOpen(true)}>Negociate contract</Button>
       )}
 
       <TableContainer component={Paper}>

@@ -1,4 +1,5 @@
 import { FlightModeEnum, NavStatusEnum, TypeEnum } from "@/enums";
+
 import { TraitModel } from "./waypoint.model";
 import { PaginationModel } from ".";
 
@@ -215,7 +216,7 @@ export interface RouteModel {
 
 interface LocalModel {
   symbol: string;
-  type: string;
+  type: TypeEnum;
   systemSymbol: string;
   x: number;
   y: number;

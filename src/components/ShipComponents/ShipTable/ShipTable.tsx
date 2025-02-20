@@ -1,4 +1,3 @@
-import { MyShipModel } from "@/models/ship.model";
 import {
   Paper,
   Table,
@@ -10,6 +9,9 @@ import {
   TableRow,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
+
+import { MyShipModel } from "@/models/ship.model";
+
 import React, {
   forwardRef,
   useEffect,
@@ -22,7 +24,7 @@ import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import PublicIcon from "@mui/icons-material/Public";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
-import { Navigation, NavStatus, ShipRefuel } from "./components";
+import { Navigation, NavStatus, ShipRefuel, Surveying } from "./components";
 
 import styles from "./ShipTable.module.css";
 import { useShips } from "@/hooks";
@@ -38,10 +40,11 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     const [shipsList, setShipsList] = useState<MyShipModel[]>([]);
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-
-    const { data: shipsData, refetch } = useShips({ page });
     const { data } = useSession();
     const token = data?.token ?? "";
+
+    const { data: shipsData, refetch } = useShips({ page });
+    console.log("🚀 ~ ShipTable ~ shipsData:", shipsData);
 
     const handleChangePage = (
       event: React.MouseEvent<HTMLButtonElement> | null,
@@ -131,6 +134,9 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                   </NavStatus>
 
                   <Navigation route={ship.nav.route} />
+                  {ship.mounts.some(
+                    (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
+                  ) && <Surveying token={token} ship={ship} />}
                 </TableCell>
               </TableRow>
             ))}

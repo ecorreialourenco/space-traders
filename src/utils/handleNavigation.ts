@@ -51,3 +51,28 @@ export const navigateToWaypoint = async ({
 
   return response.json();
 };
+
+export const getSurvey = async ({
+  token,
+  shipId,
+}: {
+  token: string;
+  shipId: string;
+}) => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const options = {
+    method: "POST",
+    headers,
+  };
+
+  const response = await fetch(
+    `${BASE_URL}/my/ships/${shipId}/survey`,
+    options
+  );
+
+  return response.json();
+};

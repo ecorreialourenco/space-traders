@@ -1,12 +1,13 @@
+import { useSession } from "next-auth/react";
+import React, { FormEvent, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import { Button, Dropdown, Feedback, Modal } from "@/components";
 import { FlightModeEnum, NavStatusEnum } from "@/enums";
 import { MyShipModel } from "@/models";
 import { RootState } from "@/store/store";
 import { navigateToWaypoint } from "@/utils/handleNavigation";
 import { AlertColor, Autocomplete, TextField } from "@mui/material";
-import { useSession } from "next-auth/react";
-import React, { FormEvent, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 interface NavShipModalProps {
   open: boolean;
@@ -60,7 +61,7 @@ export const NavShipModal = ({
       shipId: ship.symbol,
     });
 
-    if (navData.data.nav.status === NavStatusEnum.IN_TRANSIT) {
+    if (navData.data?.nav.status === NavStatusEnum.IN_TRANSIT) {
       setFeedbackType("success");
       setFeedbackMessage("Navigate");
       updateList();
