@@ -1,12 +1,12 @@
-import { Button, Dropdown, Modal } from "@/components";
-import { NavStatus } from "@/components/ShipComponents/ShipTable/components";
+import { Button, Dropdown, Modal, NavStatus } from "@/components";
 import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
-import { useShips } from "@/hooks";
 import React, { useState } from "react";
+
 import FlightLandIcon from "@mui/icons-material/FlightLand";
-import { useSession } from "next-auth/react";
 import { MyShipModel } from "@/models";
 import { negociateContract } from "@/utils";
+import { useSession } from "next-auth/react";
+import { useShips } from "@/hooks";
 
 interface NegociateContractModalProps {
   open: boolean;

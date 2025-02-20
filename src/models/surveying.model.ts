@@ -1,14 +1,11 @@
+import { CooldownModel } from ".";
+
 export interface SurveyingModel {
-  cooldown: {
-    shipSymbol: string;
-    totalSeconds: number;
-    remainingSeconds: number;
-    expiration: string;
-  };
+  cooldown: CooldownModel;
   surveys: SurveysModel[];
 }
 
-interface SurveysModel {
+export interface SurveysModel {
   signature: string;
   symbol: string;
   deposits: DepositsModel[];

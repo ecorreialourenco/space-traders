@@ -1,7 +1,7 @@
 import { FlightModeEnum, NavStatusEnum, TypeEnum } from "@/enums";
 
 import { TraitModel } from "./waypoint.model";
-import { PaginationModel } from ".";
+import { InventoryModel, PaginationModel } from ".";
 
 export interface ShipModel {
   type: string;
@@ -163,10 +163,10 @@ interface EngineModel {
   requirements: CrewRequirementModel;
 }
 
-interface CargoModel {
+export interface CargoModel {
   capacity: number;
   units: number;
-  inventory: [];
+  inventory: InventoryModel[];
 }
 
 interface CrewModel {
@@ -194,6 +194,7 @@ interface RegistrationModel {
 }
 
 interface CooldownModel {
+  expiration: string;
   shipSymbol: string;
   totalSeconds: number;
   remainingSeconds: number;

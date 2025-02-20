@@ -1,3 +1,5 @@
+import { InfoButton, Navigation, ShipRefuel, Surveying } from "./components";
+import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
 import {
   Paper,
   Table,
@@ -8,27 +10,25 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import { useSession } from "next-auth/react";
-
-import { MyShipModel } from "@/models/ship.model";
-
 import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
   useState,
 } from "react";
-import { LIMIT } from "@/constants";
-import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
 
+import { Extract } from "./components/Extract";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
-import PublicIcon from "@mui/icons-material/Public";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
-import { Navigation, NavStatus, ShipRefuel, Surveying } from "./components";
-
-import styles from "./ShipTable.module.css";
-import { useShips } from "@/hooks";
+import { LIMIT } from "@/constants";
+import { MyShipModel } from "@/models";
+import PublicIcon from "@mui/icons-material/Public";
 import { TableRef } from "@/pages/ships/Ships";
+import { checkMiningLocation } from "@/utils";
+import styles from "./ShipTable.module.css";
+import { useSession } from "next-auth/react";
+import { useShips } from "@/hooks";
+import { NavStatus } from "@/components";
 
 interface ShipTableProps {
   openModal: (val: boolean) => void;
@@ -44,7 +44,6 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     const token = data?.token ?? "";
 
     const { data: shipsData, refetch } = useShips({ page });
-    console.log("🚀 ~ ShipTable ~ shipsData:", shipsData);
 
     const handleChangePage = (
       event: React.MouseEvent<HTMLButtonElement> | null,
@@ -62,7 +61,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     }));
 
     useEffect(() => {
-      if (shipsData) {
+      if (shipsData?.data && shipsData?.meta) {
         setShipsList(shipsData.data);
         setTotal(shipsData.meta.total);
       }
@@ -134,9 +133,27 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                   </NavStatus>
 
                   <Navigation route={ship.nav.route} />
-                  {ship.mounts.some(
-                    (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
-                  ) && <Surveying token={token} ship={ship} />}
+
+                  {ship.cargo.capacity > ship.cargo.units && (
+                    <>
+                      {ship.mounts.some(
+                        (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
+                      ) && (
+                        <Surveying
+                          token={token}
+                          ship={ship}
+                          updateCargo={refetch}
+                        />
+                      )}
+
+                      {ship.nav.status === NavStatusEnum.IN_ORBIT &&
+                        checkMiningLocation(
+                          ship.nav.route.destination.type
+                        ) && <Extract ship={ship} updateCargo={refetch} />}
+                    </>
+                  )}
+
+                  <InfoButton ship={ship} />
                 </TableCell>
               </TableRow>
             ))}

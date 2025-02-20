@@ -10,20 +10,28 @@ import {
 import React from "react";
 
 import { Button, Modal } from "@/components";
-import { SurveyingModel } from "@/models";
+import { MyShipModel, MyShipsResponse, SurveyingModel } from "@/models";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
-import styles from "./SurveyingModel.module.css";
+import { Mining } from "../Extract/Extract";
+import styles from "./SurveyingModal.module.css";
 
 interface SurveyingModalProps {
   isOpen: boolean;
+  ship: MyShipModel;
   data: SurveyingModel;
   onClose: () => void;
+  updateCargo: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
 }
 
 export const SurveyingModal = ({
   isOpen,
+  ship,
   data,
   onClose,
+  updateCargo,
 }: SurveyingModalProps) => (
   <Modal open={isOpen} title="Navigation" onClose={onClose}>
     <div>
@@ -38,7 +46,7 @@ export const SurveyingModal = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.surveys.map((survey) => (
+            {data.surveys.map((survey, idx) => (
               <TableRow key={survey.signature}>
                 <TableCell>{survey.signature}</TableCell>
                 <TableCell>{survey.size}</TableCell>
@@ -51,7 +59,15 @@ export const SurveyingModal = ({
                     ))}
                   </ul>
                 </TableCell>
-                <TableCell></TableCell>
+                {idx === 0 && (
+                  <TableCell rowSpan={data.surveys.length}>
+                    <Mining
+                      ship={ship}
+                      survey={survey}
+                      updateCargo={updateCargo}
+                    />
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 
-import { MyShipModel } from "@/models/ship.model";
-import { TypeEnum } from "@/enums";
-import { getSurvey } from "@/utils/handleNavigation";
-import { SurveyingModel } from "@/models";
+import { MyShipModel, MyShipsResponse, SurveyingModel } from "@/models";
+import { checkMiningLocation, getSurvey } from "@/utils";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 import { SurveyingModal } from "./SurveyingModal";
 import { SurveyingTooltip } from "./SurveyingTooltip";
@@ -11,26 +10,23 @@ import { SurveyingTooltip } from "./SurveyingTooltip";
 interface SurveyingProps {
   token: string;
   ship: MyShipModel;
+  updateCargo: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
 }
 
-export const Surveying = ({ token, ship }: SurveyingProps) => {
+export const Surveying = ({ token, ship, updateCargo }: SurveyingProps) => {
   const [surveyingData, setSurveyingData] = useState<SurveyingModel>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const availableTyles = [
-    TypeEnum.ASTEROID,
-    TypeEnum.ASTEROID_FIELD,
-    TypeEnum.ENGINEERED_ASTEROID,
-  ];
-
-  if (!availableTyles.includes(ship.nav.route.destination.type)) {
+  if (!checkMiningLocation(ship.nav.route.destination.type)) {
     return null;
   }
 
   const handleSuvvey = async () => {
     const response = await getSurvey({ token, shipId: ship.symbol });
 
-    setSurveyingData(response.data);
+    setSurveyingData(response.data ?? response.error.data);
     setIsOpen(true);
   };
 
@@ -45,8 +41,10 @@ export const Surveying = ({ token, ship }: SurveyingProps) => {
       {surveyingData && (
         <SurveyingModal
           isOpen={isOpen}
+          ship={ship}
           data={surveyingData}
           onClose={() => setIsOpen(false)}
+          updateCargo={updateCargo}
         />
       )}
     </>

@@ -36,6 +36,13 @@ export const SurveyingTooltip = ({
   }, [ship.nav.route.arrival, ship.nav.status, targetDate]);
 
   useEffect(() => {
+    const expirationDate = ship.cooldown.expiration;
+    if (expirationDate && new Date(expirationDate) > targetDate) {
+      setTargetDate(new Date(expirationDate));
+    }
+  }, [ship.cooldown.expiration, targetDate]);
+
+  useEffect(() => {
     const calculateSecondsLeft = () => {
       const targetTime = new Date(targetDate).getTime();
       const currentTime = new Date().getTime();
