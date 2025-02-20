@@ -25,10 +25,9 @@ import { MyShipModel } from "@/models";
 import PublicIcon from "@mui/icons-material/Public";
 import { TableRef } from "@/pages/ships/Ships";
 import { checkMiningLocation } from "@/utils";
-import styles from "./ShipTable.module.css";
 import { useSession } from "next-auth/react";
 import { useShips } from "@/hooks";
-import { NavStatus } from "@/components";
+import { NavStatus, TableHeaderCell } from "@/components";
 
 interface ShipTableProps {
   openModal: (val: boolean) => void;
@@ -72,13 +71,13 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell className={styles.headerCell}>Name</TableCell>
-              <TableCell className={styles.headerCell}>Role</TableCell>
-              <TableCell className={styles.headerCell}>Location</TableCell>
-              <TableCell className={styles.headerCell}>Status</TableCell>
-              <TableCell className={styles.headerCell}>Capacity</TableCell>
-              <TableCell className={styles.headerCell}>Fuel</TableCell>
-              <TableCell className={styles.headerCell}>Actions</TableCell>
+              <TableHeaderCell>Name</TableHeaderCell>
+              <TableHeaderCell>Role</TableHeaderCell>
+              <TableHeaderCell>Location</TableHeaderCell>
+              <TableHeaderCell>Status</TableHeaderCell>
+              <TableHeaderCell>Capacity</TableHeaderCell>
+              <TableHeaderCell>Fuel</TableHeaderCell>
+              <TableHeaderCell>Actions</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>

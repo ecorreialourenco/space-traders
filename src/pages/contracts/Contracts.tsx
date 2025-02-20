@@ -17,12 +17,10 @@ import React, { useEffect, useState } from "react";
 
 import { ContractModel } from "@/models/contract.model";
 import { acceptContract } from "@/utils/handleContracts";
-import { NegociateContractModal } from "@/components";
+import { NegociateContractModal, TableHeaderCell } from "@/components";
 import { useContracts } from "@/hooks";
 import { LIMIT } from "@/constants";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-
-import styles from "./Contracts.module.css";
 
 export const Contracts = () => {
   const { data } = useSession();
@@ -71,12 +69,12 @@ export const Contracts = () => {
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell className={styles.headerCell}>Type</TableCell>
-              <TableCell className={styles.headerCell}>Deadline</TableCell>
-              <TableCell className={styles.headerCell}>Terms</TableCell>
-              <TableCell className={styles.headerCell}>Payment</TableCell>
-              <TableCell className={styles.headerCell}>Status</TableCell>
-              <TableCell className={styles.headerCell}>Action</TableCell>
+              <TableHeaderCell>Type</TableHeaderCell>
+              <TableHeaderCell>Deadline</TableHeaderCell>
+              <TableHeaderCell>Terms</TableHeaderCell>
+              <TableHeaderCell>Payment</TableHeaderCell>
+              <TableHeaderCell>Status</TableHeaderCell>
+              <TableHeaderCell>Action</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>

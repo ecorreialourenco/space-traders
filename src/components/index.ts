@@ -7,3 +7,4 @@ export * from "./Modal";
 export * from "./NavStatus";
 export * from "./ShipComponents";
 export * from "./SpaceMap";
+export * from "./Table";

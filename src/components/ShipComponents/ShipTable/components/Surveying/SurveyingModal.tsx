@@ -9,12 +9,11 @@ import {
 } from "@mui/material";
 import React from "react";
 
-import { Button, Modal } from "@/components";
+import { Button, Modal, TableHeaderCell } from "@/components";
 import { MyShipModel, MyShipsResponse, SurveyingModel } from "@/models";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
-import { Mining } from "../Extract/Extract";
-import styles from "./SurveyingModal.module.css";
+import { Extract } from "../Extract/Extract";
 
 interface SurveyingModalProps {
   isOpen: boolean;
@@ -39,10 +38,10 @@ export const SurveyingModal = ({
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell className={styles.headerCell}>Signature</TableCell>
-              <TableCell className={styles.headerCell}>Size</TableCell>
-              <TableCell className={styles.headerCell}>Deposits</TableCell>
-              <TableCell className={styles.headerCell}>Action</TableCell>
+              <TableHeaderCell>Signature</TableHeaderCell>
+              <TableHeaderCell>Size</TableHeaderCell>
+              <TableHeaderCell>Deposits</TableHeaderCell>
+              <TableHeaderCell>Action</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -61,7 +60,7 @@ export const SurveyingModal = ({
                 </TableCell>
                 {idx === 0 && (
                   <TableCell rowSpan={data.surveys.length}>
-                    <Mining
+                    <Extract
                       ship={ship}
                       survey={survey}
                       updateCargo={updateCargo}

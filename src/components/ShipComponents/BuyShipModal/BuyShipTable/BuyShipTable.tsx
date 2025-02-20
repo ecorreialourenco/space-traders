@@ -1,18 +1,15 @@
-import { Feedback } from "@/components";
+import { Feedback, TableHeaderCell } from "@/components";
 import { ShipyardShopModel } from "@/models";
 import { purchaseShip } from "@/utils";
 import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
 } from "@mui/material";
 import React, { useState } from "react";
-
-import styles from "./BuyShipTable.module.css";
 import { BuyShipTableRow } from "../BuyShipTableRow";
 
 interface BuyShipTableProps {
@@ -62,11 +59,11 @@ export const BuyShipTable = ({
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell className={styles.headerCell}>Waypoint</TableCell>
-              <TableCell className={styles.headerCell}>Name</TableCell>
-              <TableCell className={styles.headerCell}>Description</TableCell>
-              <TableCell className={styles.headerCell}>Price</TableCell>
-              <TableCell className={styles.headerCell}>Action</TableCell>
+              <TableHeaderCell>Waypoint</TableHeaderCell>
+              <TableHeaderCell>Name</TableHeaderCell>
+              <TableHeaderCell>Description</TableHeaderCell>
+              <TableHeaderCell>Price</TableHeaderCell>
+              <TableHeaderCell>Action</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
