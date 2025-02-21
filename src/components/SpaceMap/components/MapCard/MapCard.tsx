@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Label } from "react-konva";
 import { Html } from "react-konva-utils";
-import { useSession } from "next-auth/react";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSelector } from "react-redux";
-
-import { RootState } from "@/store/store";
+import { useWaypoint } from "@/hooks";
 import { PointsModel, TraitModel } from "@/models";
-import { getWaypoint } from "@/utils";
 
 import styles from "./MapCard.module.css";
+import { MapTraitCard } from "./MapTraitCard";
 
 interface MapCardProps {
   selectedPoint: PointsModel;
@@ -18,39 +15,28 @@ interface MapCardProps {
 }
 
 export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
-  const { data } = useSession();
-  const { system } = useSelector((state: RootState) => state.ui);
   const [traits, setTraits] = useState<TraitModel[]>([]);
-  const token = data?.token ?? "";
+
+  const { data: waypointData } = useWaypoint({
+    planet: selectedPoint.symbol,
+  });
 
   useEffect(() => {
-    const handleWaypoint = async () => {
-      const { data: waypointData } = await getWaypoint({
-        token,
-        system,
-        planet: selectedPoint.symbol,
-      });
-
-      if (waypointData) {
-        setTraits(waypointData.traits);
-      }
-    };
-
-    if (token) {
-      handleWaypoint();
+    if (waypointData) {
+      setTraits(waypointData.traits);
     }
-  }, [token, selectedPoint.symbol, system]);
+  }, [waypointData]);
 
   return (
     <Label
       x={selectedPoint.x + 10}
       y={selectedPoint.y - 10}
-      scaleX={0.7}
-      scaleY={0.7}
+      scaleX={0.4}
+      scaleY={0.4}
     >
       <Html>
         <div className={styles.mapCardWrapper}>
-          <div className="inline-flex">
+          <div className="w-full inline-flex justify-between">
             <div>
               <div className={styles.symbol}>{selectedPoint.symbol}</div>
               <div className={styles.coords}>
@@ -63,11 +49,10 @@ export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
             </IconButton>
           </div>
           <div className={styles.traitsGroup}>
-            {traits.map((trait) => (
-              <div key={trait.symbol} className={styles.traits}>
-                {trait.name}
-              </div>
-            ))}
+            <MapTraitCard
+              traits={traits}
+              selectedSymbol={selectedPoint.symbol}
+            />
           </div>
         </div>
       </Html>

@@ -4,3 +4,5 @@ export * from "./useExtraction";
 export * from "./useHeadquarters";
 export * from "./useMarket";
 export * from "./useShips";
+export * from "./useShipyard";
+export * from "./useWaypoint";

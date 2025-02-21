@@ -48,7 +48,7 @@ export const AgentHeader = () => {
             ...point,
             color: isHeadquarter
               ? TypeColorEnum.HEADQUARTER
-              : TypeColorEnum[point.type],
+              : TypeColorEnum[point.type as keyof typeof TypeColorEnum],
             size: getSize({
               type: isHeadquarter ? TypeEnum.HEADQUARTER : point.type,
             }),

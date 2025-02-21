@@ -15,6 +15,7 @@ export enum TypeEnum {
 export enum TypeColorEnum {
   "HEADQUARTER" = "lime",
   "ASTEROID_BASE" = "red",
+  "ASTEROID_FIELD" = "darkorange",
   "ORBITAL_STATION" = "gray",
   "ASTEROID" = "burlywood",
   "MOON" = "white",

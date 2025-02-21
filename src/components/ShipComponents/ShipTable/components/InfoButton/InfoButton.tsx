@@ -15,7 +15,7 @@ export const InfoButton = ({ ship }: InfoButtonProps) => {
 
   return (
     <>
-      <Tooltip title="Check ship info">
+      <Tooltip title="Info">
         <span>
           <IconButton onClick={() => setIsOpen(true)}>
             <InfoIcon />

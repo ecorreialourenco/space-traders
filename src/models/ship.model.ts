@@ -211,8 +211,8 @@ export interface NavigationModel {
 export interface RouteModel {
   origin: LocalModel;
   destination: LocalModel;
-  arrival: Date;
-  departureTime: Date;
+  arrival: string;
+  departureTime: string;
 }
 
 interface LocalModel {

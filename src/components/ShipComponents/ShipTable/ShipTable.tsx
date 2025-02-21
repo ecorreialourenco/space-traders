@@ -1,4 +1,10 @@
-import { InfoButton, Navigation, ShipRefuel, Surveying } from "./components";
+import {
+  InfoButton,
+  MarketButton,
+  Navigation,
+  ShipRefuel,
+  Surveying,
+} from "./components";
 import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
 import {
   Paper,
@@ -28,6 +34,7 @@ import { checkMiningLocation } from "@/utils";
 import { useSession } from "next-auth/react";
 import { useShips } from "@/hooks";
 import { NavStatus, TableHeaderCell } from "@/components";
+import { ShipMoving } from "./components/ShipMoving/ShipMoving";
 
 interface ShipTableProps {
   openModal: (val: boolean) => void;
@@ -71,6 +78,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
         <Table stickyHeader>
           <TableHead>
             <TableRow>
+              <TableHeaderCell> </TableHeaderCell>
               <TableHeaderCell>Name</TableHeaderCell>
               <TableHeaderCell>Role</TableHeaderCell>
               <TableHeaderCell>Location</TableHeaderCell>
@@ -83,6 +91,9 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
           <TableBody>
             {shipsList.map((ship: MyShipModel) => (
               <TableRow key={ship.registration.name}>
+                <TableCell sx={{ padding: 0 }}>
+                  <InfoButton ship={ship} />
+                </TableCell>
                 <TableCell>{ship.registration.name}</TableCell>
                 <TableCell>{ship.registration.role}</TableCell>
                 <TableCell>{ship.nav.waypointSymbol}</TableCell>
@@ -94,65 +105,68 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                   {ship.fuel.current} / {ship.fuel.capacity}
                 </TableCell>
                 <TableCell>
-                  <ShipRefuel token={token} ship={ship} refetch={refetch} />
-                  {ship.nav.status === NavStatusEnum.DOCKED ? (
-                    <NavStatus
-                      token={token}
-                      title="Orbit"
-                      status={NavActionStatusEnum.IN_ORBIT}
-                      miningShipSymbol={ship.symbol}
-                      refetch={refetch}
-                    >
-                      <PublicIcon />
-                    </NavStatus>
+                  {ship.nav.status === NavStatusEnum.IN_TRANSIT ? (
+                    <ShipMoving ship={ship} refetch={refetch} />
                   ) : (
-                    <NavStatus
-                      token={token}
-                      title="Dock"
-                      status={NavActionStatusEnum.DOCKED}
-                      miningShipSymbol={ship.symbol}
-                      refetch={refetch}
-                    >
-                      <FlightLandIcon />
-                    </NavStatus>
-                  )}
-
-                  <NavStatus
-                    token={token}
-                    title="Navigate"
-                    status={NavActionStatusEnum.IN_ORBIT}
-                    miningShipSymbol={ship.symbol}
-                    refetch={refetch}
-                    onClick={() => {
-                      openModal(true);
-                      selectShip(ship);
-                    }}
-                  >
-                    <FlightTakeoffIcon />
-                  </NavStatus>
-
-                  <Navigation route={ship.nav.route} />
-
-                  {ship.cargo.capacity > ship.cargo.units && (
                     <>
-                      {ship.mounts.some(
-                        (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
-                      ) && (
-                        <Surveying
+                      <ShipRefuel token={token} ship={ship} refetch={refetch} />
+                      {ship.nav.status === NavStatusEnum.DOCKED ? (
+                        <NavStatus
                           token={token}
-                          ship={ship}
-                          updateCargo={refetch}
-                        />
+                          title="Orbit"
+                          status={NavActionStatusEnum.IN_ORBIT}
+                          miningShipSymbol={ship.symbol}
+                          refetch={refetch}
+                        >
+                          <PublicIcon />
+                        </NavStatus>
+                      ) : (
+                        <NavStatus
+                          token={token}
+                          title="Dock"
+                          status={NavActionStatusEnum.DOCKED}
+                          miningShipSymbol={ship.symbol}
+                          refetch={refetch}
+                        >
+                          <FlightLandIcon />
+                        </NavStatus>
                       )}
-
-                      {ship.nav.status === NavStatusEnum.IN_ORBIT &&
-                        checkMiningLocation(
-                          ship.nav.route.destination.type
-                        ) && <Extract ship={ship} updateCargo={refetch} />}
+                      <NavStatus
+                        token={token}
+                        title="Navigate"
+                        status={NavActionStatusEnum.IN_ORBIT}
+                        miningShipSymbol={ship.symbol}
+                        refetch={refetch}
+                        onClick={() => {
+                          openModal(true);
+                          selectShip(ship);
+                        }}
+                      >
+                        <FlightTakeoffIcon />
+                      </NavStatus>
+                      <Navigation route={ship.nav.route} />
+                      {ship.cargo.capacity > ship.cargo.units && (
+                        <>
+                          {ship.mounts.some(
+                            (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
+                          ) && (
+                            <Surveying
+                              token={token}
+                              ship={ship}
+                              updateCargo={refetch}
+                            />
+                          )}
+                          {ship.nav.status === NavStatusEnum.IN_ORBIT &&
+                            checkMiningLocation(
+                              ship.nav.route.destination.type
+                            ) && <Extract ship={ship} updateCargo={refetch} />}
+                        </>
+                      )}
+                      <MarketButton
+                        waypoint={ship.nav.route.destination.symbol}
+                      />
                     </>
                   )}
-
-                  <InfoButton ship={ship} />
                 </TableCell>
               </TableRow>
             ))}

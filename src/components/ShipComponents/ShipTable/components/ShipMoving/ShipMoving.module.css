@@ -1,0 +1,29 @@
+.navShip {
+  transform: rotate(45deg);
+  top: -11px;
+  position: absolute;
+  animation: linear infinite;
+  animation-name: navigate;
+}
+
+.planet {
+  top: -11px;
+  position: absolute;
+  animation: translate 12s linear infinite;
+}
+
+@keyframes navigate {
+  0% {
+    left: calc(20px);
+  }
+  100% {
+    left: calc(100% - 20%);
+  }
+}
+
+@keyframes translate {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

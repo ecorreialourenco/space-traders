@@ -1,3 +1,4 @@
+export * from "./calculateTime";
 export * from "./checkMiningLocation";
 export * from "./formatCredits";
 export * from "./getFactions";

@@ -22,7 +22,7 @@ interface InfoModalProps {
 }
 
 export const InfoModal = ({ isOpen, ship, onClose }: InfoModalProps) => (
-  <Modal open={isOpen} title={`Info - ${ship.symbol}`} onClose={onClose}>
+  <Modal open={isOpen} title={ship.symbol} onClose={onClose}>
     <div className="m-6">
       <InfoAccordion title="Frame">
         <Typography>{ship.frame.name}</Typography>

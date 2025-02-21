@@ -28,3 +28,7 @@ export interface TraitModel {
 export interface OrbitalModel {
   symbol: string;
 }
+
+export interface WaypointResponse {
+  data: WaypointModel;
+}

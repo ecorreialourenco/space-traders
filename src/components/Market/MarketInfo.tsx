@@ -12,12 +12,21 @@ import React, { useEffect, useState } from "react";
 import { useMarket } from "@/hooks";
 import { MarketModel, TradeGoodModel } from "@/models";
 import { MarketTypeEnum } from "@/enums";
+import cn from "classnames";
+
+import styles from "./MarketInfo.module.css";
+import { formatCredits } from "@/utils";
+import { TableHeaderCell } from "..";
 
 interface MarketInfoProps {
   asteroidWaypointSymbol: string;
+  short?: boolean;
 }
 
-export const MarketInfo = ({ asteroidWaypointSymbol }: MarketInfoProps) => {
+export const MarketInfo = ({
+  asteroidWaypointSymbol,
+  short,
+}: MarketInfoProps) => {
   const [market, setMarket] = useState<MarketModel | null>(null);
   const { data } = useMarket({ asteroidWaypointSymbol });
 
@@ -49,20 +58,34 @@ export const MarketInfo = ({ asteroidWaypointSymbol }: MarketInfoProps) => {
 
   return (
     <div>
-      MarketInfo
-      <TableContainer component={Paper}>
+      <TableContainer
+        className={cn({ [styles.table]: short })}
+        component={Paper}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Units</TableCell>
-              <TableCell>Purchase Price</TableCell>
-              <TableCell>Sell Price</TableCell>
+              <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                Name
+              </TableHeaderCell>
+              {!short && (
+                <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                  Description
+                </TableHeaderCell>
+              )}
+              <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                Units
+              </TableHeaderCell>
+              <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                Buy
+              </TableHeaderCell>
+              <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                Sell
+              </TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {market?.tradeGoods.map((items: TradeGoodModel) => {
+            {market?.tradeGoods?.map((items: TradeGoodModel) => {
               const marketData = getInfo({
                 symbol: items.symbol,
                 type: items.type,
@@ -70,11 +93,19 @@ export const MarketInfo = ({ asteroidWaypointSymbol }: MarketInfoProps) => {
 
               return (
                 <TableRow key={items.symbol}>
-                  <TableCell>{marketData?.name}</TableCell>
-                  <TableCell>{marketData?.description}</TableCell>
-                  <TableCell>{items.tradeVolume}</TableCell>
-                  <TableCell>{items.purchasePrice}</TableCell>
-                  <TableCell>{items.sellPrice}</TableCell>
+                  <TableCell className={cn({ [styles.shortCell]: short })}>
+                    {marketData?.name}
+                  </TableCell>
+                  {!short && <TableCell>{marketData?.description}</TableCell>}
+                  <TableCell className={cn({ [styles.shortCell]: short })}>
+                    {items.tradeVolume}
+                  </TableCell>
+                  <TableCell className={cn({ [styles.shortCell]: short })}>
+                    {formatCredits(items.purchasePrice)}
+                  </TableCell>
+                  <TableCell className={cn({ [styles.shortCell]: short })}>
+                    {formatCredits(items.sellPrice)}
+                  </TableCell>
                 </TableRow>
               );
             })}

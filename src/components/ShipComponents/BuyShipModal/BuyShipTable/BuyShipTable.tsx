@@ -11,14 +11,19 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { BuyShipTableRow } from "../BuyShipTableRow";
+import cn from "classnames";
+
+import styles from "./BuyShipTable.module.css";
 
 interface BuyShipTableProps {
+  short?: boolean;
   token: string;
   waypoints: ShipyardShopModel[];
   updateList: () => void;
 }
 
 export const BuyShipTable = ({
+  short,
   token,
   waypoints,
   updateList,
@@ -59,25 +64,35 @@ export const BuyShipTable = ({
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableHeaderCell>Waypoint</TableHeaderCell>
-              <TableHeaderCell>Name</TableHeaderCell>
-              <TableHeaderCell>Description</TableHeaderCell>
-              <TableHeaderCell>Price</TableHeaderCell>
-              <TableHeaderCell>Action</TableHeaderCell>
+              {!short && <TableHeaderCell>Waypoint</TableHeaderCell>}
+              <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                Name
+              </TableHeaderCell>
+              {!short && <TableHeaderCell>Description</TableHeaderCell>}
+              <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                Price
+              </TableHeaderCell>
+              <TableHeaderCell className={cn({ [styles.shortCell]: short })}>
+                Action
+              </TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {waypoints.map((waypoint) => (
               <React.Fragment key={waypoint.symbol}>
-                <BuyShipTableRow
-                  waypoint={waypoint.symbol}
-                  ship={waypoint.ships[0]}
-                  length={waypoint.ships.length}
-                  handlePurchase={handlePurchase}
-                />
+                {waypoint.ships.length > 0 && (
+                  <BuyShipTableRow
+                    short={short}
+                    waypoint={waypoint.symbol}
+                    ship={waypoint.ships[0]}
+                    length={waypoint.ships.length}
+                    handlePurchase={handlePurchase}
+                  />
+                )}
 
                 {waypoint.ships.slice(1).map((ship) => (
                   <BuyShipTableRow
+                    short={short}
                     key={ship.type}
                     waypoint={waypoint.symbol}
                     ship={ship}

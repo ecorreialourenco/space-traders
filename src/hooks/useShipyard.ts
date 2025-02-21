@@ -1,12 +1,12 @@
+import { BASE_URL } from "@/constants";
+import { ShipyardShopModel } from "@/models";
+import { RootState } from "@/store/store";
+import { options } from "@/utils/requestOptions";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 
-import { BASE_URL } from "@/constants";
-import { options } from "@/utils/requestOptions";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { RootState } from "@/store/store";
-
-export const useMarket = ({
+export const useShipyard = ({
   asteroidWaypointSymbol,
 }: {
   asteroidWaypointSymbol: string;
@@ -15,9 +15,9 @@ export const useMarket = ({
   const { data } = useSession();
   const token = data?.token ?? "";
 
-  const getShips = async () => {
+  const getShipyard = async (): Promise<{ data: ShipyardShopModel }> => {
     const response = await fetch(
-      `${BASE_URL}/systems/${system}/waypoints/${asteroidWaypointSymbol}/market`,
+      `${BASE_URL}/systems/${system}/waypoints/${asteroidWaypointSymbol}/shipyard`,
       options(token)
     );
 
@@ -25,7 +25,7 @@ export const useMarket = ({
   };
 
   return useSuspenseQuery({
-    queryKey: ["myShips", system, asteroidWaypointSymbol],
-    queryFn: getShips,
+    queryKey: ["shipyard", asteroidWaypointSymbol],
+    queryFn: getShipyard,
   });
 };
