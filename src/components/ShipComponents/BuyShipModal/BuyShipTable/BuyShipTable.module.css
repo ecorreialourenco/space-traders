@@ -1,3 +1,8 @@
+.table {
+  max-height: 100px;
+  overflow: auto;
+}
+
 .shortCell {
   font-size: 12px;
   padding: 2px;

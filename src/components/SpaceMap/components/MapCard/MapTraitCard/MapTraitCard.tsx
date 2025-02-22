@@ -48,7 +48,10 @@ export const MapTraitCard = ({ traits, selectedSymbol }: MapTraitCardProps) => {
       )}
 
       {selectedTrait === TraitEnum.SHIPYARD && (
+        <div>
+
         <Shipyard asteroidWaypointSymbol={selectedSymbol} />
+        </div>
       )}
       {selectedTrait === TraitEnum.MARKETPLACE && (
         <MarketInfo asteroidWaypointSymbol={selectedSymbol} short />

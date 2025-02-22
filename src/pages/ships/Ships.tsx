@@ -21,7 +21,6 @@ export const Ships = () => {
   const [isNavModalOpen, setIsNavModalOpen] = useState<boolean>(false);
   const [selectedShip, setSelectedShip] = useState<MyShipModel | null>(null);
   const [feedbackOpen, setFeedbackOpen] = useState<boolean>(false);
-  console.log("🚀 ~ Ships ~ feedbackOpen:", feedbackOpen)
   const [feedbackType, setFeedbackType] = useState<AlertColor>("error");
   const [feedbackMessage, setFeedbackMessage] = useState<string>("");
 
@@ -41,9 +40,8 @@ export const Ships = () => {
   const handleCloseFeedback = () => {
     setFeedbackMessage("");
     setFeedbackOpen(false);
-    console.log("🚀 ~ ship ~ handleCloseFeedback:")
   };
-  
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="flex flex-col h-full items-center mx-4">

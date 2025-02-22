@@ -29,7 +29,12 @@ export const MarketButton = ({
 
   return (
     <>
-      <MButton variant="text" onClick={() => setIsOpen(true)}>
+      <MButton
+        className="w-full justify-start text-xs"
+        variant="text"
+        size="small"
+        onClick={() => setIsOpen(true)}
+      >
         {formatCredits(price)}
       </MButton>
 

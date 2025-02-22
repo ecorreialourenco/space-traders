@@ -63,7 +63,10 @@ export const BuyShipTable = ({
         message={error}
         onClose={() => setError("")}
       />
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        className={cn({ [styles.table]: short })}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow>
