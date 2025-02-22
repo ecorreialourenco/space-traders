@@ -25,3 +25,8 @@ export enum TypeColorEnum {
   "JUMP_GATE" = "slateblue",
   "ENGINEERED_ASTEROID" = "cornflowerblue",
 }
+
+export enum SearchMode {
+  Waypoint,
+  Coordinates,
+}

@@ -215,7 +215,7 @@ export interface RouteModel {
   departureTime: string;
 }
 
-interface LocalModel {
+export interface LocalModel {
   symbol: string;
   type: TypeEnum;
   systemSymbol: string;

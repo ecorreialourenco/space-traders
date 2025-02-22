@@ -157,7 +157,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                       >
                         <FlightTakeoffIcon />
                       </NavStatus>
-                      <Navigation route={ship.nav.route} />
+                      <Navigation route={ship.nav.route.destination} />
                       {ship.cargo.capacity > ship.cargo.units && (
                         <>
                           {ship.mounts.some(

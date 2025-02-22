@@ -7,13 +7,12 @@ import { Legend } from "@/components/SpaceMap/components";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  console.log("🚀 ~ Home ~ isOpen:", isOpen);
 
   return (
     <div>
       <div className="flex flex-row">
         <div
-          className="w-full"
+          className="absolute w-3xs z-10"
           style={{
             backgroundColor: isOpen ? "rgba(255, 255, 255, 0.1)" : "initial",
           }}

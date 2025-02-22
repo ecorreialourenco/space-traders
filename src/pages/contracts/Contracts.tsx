@@ -21,6 +21,10 @@ import { NegociateContractModal, TableHeaderCell } from "@/components";
 import { useContracts } from "@/hooks";
 import { LIMIT } from "@/constants";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import { Navigation } from "@/components/ShipComponents/ShipTable/components/Navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { LocalModel } from "@/models";
 
 export const Contracts = () => {
   const { data } = useSession();
@@ -28,8 +32,11 @@ export const Contracts = () => {
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { waypoints } = useSelector((state: RootState) => state.map);
+  const { system } = useSelector((state: RootState) => state.ui);
 
   const { data: contractsData, refetch } = useContracts({ page });
+  console.log("🚀 ~ Contracts ~ contractsData:", contractsData);
 
   const handleClick = async (id: string) => {
     await acceptContract({ token: data?.token ?? "", id }).then(() =>
@@ -85,16 +92,15 @@ export const Contracts = () => {
                   {new Date(contract.terms.deadline).toDateString()}
                 </TableCell>
                 <TableCell>
-                  {contract.terms.deliver.map((item) => {
-                    return (
-                      <div key={item.tradeSymbol}>
-                        <p>{item.tradeSymbol}</p>
-                        <p>
-                          {item.unitsFulfilled} / {item.unitsRequired}
-                        </p>
-                      </div>
-                    );
-                  })}
+                  {contract.terms.deliver.map((item) => (
+                    <div key={item.tradeSymbol}>
+                      <p>Destination: {item.destinationSymbol}</p>
+                      <p>Material: {item.tradeSymbol}</p>
+                      <p>
+                        Progress: {item.unitsFulfilled} / {item.unitsRequired}
+                      </p>
+                    </div>
+                  ))}
                 </TableCell>
                 <TableCell>
                   <>
@@ -112,7 +118,7 @@ export const Contracts = () => {
                   {contract.accepted ? "Accepted" : "Pending"}
                 </TableCell>
                 <TableCell>
-                  {!contract.accepted && (
+                  {!contract.accepted ? (
                     <Tooltip title="Accept contract">
                       <span>
                         <IconButton onClick={() => handleClick(contract.id)}>
@@ -120,6 +126,27 @@ export const Contracts = () => {
                         </IconButton>
                       </span>
                     </Tooltip>
+                  ) : (
+                    contract.terms.deliver.map((point) => {
+                      const selectedWaypoint = waypoints.find(
+                        (waypoint) =>
+                          waypoint.symbol === point.destinationSymbol
+                      );
+
+                      if (!selectedWaypoint) {
+                        return null;
+                      }
+
+                      const route: LocalModel = {
+                        systemSymbol: system,
+                        symbol: selectedWaypoint.symbol,
+                        type: selectedWaypoint.type,
+                        x: selectedWaypoint.x,
+                        y: selectedWaypoint.y,
+                      };
+
+                      return <Navigation key={route.symbol} route={route} />;
+                    })
                   )}
                 </TableCell>
               </TableRow>
