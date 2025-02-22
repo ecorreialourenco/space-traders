@@ -5,10 +5,11 @@ import { Html } from "react-konva-utils";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Dropdown, Input } from "@/components/Form";
 import { RootState } from "@/store/store";
-import { IconButton, Tooltip } from "@mui/material";
+import { Autocomplete, IconButton, TextField, Tooltip } from "@mui/material";
 import { PointsModel } from "@/models";
 
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import PlaceIcon from "@mui/icons-material/Place";
+import MapIcon from "@mui/icons-material/Map";
 
 import styles from "./PointFinder.module.css";
 
@@ -35,8 +36,8 @@ export const PointFinder = ({ width }: PointFinderProps) => {
   const dispatch = useDispatch();
 
   const navOptions = waypoints.map((item) => ({
-    name: item.symbol,
-    value: item.symbol,
+    label: item.symbol,
+    id: item.symbol,
   }));
 
   const handleSelect = (symbol: string) => {
@@ -71,6 +72,28 @@ export const PointFinder = ({ width }: PointFinderProps) => {
       <Label scaleX={0.7} scaleY={0.7}>
         <Html>
           <div className={styles.wrapper}>
+            <Tooltip title="Search by coordinates">
+              <IconButton
+                onClick={() => setSearchMode(SearchMode.Coordinates)}
+                edge="end"
+                color={
+                  searchMode === SearchMode.Coordinates ? "primary" : "default"
+                }
+              >
+                <PlaceIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Search by waypoint">
+              <IconButton
+                onClick={() => setSearchMode(SearchMode.Waypoint)}
+                edge="end"
+                color={
+                  searchMode === SearchMode.Waypoint ? "primary" : "default"
+                }
+              >
+                <MapIcon />
+              </IconButton>
+            </Tooltip>
             <form
               ref={formRef}
               style={{ width: 300, display: "flex" }}
@@ -78,12 +101,19 @@ export const PointFinder = ({ width }: PointFinderProps) => {
             >
               {selectedWaypoint?.symbol &&
               searchMode === SearchMode.Waypoint ? (
-                <div className="w-full">
-                  <Dropdown
-                    label="Waypoint"
-                    value={selectedWaypoint.symbol}
+                <div className="w-full m-2">
+                  <Autocomplete
+                    disablePortal
                     options={navOptions}
-                    onChange={(op) => handleSelect(op.target.value)}
+                    onChange={(e, value) => handleSelect(value?.id ?? "")}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label="Place"
+                        value={selectedWaypoint.symbol}
+                      />
+                    )}
                   />
                 </div>
               ) : (
@@ -103,26 +133,6 @@ export const PointFinder = ({ width }: PointFinderProps) => {
 
               <Button label="Go to" type="submit" />
             </form>
-            <Tooltip
-              title={
-                searchMode === SearchMode.Waypoint
-                  ? "Search by coordinates"
-                  : "Search by waypoint"
-              }
-            >
-              <IconButton
-                onClick={() =>
-                  setSearchMode(
-                    searchMode === SearchMode.Waypoint
-                      ? SearchMode.Coordinates
-                      : SearchMode.Waypoint
-                  )
-                }
-                edge="end"
-              >
-                <KeyboardArrowDownIcon className="fill-white" />
-              </IconButton>
-            </Tooltip>
           </div>
         </Html>
       </Label>

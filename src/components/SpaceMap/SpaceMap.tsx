@@ -2,14 +2,7 @@ import { PointsModel } from "@/models";
 import Konva from "konva";
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Circle, Text } from "react-konva";
-import {
-  Grid,
-  Legend,
-  MapCard,
-  Orbitals,
-  PointFinder,
-  ZoomButton,
-} from "./components";
+import { Grid, MapCard, Orbitals, PointFinder, ZoomButton } from "./components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { TypeEnum } from "@/enums";
@@ -120,7 +113,6 @@ export const SpaceMap = () => {
           />
         )}
       </Layer>
-      <Legend />
     </Stage>
   );
 };
