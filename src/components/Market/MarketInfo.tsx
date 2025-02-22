@@ -70,6 +70,14 @@ export const MarketInfo = ({
     }
   };
 
+  const checkCargo = (symbol: string) => {
+    const stockItem = ship?.cargo.inventory.find(
+      (cargo) => cargo.symbol === symbol
+    );
+
+    return stockItem?.units ?? 0;
+  };
+
   useEffect(() => {
     if (data?.data) {
       setMarket(data.data);
@@ -136,22 +144,11 @@ export const MarketInfo = ({
                       }
                     />
                   </TableCell>
-                  <TableCell
-                    className={cn({ [styles.shortCell]: short })}
-                    onClick={() =>
-                      handleAction({
-                        action: "sell",
-                        cargo: {
-                          symbol: items.symbol,
-                          units: 1,
-                        },
-                      })
-                    }
-                  >
+                  <TableCell className={cn({ [styles.shortCell]: short })}>
                     <MarketButton
                       price={items.sellPrice}
                       action="sell"
-                      maxValue={items.tradeVolume}
+                      maxValue={checkCargo(items.symbol)}
                       onClick={({ units }) =>
                         handleAction({
                           action: "sell",

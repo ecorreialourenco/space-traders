@@ -27,13 +27,6 @@ export const MarketButton = ({
     }
   };
 
-  /* onClick({
-            action: "sell",
-            cargo: {
-              symbol: items.symbol,
-              units: 1,
-            },
-          }) */
   return (
     <>
       <MButton variant="text" onClick={() => setIsOpen(true)}>
@@ -49,6 +42,12 @@ export const MarketButton = ({
             className="w-full px-2"
             onChange={(e) => handleChange(parseInt(e.target.value))}
             value={value}
+            slotProps={{
+              htmlInput: {
+                min: 0,
+                max: maxValue,
+              },
+            }}
           />
 
           <div className="flex justify-between">
