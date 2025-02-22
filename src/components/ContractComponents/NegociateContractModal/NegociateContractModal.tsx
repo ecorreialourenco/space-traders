@@ -4,9 +4,9 @@ import React, { useState } from "react";
 
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import { MyShipModel } from "@/models";
-import { negociateContract } from "@/utils";
 import { useSession } from "next-auth/react";
 import { useShips } from "@/hooks";
+import { useContractNegociation } from "@/hooks/mutations/useContractNegociation";
 
 interface NegociateContractModalProps {
   open: boolean;
@@ -34,10 +34,13 @@ export const NegociateContractModal = ({
 
   const isDocked = shipId && selectedShip.nav.status === NavStatusEnum.DOCKED;
 
+  const { mutate: negociateContract } = useContractNegociation({
+    shipSymbol: shipId,
+    updateList,
+  });
+
   const handleNegociation = async () => {
-    await negociateContract({ token, shipSymbol: shipId }).then(() =>
-      updateList()
-    );
+    negociateContract();
   };
 
   return (

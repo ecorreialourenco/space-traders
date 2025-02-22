@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { calculateSecondsLeft } from "@/utils";
-import { Badge } from "@mui/material";
 
-interface PlanetPros {
+interface ArriveCounterPros {
   expirationDate: Date;
 }
 
-export const ShipMovingCounter = ({ expirationDate }: PlanetPros) => {
+export const ArriveCounter = ({ expirationDate }: ArriveCounterPros) => {
   const [secondsLeft, setSecondsLeft] = useState<number>(0);
 
   useEffect(() => {
@@ -18,12 +17,8 @@ export const ShipMovingCounter = ({ expirationDate }: PlanetPros) => {
   }, [expirationDate]);
 
   return (
-    <div className="flex w-full justify-center">
-      <Badge
-        badgeContent={secondsLeft}
-        color="primary"
-        style={{ opacity: 0.5 }}
-      />
+    <div className="flex w-full justify-center text-red-500 text-xs">
+      Time to land: {new Date(secondsLeft * 1000).toISOString().slice(11, 19)}
     </div>
   );
 };

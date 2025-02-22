@@ -19,5 +19,6 @@ export const useAgent = () => {
     queryFn: async () => await getAgent(),
     select: (res) => res.data,
     enabled: !!token,
+    refetchInterval: false
   });
 };

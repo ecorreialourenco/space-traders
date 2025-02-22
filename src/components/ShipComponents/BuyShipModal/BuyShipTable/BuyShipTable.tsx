@@ -1,5 +1,5 @@
 import { Feedback, TableHeaderCell } from "@/components";
-import { ShipyardShopModel } from "@/models";
+import { FeedbackType, ShipyardShopModel } from "@/models";
 import { purchaseShip } from "@/utils";
 import {
   Paper,
@@ -19,7 +19,7 @@ interface BuyShipTableProps {
   short?: boolean;
   token: string;
   waypoints: ShipyardShopModel[];
-  updateList: () => void;
+  updateList: ({ message, type }: FeedbackType) => void;
 }
 
 export const BuyShipTable = ({
@@ -44,7 +44,10 @@ export const BuyShipTable = ({
     });
 
     if (purchaseData.data) {
-      updateList();
+      updateList({
+        message: `You have bougth new ship -> ${purchaseData.data.ship.symbol}`,
+        type: "success",
+      });
     }
 
     if (purchaseData.error) {

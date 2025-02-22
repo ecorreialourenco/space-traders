@@ -4,6 +4,7 @@ import { BASE_URL } from "@/constants";
 import { options } from "@/utils/requestOptions";
 import { useQuery } from "@tanstack/react-query";
 import { SurveysModel } from "@/models";
+import { ExtractErrorModel, ExtractModel } from "@/models/extract.model";
 
 export const useExtraction = ({
   shipId,
@@ -15,7 +16,10 @@ export const useExtraction = ({
   const { data } = useSession();
   const token = data?.token ?? "";
 
-  const getShips = async () => {
+  const getShips = async (): Promise<{
+    data: ExtractModel;
+    error: ExtractErrorModel;
+  }> => {
     const response = await fetch(`${BASE_URL}/my/ships/${shipId}/extract`, {
       ...options(token),
       method: "POST",

@@ -1,20 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import PublicIcon from "@mui/icons-material/Public";
-import styles from "./ShipMoving.module.css";
+import styles from "./ShipNavigationAnimation.module.css";
 import { MyShipModel, MyShipsResponse } from "@/models";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { calculateSecondsLeft } from "@/utils";
-import { ShipMovingCounter } from "./ShipMovingCounter";
+import { ArriveCounter } from "./ArriveCounter";
 
-interface ShipMovingProps {
+interface ShipNavigationAnimationProps {
   ship: MyShipModel;
   refetch: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
 }
 
-export const ShipMoving = ({ ship, refetch }: ShipMovingProps) => {
+export const ShipNavigationAnimation = ({ ship, refetch }: ShipNavigationAnimationProps) => {
   const [secondsLeft, setSecondsLeft] = useState<number>(0);
   const expirationDate = useMemo(
     () => new Date(ship.nav.route.arrival),
@@ -38,13 +38,17 @@ export const ShipMoving = ({ ship, refetch }: ShipMovingProps) => {
 
   return (
     <div style={{ position: "relative" }}>
-      <PublicIcon className={styles.planet} />
-      <RocketLaunchIcon
-        style={{ animationDuration: `${secondsLeft}s` }}
-        className={styles.navShip}
-      />
-      <ShipMovingCounter expirationDate={expirationDate} />
-      <PublicIcon className={styles.planet} style={{ right: 0 }} />
+      <div className="h-4 mt-1">
+        <PublicIcon className={styles.planet} />
+        <RocketLaunchIcon
+          style={{ animationDuration: `${secondsLeft}s` }}
+          className={styles.navShip}
+        />
+        <PublicIcon className={styles.planet} style={{ right: 0 }} />
+      </div>
+      <div className="block">
+        <ArriveCounter expirationDate={expirationDate} />
+      </div>
     </div>
   );
 };

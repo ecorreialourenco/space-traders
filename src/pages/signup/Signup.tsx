@@ -1,10 +1,9 @@
 import React, { FormEvent, useState } from "react";
 import { Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { getFactions } from "@/utils/getFactions";
 import { FactionModel } from "@/models";
 import { Button, Dropdown, Feedback, Input, InputPassword } from "@/components";
 import { signIn } from "next-auth/react";
+import { useFactions } from "@/hooks";
 
 export const Signup = () => {
   const [username, setUsername] = useState<string>("");
@@ -12,11 +11,7 @@ export const Signup = () => {
   const [password2, setPassword2] = useState<string>("");
   const [faction, setFaction] = useState<string>("");
   const [error, setError] = useState<string>("");
-
-  const { data } = useQuery({
-    queryKey: ["factions"],
-    queryFn: () => getFactions({ page: 1 }),
-  });
+  const { data } = useFactions({ page: 1 });
 
   const formatedList = data?.data
     ? data.data.map((item: FactionModel) => ({

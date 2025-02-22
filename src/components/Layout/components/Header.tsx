@@ -10,18 +10,14 @@ export const Header = () => {
 
   const isAuthenticated = status === "authenticated";
 
-  const handleRoute = (url: string) => {
-    router.push(url);
-  };
+  const handleRoute = (url: string) => router.push(url);
 
   return (
     <>
       <div className="w-full flex justify-between h-12">
-        <div>
-          <Button variant="text" onClick={() => handleRoute("/")}>
-            Space Traders
-          </Button>
-        </div>
+        <Button variant="text" onClick={() => handleRoute("/")}>
+          Space Traders
+        </Button>
         <div>
           {isAuthenticated ? (
             <>

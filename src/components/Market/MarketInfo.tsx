@@ -10,25 +10,30 @@ import {
 import React, { useEffect, useState } from "react";
 
 import { useMarket } from "@/hooks";
-import { MarketModel, TradeGoodModel } from "@/models";
+import { MarketModel, MyShipModel, TradeGoodModel } from "@/models";
 import { MarketTypeEnum } from "@/enums";
 import cn from "classnames";
 
 import styles from "./MarketInfo.module.css";
-import { formatCredits } from "@/utils";
 import { TableHeaderCell } from "..";
+import { useMarketActions } from "@/hooks/useMarketActions";
+import { MarketButton } from "./MarketButton";
 
 interface MarketInfoProps {
   asteroidWaypointSymbol: string;
   short?: boolean;
+  ship?: MyShipModel;
 }
 
 export const MarketInfo = ({
   asteroidWaypointSymbol,
   short,
+  ship,
 }: MarketInfoProps) => {
   const [market, setMarket] = useState<MarketModel | null>(null);
   const { data } = useMarket({ asteroidWaypointSymbol });
+
+  const { mutate } = useMarketActions();
 
   const getInfo = ({
     symbol,
@@ -47,6 +52,21 @@ export const MarketInfo = ({
 
       default:
         return null;
+    }
+  };
+
+  const handleAction = ({
+    action,
+    cargo,
+  }: {
+    action: string;
+    cargo: {
+      symbol: string;
+      units: number;
+    };
+  }) => {
+    if (ship) {
+      mutate({ miningShipSymbol: ship.symbol, action, cargo });
     }
   };
 
@@ -101,10 +121,47 @@ export const MarketInfo = ({
                     {items.tradeVolume}
                   </TableCell>
                   <TableCell className={cn({ [styles.shortCell]: short })}>
-                    {formatCredits(items.purchasePrice)}
+                    <MarketButton
+                      price={items.purchasePrice}
+                      maxValue={items.tradeVolume}
+                      action="purchase"
+                      onClick={({ units }) =>
+                        handleAction({
+                          action: "purchase",
+                          cargo: {
+                            symbol: items.symbol,
+                            units,
+                          },
+                        })
+                      }
+                    />
                   </TableCell>
-                  <TableCell className={cn({ [styles.shortCell]: short })}>
-                    {formatCredits(items.sellPrice)}
+                  <TableCell
+                    className={cn({ [styles.shortCell]: short })}
+                    onClick={() =>
+                      handleAction({
+                        action: "sell",
+                        cargo: {
+                          symbol: items.symbol,
+                          units: 1,
+                        },
+                      })
+                    }
+                  >
+                    <MarketButton
+                      price={items.sellPrice}
+                      action="sell"
+                      maxValue={items.tradeVolume}
+                      onClick={({ units }) =>
+                        handleAction({
+                          action: "sell",
+                          cargo: {
+                            symbol: items.symbol,
+                            units,
+                          },
+                        })
+                      }
+                    />
                   </TableCell>
                 </TableRow>
               );

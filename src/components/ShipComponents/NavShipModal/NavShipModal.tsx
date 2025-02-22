@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import { Button, Dropdown, Feedback, Modal } from "@/components";
 import { FlightModeEnum, NavStatusEnum } from "@/enums";
-import { MyShipModel } from "@/models";
+import { FeedbackType, MyShipModel } from "@/models";
 import { RootState } from "@/store/store";
 import { navigateToWaypoint } from "@/utils/handleNavigation";
 import { AlertColor, Autocomplete, TextField } from "@mui/material";
@@ -13,7 +13,7 @@ interface NavShipModalProps {
   open: boolean;
   ship: MyShipModel;
   onClose: () => void;
-  updateList: () => void;
+  updateList: ({ message, type }: FeedbackType) => void;
 }
 
 export const NavShipModal = ({
@@ -30,11 +30,13 @@ export const NavShipModal = ({
   const { data } = useSession();
   const token = data?.token ?? "";
 
-  const navOptions = waypoints.map((item) => ({
-    key: item.symbol,
-    label: item.symbol,
-    id: item.symbol,
-  }));
+  const navOptions = waypoints
+    .map((item) => ({
+      key: item.symbol,
+      label: item.symbol,
+      id: item.symbol,
+    }))
+    .filter((item) => item.id !== ship.nav.waypointSymbol);
 
   const regularText = (str: string) => {
     if (!str) {
@@ -62,11 +64,15 @@ export const NavShipModal = ({
     });
 
     if (navData.data?.nav.status === NavStatusEnum.IN_TRANSIT) {
-      setFeedbackType("success");
-      setFeedbackMessage("Navigate");
-      updateList();
+      updateList({
+        message: `Your ship is now going to ${navData.data.nav.route.destination.symbol}`,
+        type: "success",
+      });
 
       setTimeout(() => onClose(), 500);
+    } else {
+      setFeedbackType("error");
+      setFeedbackMessage("Navigation fail");
     }
   };
 

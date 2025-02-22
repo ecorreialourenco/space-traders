@@ -15,11 +15,13 @@ interface MapCardProps {
 }
 
 export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
+  console.log("🚀 ~ MapCard ~ selectedPoint:", selectedPoint)
   const [traits, setTraits] = useState<TraitModel[]>([]);
 
   const { data: waypointData } = useWaypoint({
     planet: selectedPoint.symbol,
   });
+  console.log("🚀 ~ MapCard ~ waypointData:", waypointData)
 
   useEffect(() => {
     if (waypointData) {

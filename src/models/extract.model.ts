@@ -12,3 +12,18 @@ export interface ExtractModel {
   cargo: CargoModel;
   events: [];
 }
+
+export interface ExtractErrorModel {
+  data: {
+    extraction: {
+      shipSymbol: string;
+      yield: {
+        symbol: "ALUMINUM_ORE";
+        units: 8;
+      };
+    };
+    cooldown: CooldownModel;
+    cargo: CargoModel;
+    events: [];
+  };
+}

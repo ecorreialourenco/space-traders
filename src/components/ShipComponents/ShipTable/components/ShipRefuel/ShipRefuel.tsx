@@ -1,21 +1,19 @@
 import React from "react";
-import { MyShipModel, MyShipsResponse } from "@/models/ship.model";
+import { MyShipModel } from "@/models/ship.model";
 import { handleShipStatus, refuelShip } from "@/utils";
 import { IconButton, Tooltip } from "@mui/material";
 import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { FeedbackType } from "@/models";
 
 export const ShipRefuel = ({
   token,
   ship,
-  refetch,
+  onRefuel,
 }: {
   token: string;
   ship: MyShipModel;
-  refetch: (
-    options?: RefetchOptions
-  ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
+  onRefuel: ({ message, type }: FeedbackType) => void;
 }) => {
   const handleRefuelShip = async ({
     miningShipSymbol,
@@ -40,8 +38,10 @@ export const ShipRefuel = ({
     } else {
       const response = await refuelShip({ token, miningShipSymbol });
 
-      if (response) {
-        refetch();
+      if (response.error) {
+        onRefuel({ message: response.error.message, type: "error" });
+      } else if (response) {
+        onRefuel({ message: "Ship refueled", type: "success" });
       }
     }
   };

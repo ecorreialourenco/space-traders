@@ -15,7 +15,7 @@ export const useMarket = ({
   const { data } = useSession();
   const token = data?.token ?? "";
 
-  const getShips = async () => {
+  const getMarketInfo = async () => {
     const response = await fetch(
       `${BASE_URL}/systems/${system}/waypoints/${asteroidWaypointSymbol}/market`,
       options(token)
@@ -25,7 +25,7 @@ export const useMarket = ({
   };
 
   return useSuspenseQuery({
-    queryKey: ["myShips", system, asteroidWaypointSymbol],
-    queryFn: getShips,
+    queryKey: ["market", system, asteroidWaypointSymbol],
+    queryFn: getMarketInfo,
   });
 };

@@ -4,13 +4,18 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Modal } from "@/components";
-import { ShipyardModel, ShipyardShopModel, TraitModel } from "@/models";
+import {
+  FeedbackType,
+  ShipyardModel,
+  ShipyardShopModel,
+  TraitModel,
+} from "@/models";
 import { BuyShipTable } from "./BuyShipTable";
 
 interface BuyShipModalProps {
   open: boolean;
   onClose: () => void;
-  updateList: () => void;
+  updateList: ({ message, type }: FeedbackType) => void;
 }
 
 export const BuyShipModal = ({

@@ -2,6 +2,7 @@ import {
   InfoButton,
   MarketButton,
   Navigation,
+  ShipNavigationAnimation,
   ShipRefuel,
   Surveying,
 } from "./components";
@@ -27,22 +28,22 @@ import { Extract } from "./components/Extract";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import { LIMIT } from "@/constants";
-import { MyShipModel } from "@/models";
+import { FeedbackType, MyShipModel } from "@/models";
 import PublicIcon from "@mui/icons-material/Public";
 import { TableRef } from "@/pages/ships/Ships";
 import { checkMiningLocation } from "@/utils";
 import { useSession } from "next-auth/react";
-import { useShips } from "@/hooks";
+import { useContracts, useShips } from "@/hooks";
 import { NavStatus, TableHeaderCell } from "@/components";
-import { ShipMoving } from "./components/ShipMoving/ShipMoving";
 
 interface ShipTableProps {
   openModal: (val: boolean) => void;
   selectShip: (ship: MyShipModel) => void;
+  setInfo: ({ message, type }: FeedbackType) => void;
 }
 
 export const ShipTable = forwardRef<TableRef, ShipTableProps>(
-  function ShipTable({ openModal, selectShip }, forwardedRef) {
+  function ShipTable({ openModal, selectShip, setInfo }, forwardedRef) {
     const [shipsList, setShipsList] = useState<MyShipModel[]>([]);
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
@@ -50,6 +51,8 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     const token = data?.token ?? "";
 
     const { data: shipsData, refetch } = useShips({ page });
+    const { data: contractsData } = useContracts({ page: 1 });
+    console.log("🚀 ~ ShipTable ~ contractsData:", contractsData);
 
     const handleChangePage = (
       event: React.MouseEvent<HTMLButtonElement> | null,
@@ -60,6 +63,12 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
       } else {
         setPage((prevPage) => prevPage - 1);
       }
+    };
+
+    const handleUpdateCargo = ({ message, type }: FeedbackType) => {
+      setInfo({ message, type });
+
+      refetch();
     };
 
     useImperativeHandle(forwardedRef, () => ({
@@ -106,10 +115,14 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                 </TableCell>
                 <TableCell>
                   {ship.nav.status === NavStatusEnum.IN_TRANSIT ? (
-                    <ShipMoving ship={ship} refetch={refetch} />
+                    <ShipNavigationAnimation ship={ship} refetch={refetch} />
                   ) : (
                     <>
-                      <ShipRefuel token={token} ship={ship} refetch={refetch} />
+                      <ShipRefuel
+                        token={token}
+                        ship={ship}
+                        onRefuel={handleUpdateCargo}
+                      />
                       {ship.nav.status === NavStatusEnum.DOCKED ? (
                         <NavStatus
                           token={token}
@@ -159,11 +172,17 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                           {ship.nav.status === NavStatusEnum.IN_ORBIT &&
                             checkMiningLocation(
                               ship.nav.route.destination.type
-                            ) && <Extract ship={ship} updateCargo={refetch} />}
+                            ) && (
+                              <Extract
+                                ship={ship}
+                                updateCargo={handleUpdateCargo}
+                              />
+                            )}
                         </>
                       )}
                       <MarketButton
                         waypoint={ship.nav.route.destination.symbol}
+                        ship={ship}
                       />
                     </>
                   )}

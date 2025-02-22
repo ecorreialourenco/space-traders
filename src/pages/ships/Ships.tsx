@@ -1,8 +1,15 @@
 import { MyShipModel } from "@/models/ship.model";
-import { Button, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import { AlertColor, Button, Typography } from "@mui/material";
+import React, { Suspense, useRef, useState } from "react";
 
-import { BuyShipModal, NavShipModal, ShipTable } from "@/components";
+import {
+  BuyShipModal,
+  Feedback,
+  Loading,
+  NavShipModal,
+  ShipTable,
+} from "@/components";
+import { FeedbackType } from "@/models";
 
 export interface TableRef {
   refetch: () => void;
@@ -13,39 +20,67 @@ export const Ships = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNavModalOpen, setIsNavModalOpen] = useState<boolean>(false);
   const [selectedShip, setSelectedShip] = useState<MyShipModel | null>(null);
+  const [feedbackOpen, setFeedbackOpen] = useState<boolean>(false);
+  console.log("🚀 ~ Ships ~ feedbackOpen:", feedbackOpen)
+  const [feedbackType, setFeedbackType] = useState<AlertColor>("error");
+  const [feedbackMessage, setFeedbackMessage] = useState<string>("");
 
-  const handleRefetch = () => {
+  const handleInfo = ({ message, type }: FeedbackType) => {
+    setFeedbackType(type);
+    setFeedbackMessage(message);
+    setFeedbackOpen(true);
+  };
+
+  const handleRefetch = ({ message, type }: FeedbackType) => {
+    handleInfo({ message, type });
     if (tableRef.current) {
       tableRef.current.refetch();
     }
   };
 
+  const handleCloseFeedback = () => {
+    setFeedbackMessage("");
+    setFeedbackOpen(false);
+    console.log("🚀 ~ ship ~ handleCloseFeedback:")
+  };
+  
   return (
-    <div className="flex flex-col h-full items-center mx-4">
-      <Typography variant="h3" style={{ textAlign: "center" }}>
-        My Ships
-      </Typography>
-      <Button onClick={() => setIsModalOpen(true)}>Buy Ship</Button>
-      <ShipTable
-        ref={tableRef}
-        openModal={setIsNavModalOpen}
-        selectShip={setSelectedShip}
-      />
+    <Suspense fallback={<Loading />}>
+      <div className="flex flex-col h-full items-center mx-4">
+        <Typography variant="h3" style={{ textAlign: "center" }}>
+          My Ships
+        </Typography>
+        <Button onClick={() => setIsModalOpen(true)}>Buy Ship</Button>
 
-      <BuyShipModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        updateList={handleRefetch}
-      />
+        <Feedback
+          isOpen={feedbackOpen}
+          severity={feedbackType}
+          message={feedbackMessage}
+          onClose={handleCloseFeedback}
+        />
 
-      {selectedShip && (
-        <NavShipModal
-          open={isNavModalOpen}
-          ship={selectedShip}
-          onClose={() => setIsNavModalOpen(false)}
+        <ShipTable
+          ref={tableRef}
+          openModal={setIsNavModalOpen}
+          selectShip={setSelectedShip}
+          setInfo={handleInfo}
+        />
+
+        <BuyShipModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
           updateList={handleRefetch}
         />
-      )}
-    </div>
+
+        {selectedShip && (
+          <NavShipModal
+            open={isNavModalOpen}
+            ship={selectedShip}
+            onClose={() => setIsNavModalOpen(false)}
+            updateList={handleRefetch}
+          />
+        )}
+      </div>
+    </Suspense>
   );
 };
