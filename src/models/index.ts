@@ -1,5 +1,6 @@
 export * from "./agent.model";
 export * from "./common.model";
+export * from "./contract.model";
 export * from "./faction.model";
 export * from "./feedback.model";
 export * from "./market.model";

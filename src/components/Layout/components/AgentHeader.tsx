@@ -16,8 +16,7 @@ export const AgentHeader = () => {
   const { center } = useSelector((state: RootState) => state.map);
   const { agent } = useSelector((state: RootState) => state.ui);
 
-  const { data, error } = useAgent();
-  console.log("🚀 ~ AgentHeader ~ error:", error)
+  const { data } = useAgent();
   const { data: headquarters } = useHeadquarters();
 
   const handleSystemString = (headquarters: string) => {

@@ -51,8 +51,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     const token = data?.token ?? "";
 
     const { data: shipsData, refetch } = useShips({ page });
-    const { data: contractsData } = useContracts({ page: 1 });
-    console.log("🚀 ~ ShipTable ~ contractsData:", contractsData);
+    //const { data: contractsData } = useContracts({ page: 1 });
 
     const handleChangePage = (
       event: React.MouseEvent<HTMLButtonElement> | null,

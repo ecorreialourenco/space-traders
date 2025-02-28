@@ -1,7 +1,7 @@
 import { MarketInfo } from "@/components/Market";
 import { Shipyard } from "@/components/Shipyard";
 import { TraitModel } from "@/models";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import InfoIcon from "@mui/icons-material/Info";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
@@ -20,14 +20,6 @@ export const MapTraitCard = ({ traits, selectedSymbol }: MapTraitCardProps) => {
   const [selectedTrait, setSelectedTrait] = useState<TraitEnum | "INFO">(
     "INFO"
   );
-
-  useEffect(() => {
-    const traitsOptions = traits
-      .filter((trait) => Object.keys(TraitEnum).includes(trait.symbol))
-      .map((trait) => trait.symbol as TraitEnum);
-
-    setSelectedTrait(traitsOptions[0]);
-  }, [traits]);
 
   return (
     <div className={styles.traitsGroup}>

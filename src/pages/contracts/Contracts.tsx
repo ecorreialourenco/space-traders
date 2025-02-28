@@ -11,20 +11,25 @@ import {
   Tooltip,
   Typography,
   Button,
+  AlertColor,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
-import { ContractModel } from "@/models/contract.model";
 import { acceptContract } from "@/utils/handleContracts";
-import { NegociateContractModal, TableHeaderCell } from "@/components";
+import {
+  Delivery,
+  Feedback,
+  NegociateContractModal,
+  TableHeaderCell,
+} from "@/components";
 import { useContracts } from "@/hooks";
 import { LIMIT } from "@/constants";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Navigation } from "@/components/ShipComponents/ShipTable/components/Navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { LocalModel } from "@/models";
+import { ContractModel, FeedbackType, LocalModel } from "@/models";
 
 export const Contracts = () => {
   const { data } = useSession();
@@ -32,11 +37,14 @@ export const Contracts = () => {
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [feedbackOpen, setFeedbackOpen] = useState<boolean>(false);
+  const [feedbackType, setFeedbackType] = useState<AlertColor>("error");
+  const [feedbackMessage, setFeedbackMessage] = useState<string>("");
+
   const { waypoints } = useSelector((state: RootState) => state.map);
   const { system } = useSelector((state: RootState) => state.ui);
 
   const { data: contractsData, refetch } = useContracts({ page });
-  console.log("🚀 ~ Contracts ~ contractsData:", contractsData);
 
   const handleClick = async (id: string) => {
     await acceptContract({ token: data?.token ?? "", id }).then(() =>
@@ -52,6 +60,21 @@ export const Contracts = () => {
       setPage((prevPage) => prevPage + 1);
     } else {
       setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleCloseFeedback = () => {
+    setFeedbackMessage("");
+    setFeedbackOpen(false);
+  };
+
+  const handleUpdateContract = ({ message, type }: FeedbackType) => {
+    setFeedbackType(type);
+    setFeedbackMessage(message);
+    setFeedbackOpen(true);
+
+    if (type === "success") {
+      refetch();
     }
   };
 
@@ -71,6 +94,13 @@ export const Contracts = () => {
       {contractList.length === 0 && (
         <Button onClick={() => setIsModalOpen(true)}>Negociate contract</Button>
       )}
+
+      <Feedback
+        isOpen={feedbackOpen}
+        severity={feedbackType}
+        message={feedbackMessage}
+        onClose={handleCloseFeedback}
+      />
 
       <TableContainer component={Paper}>
         <Table stickyHeader>
@@ -127,26 +157,34 @@ export const Contracts = () => {
                       </span>
                     </Tooltip>
                   ) : (
-                    contract.terms.deliver.map((point) => {
-                      const selectedWaypoint = waypoints.find(
-                        (waypoint) =>
-                          waypoint.symbol === point.destinationSymbol
-                      );
+                    <>
+                      {contract.terms.deliver.map((point) => {
+                        const selectedWaypoint = waypoints.find(
+                          (waypoint) =>
+                            waypoint.symbol === point.destinationSymbol
+                        );
 
-                      if (!selectedWaypoint) {
-                        return null;
-                      }
+                        if (!selectedWaypoint) {
+                          return null;
+                        }
 
-                      const route: LocalModel = {
-                        systemSymbol: system,
-                        symbol: selectedWaypoint.symbol,
-                        type: selectedWaypoint.type,
-                        x: selectedWaypoint.x,
-                        y: selectedWaypoint.y,
-                      };
+                        const route: LocalModel = {
+                          systemSymbol: system,
+                          symbol: selectedWaypoint.symbol,
+                          type: selectedWaypoint.type,
+                          x: selectedWaypoint.x,
+                          y: selectedWaypoint.y,
+                        };
 
-                      return <Navigation key={route.symbol} route={route} />;
-                    })
+                        return <Navigation key={route.symbol} route={route} />;
+                      })}
+
+                      <Delivery
+                        contractId={contract.id}
+                        deliver={contract.terms.deliver}
+                        updateContract={handleUpdateContract}
+                      />
+                    </>
                   )}
                 </TableCell>
               </TableRow>

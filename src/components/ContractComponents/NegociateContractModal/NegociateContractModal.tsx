@@ -5,8 +5,7 @@ import React, { useState } from "react";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import { MyShipModel } from "@/models";
 import { useSession } from "next-auth/react";
-import { useShips } from "@/hooks";
-import { useContractNegociation } from "@/hooks/mutations/useContractNegociation";
+import { useContractNegociation, useShips } from "@/hooks";
 
 interface NegociateContractModalProps {
   open: boolean;

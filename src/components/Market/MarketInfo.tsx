@@ -9,14 +9,13 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-import { useMarket } from "@/hooks";
+import { useMarket, useMarketActions } from "@/hooks";
 import { MarketModel, MyShipModel, TradeGoodModel } from "@/models";
 import { MarketTypeEnum } from "@/enums";
 import cn from "classnames";
 
 import styles from "./MarketInfo.module.css";
 import { TableHeaderCell } from "..";
-import { useMarketActions } from "@/hooks/useMarketActions";
 import { MarketButton } from "./MarketButton";
 
 interface MarketInfoProps {

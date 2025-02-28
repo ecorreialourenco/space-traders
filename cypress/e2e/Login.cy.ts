@@ -15,7 +15,7 @@ describe("Login", () => {
   it("Login with correct credentials", () => {
     cy.visit("http://localhost:3000");
 
-    cy.get("input").eq(0).type("ecorreia");
+    cy.get("input").eq(0).type("Cypress");
     cy.get("input").eq(1).type("123");
     cy.get("form").submit();
     cy.wait(500);
