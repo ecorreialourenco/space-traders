@@ -2,22 +2,30 @@ import React, { FormEvent, useState } from "react";
 import { Typography } from "@mui/material";
 import { Button, Feedback, Input, InputPassword } from "@/components";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (username) {
-      await signIn("credentials", {
+      const response = await signIn("credentials", {
         username,
         password,
-        redirect: true,
+        redirect: false,
         callbackUrl: "http://localhost:3000",
       });
+
+      if (!response?.ok) {
+        setError("Username or password doesn't match");
+      } else {
+        router.push("/");
+      }
     }
   };
 

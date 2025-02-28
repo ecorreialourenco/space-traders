@@ -34,9 +34,14 @@ export const Dropdown = ({
           label={label}
           onChange={onChange}
           variant="filled"
+          data-cy="dropdown"
         >
           {options.map((option: Option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem
+              key={option.value}
+              value={option.value}
+              data-cy={`dropdown-option-${option.value.replaceAll(" ", "-")}`}
+            >
               {option.name}
             </MenuItem>
           ))}

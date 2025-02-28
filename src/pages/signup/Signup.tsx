@@ -13,8 +13,8 @@ export const Signup = () => {
   const [error, setError] = useState<string>("");
   const { data } = useFactions({ page: 1 });
 
-  const formatedList = data?.data
-    ? data.data.map((item: FactionModel) => ({
+  const formatedList = data
+    ? data.map((item: FactionModel) => ({
         value: item.symbol,
         name: item.name,
       }))
@@ -23,7 +23,12 @@ export const Signup = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (password && password === password2) {
+    if (!faction) {
+      setError("Please select our faction!");
+      return;
+    }
+
+    if (password && faction && password === password2) {
       const options = {
         method: "POST",
         headers: {

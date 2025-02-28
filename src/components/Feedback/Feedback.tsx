@@ -17,11 +17,11 @@ export const Feedback = ({
   <Snackbar
     anchorOrigin={{ vertical: "top", horizontal: "right" }}
     open={isOpen}
-    autoHideDuration={6000}
+    //autoHideDuration={6000}
     onClose={onClose}
   >
     <Alert severity={severity} sx={{ width: "100%" }} onClose={onClose}>
-      {message}
+      <span data-cy="feedback-message">{message}</span>
     </Alert>
   </Snackbar>
 );

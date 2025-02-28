@@ -51,6 +51,7 @@ export const InputPassword = ({
           }
           value={value}
           required={required}
+          autoComplete={label.replaceAll(" ", "")}
           name={label.toLocaleLowerCase().replaceAll(" ", "_")}
           onChange={onChange}
           className={cn(

@@ -3,6 +3,7 @@ import { Shipyard } from "@/components/Shipyard";
 import { TraitModel } from "@/models";
 import React, { useEffect, useState } from "react";
 
+import InfoIcon from "@mui/icons-material/Info";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 
@@ -16,7 +17,9 @@ interface MapTraitCardProps {
 }
 
 export const MapTraitCard = ({ traits, selectedSymbol }: MapTraitCardProps) => {
-  const [selectedTrait, setSelectedTrait] = useState<TraitEnum | null>(null);
+  const [selectedTrait, setSelectedTrait] = useState<TraitEnum | "INFO">(
+    "INFO"
+  );
 
   useEffect(() => {
     const traitsOptions = traits
@@ -28,6 +31,12 @@ export const MapTraitCard = ({ traits, selectedSymbol }: MapTraitCardProps) => {
 
   return (
     <div className={styles.traitsGroup}>
+      <IconButton
+        color={selectedTrait === "INFO" ? "primary" : "default"}
+        onClick={() => setSelectedTrait("INFO")}
+      >
+        <InfoIcon />
+      </IconButton>
       {traits.find((trait) => trait.symbol === TraitEnum.SHIPYARD) && (
         <IconButton
           color={selectedTrait === TraitEnum.SHIPYARD ? "primary" : "default"}
@@ -47,10 +56,17 @@ export const MapTraitCard = ({ traits, selectedSymbol }: MapTraitCardProps) => {
         </IconButton>
       )}
 
+      {selectedTrait === "INFO" && (
+        <div>
+          {traits.map((trait) => (
+            <p key={trait.symbol}>{trait.name}</p>
+          ))}
+        </div>
+      )}
+
       {selectedTrait === TraitEnum.SHIPYARD && (
         <div>
-
-        <Shipyard asteroidWaypointSymbol={selectedSymbol} />
+          <Shipyard asteroidWaypointSymbol={selectedSymbol} />
         </div>
       )}
       {selectedTrait === TraitEnum.MARKETPLACE && (

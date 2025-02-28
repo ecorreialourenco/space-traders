@@ -21,13 +21,11 @@ export default NextAuth({
         const fileContent = await fs.readFile(filePath, "utf8");
         const users = JSON.parse(fileContent);
 
-        const user = users.find((user: User) => {
-          return user.username === username;
-        });
+        const user = users.find((user: User) => user.username === username);
 
         const match = user && (await bcrypt.compare(password, user.password));
         if (!match) {
-          throw new Error("Wrong credentials");
+          return null;
         }
 
         user.id = user.token;
