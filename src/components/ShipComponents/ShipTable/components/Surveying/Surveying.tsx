@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-import { MyShipModel, MyShipsResponse, SurveyingModel } from "@/models";
+import { FeedbackType, MyShipModel, SurveyingModel } from "@/models";
 import { checkMiningLocation, getSurvey } from "@/utils";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 import { SurveyingModal } from "./SurveyingModal";
 import { SurveyingTooltip } from "./SurveyingTooltip";
@@ -10,9 +9,7 @@ import { SurveyingTooltip } from "./SurveyingTooltip";
 interface SurveyingProps {
   token: string;
   ship: MyShipModel;
-  updateCargo: (
-    options?: RefetchOptions
-  ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
+  updateCargo: ({ message, type }: FeedbackType) => void;
 }
 
 export const Surveying = ({ token, ship, updateCargo }: SurveyingProps) => {
@@ -28,6 +25,7 @@ export const Surveying = ({ token, ship, updateCargo }: SurveyingProps) => {
 
     setSurveyingData(response.data ?? response.error.data);
     setIsOpen(true);
+    updateCargo({ message: "Survey successfully completed", type: "success" });
   };
 
   return (

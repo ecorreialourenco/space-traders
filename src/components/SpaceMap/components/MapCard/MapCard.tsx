@@ -47,7 +47,7 @@ export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
               <CloseIcon />
             </IconButton>
           </div>
-          <div className={styles.traitsGroup}>
+          <div className={styles.traits}>
             <MapTraitCard
               traits={traits}
               selectedSymbol={selectedPoint.symbol}

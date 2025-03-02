@@ -3,10 +3,9 @@ import { IconButton, Tooltip } from "@mui/material";
 import { NavActionStatusEnum } from "@/enums";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { MyShipsResponse } from "@/models/ship.model";
-import { handleShipStatus } from "@/utils";
+import { useShipStatus } from "@/hooks";
 
 export const NavStatus = ({
-  token,
   title,
   status,
   miningShipSymbol,
@@ -14,7 +13,6 @@ export const NavStatus = ({
   refetch,
   onClick,
 }: {
-  token: string;
   title: string;
   status: NavActionStatusEnum;
   miningShipSymbol: string;
@@ -24,6 +22,12 @@ export const NavStatus = ({
   ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
   onClick?: () => void;
 }) => {
+  const updateShip = () => {
+    refetch?.();
+  };
+
+  const { mutate } = useShipStatus({ updateShip });
+
   const handleChangeShipStatus = async ({
     miningShipSymbol,
     status,
@@ -31,15 +35,7 @@ export const NavStatus = ({
     miningShipSymbol: string;
     status: NavActionStatusEnum;
   }) => {
-    const dockResponse = await handleShipStatus({
-      token,
-      miningShipSymbol,
-      status,
-    });
-
-    if (dockResponse.data?.nav) {
-      refetch?.();
-    }
+    mutate({ miningShipSymbol, status });
   };
 
   return (

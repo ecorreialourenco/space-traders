@@ -7,7 +7,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 
-import styles from "../MapCard.module.css";
+import styles from "./MapTraitCard.module.css";
 import { IconButton } from "@mui/material";
 import { TraitEnum } from "@/enums";
 

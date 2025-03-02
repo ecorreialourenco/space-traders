@@ -1,5 +1,5 @@
 import { MyShipModel } from "@/models/ship.model";
-import { AlertColor, Button, Typography } from "@mui/material";
+import { AlertColor } from "@mui/material";
 import React, { Suspense, useRef, useState } from "react";
 
 import {
@@ -8,6 +8,7 @@ import {
   Loading,
   NavShipModal,
   ShipTable,
+  TitleButton,
 } from "@/components";
 import { FeedbackType } from "@/models";
 
@@ -45,10 +46,11 @@ export const Ships = () => {
   return (
     <Suspense fallback={<Loading />}>
       <div className="flex flex-col h-full items-center mx-4">
-        <Typography variant="h3" style={{ textAlign: "center" }}>
-          My Ships
-        </Typography>
-        <Button onClick={() => setIsModalOpen(true)}>Buy Ship</Button>
+        <TitleButton
+          title="My Ships"
+          btnText="Buy Ship"
+          onClick={() => setIsModalOpen(true)}
+        />
 
         <Feedback
           isOpen={feedbackOpen}

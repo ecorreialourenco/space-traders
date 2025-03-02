@@ -11,7 +11,7 @@ export const useFactions = ({ page }: { page: number }) => {
 
   return useQuery({
     queryKey: ["factions", page],
-    queryFn: async () => await getFactions(),
+    queryFn: getFactions,
     select: (res) => res.data,
   });
 };

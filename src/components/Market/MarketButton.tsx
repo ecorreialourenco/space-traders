@@ -32,6 +32,7 @@ export const MarketButton = ({
       <MButton
         className="w-full justify-start text-xs"
         variant="text"
+        disabled={maxValue === 0}
         size="small"
         onClick={() => setIsOpen(true)}
       >

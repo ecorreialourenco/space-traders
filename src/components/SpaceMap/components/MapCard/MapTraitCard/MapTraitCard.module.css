@@ -1,0 +1,5 @@
+.traitsGroup {
+  max-height: 100px;
+  overflow: auto;
+  font-size: 10px;
+}

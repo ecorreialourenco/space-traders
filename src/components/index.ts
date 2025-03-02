@@ -10,3 +10,4 @@ export * from "./ShipComponents";
 export * from "./Shipyard";
 export * from "./SpaceMap";
 export * from "./Table";
+export * from "./TitleButton";

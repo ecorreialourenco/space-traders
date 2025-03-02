@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import { AgentHeader } from "./AgentHeader";
 
+import styles from "./Header.module.css";
+
 export const Header = () => {
   const router = useRouter();
   const { status } = useSession();
@@ -15,28 +17,40 @@ export const Header = () => {
   return (
     <>
       <div className="w-full flex justify-between h-12">
-        <Button variant="text" onClick={() => handleRoute("/")}>
+        <Button className={styles.button} onClick={() => handleRoute("/")}>
           Space Traders
         </Button>
         <div>
           {isAuthenticated ? (
             <>
-              <Button variant="text" onClick={() => handleRoute("/ships")}>
+              <Button
+                className={styles.button}
+                onClick={() => handleRoute("/ships")}
+              >
                 Ships
               </Button>
-              <Button variant="text" onClick={() => handleRoute("/contracts")}>
+              <Button
+                className={styles.button}
+                onClick={() => handleRoute("/contracts")}
+              >
                 Contracts
               </Button>
-              <Button variant="text" onClick={() => signOut()}>
+              <Button className={styles.button} onClick={() => signOut()}>
                 Logout
               </Button>
             </>
           ) : (
             <>
-              <Button variant="text" onClick={() => handleRoute("/login")}>
+              <Button
+                className={styles.button}
+                onClick={() => handleRoute("/login")}
+              >
                 Login
               </Button>
-              <Button variant="text" onClick={() => handleRoute("/signup")}>
+              <Button
+                className={styles.button}
+                onClick={() => handleRoute("/signup")}
+              >
                 Signup
               </Button>
             </>

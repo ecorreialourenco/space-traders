@@ -10,8 +10,7 @@ import {
 import React from "react";
 
 import { Button, Modal, TableHeaderCell } from "@/components";
-import { MyShipModel, MyShipsResponse, SurveyingModel } from "@/models";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { FeedbackType, MyShipModel, SurveyingModel } from "@/models";
 
 import { Extract } from "../Extract/Extract";
 
@@ -20,9 +19,7 @@ interface SurveyingModalProps {
   ship: MyShipModel;
   data: SurveyingModel;
   onClose: () => void;
-  updateCargo: (
-    options?: RefetchOptions
-  ) => Promise<QueryObserverResult<MyShipsResponse, Error>>;
+  updateCargo: ({ message, type }: FeedbackType) => void;
 }
 
 export const SurveyingModal = ({

@@ -36,12 +36,6 @@ interface RefuelShipProps {
   miningShipSymbol: string;
 }
 
-interface HandleNavigateProps {
-  token: string;
-  miningShipSymbol: string;
-  waypoint: string;
-}
-
 interface PurchaseShipError {
   message: string;
   code: number;
@@ -149,29 +143,5 @@ export const refuelShip = async ({
     `${BASE_URL}/my/ships/${miningShipSymbol}/refuel`,
     options
   );
-  return response.json();
-};
-
-export const handleNavigate = async ({
-  token,
-  waypoint,
-  miningShipSymbol,
-}: HandleNavigateProps) => {
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      waypointSymbol: waypoint,
-    }),
-  };
-
-  const response = await fetch(
-    `${BASE_URL}/my/ships/${miningShipSymbol}/navigate`,
-    options
-  );
-
   return response.json();
 };

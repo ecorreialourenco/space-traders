@@ -14,7 +14,6 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
 } from "@mui/material";
 import React, {
@@ -27,14 +26,13 @@ import React, {
 import { Extract } from "./components/Extract";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
-import { LIMIT } from "@/constants";
 import { FeedbackType, MyShipModel } from "@/models";
 import PublicIcon from "@mui/icons-material/Public";
 import { TableRef } from "@/pages/ships/Ships";
 import { checkMiningLocation } from "@/utils";
 import { useSession } from "next-auth/react";
-import { useContracts, useShips } from "@/hooks";
-import { NavStatus, TableHeaderCell } from "@/components";
+import { useShips } from "@/hooks";
+import { NavStatus, Paginator, TableHeaderCell } from "@/components";
 
 interface ShipTableProps {
   openModal: (val: boolean) => void;
@@ -51,12 +49,8 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     const token = data?.token ?? "";
 
     const { data: shipsData, refetch } = useShips({ page });
-    //const { data: contractsData } = useContracts({ page: 1 });
 
-    const handleChangePage = (
-      event: React.MouseEvent<HTMLButtonElement> | null,
-      page: number
-    ) => {
+    const handleChangePage = (page: number) => {
       if (shipsData && page + 1 > shipsData?.meta.page) {
         setPage((prevPage) => prevPage + 1);
       } else {
@@ -124,7 +118,6 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                       />
                       {ship.nav.status === NavStatusEnum.DOCKED ? (
                         <NavStatus
-                          token={token}
                           title="Orbit"
                           status={NavActionStatusEnum.IN_ORBIT}
                           miningShipSymbol={ship.symbol}
@@ -134,7 +127,6 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                         </NavStatus>
                       ) : (
                         <NavStatus
-                          token={token}
                           title="Dock"
                           status={NavActionStatusEnum.DOCKED}
                           miningShipSymbol={ship.symbol}
@@ -144,7 +136,6 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                         </NavStatus>
                       )}
                       <NavStatus
-                        token={token}
                         title="Navigate"
                         status={NavActionStatusEnum.IN_ORBIT}
                         miningShipSymbol={ship.symbol}
@@ -159,15 +150,16 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                       <Navigation route={ship.nav.route.destination} />
                       {ship.cargo.capacity > ship.cargo.units && (
                         <>
-                          {ship.mounts.some(
-                            (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
-                          ) && (
-                            <Surveying
-                              token={token}
-                              ship={ship}
-                              updateCargo={refetch}
-                            />
-                          )}
+                          {ship.nav.status === NavStatusEnum.IN_ORBIT &&
+                            ship.mounts.some(
+                              (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
+                            ) && (
+                              <Surveying
+                                token={token}
+                                ship={ship}
+                                updateCargo={handleUpdateCargo}
+                              />
+                            )}
                           {ship.nav.status === NavStatusEnum.IN_ORBIT &&
                             checkMiningLocation(
                               ship.nav.route.destination.type
@@ -191,17 +183,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
           </TableBody>
         </Table>
 
-        {total > LIMIT && (
-          <TablePagination
-            component="div"
-            rowsPerPageOptions={[]}
-            count={total}
-            rowsPerPage={LIMIT}
-            page={page - 1}
-            labelDisplayedRows={() => `${page} of ${Math.ceil(total / LIMIT)}`}
-            onPageChange={handleChangePage}
-          />
-        )}
+        <Paginator page={page} total={total} onPageChange={handleChangePage} />
       </TableContainer>
     );
   }

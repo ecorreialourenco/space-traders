@@ -36,3 +36,8 @@ export interface InventoryModel {
   description: string;
   units: number;
 }
+
+export interface CommonError {
+  message: string;
+  code: number;
+}

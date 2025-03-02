@@ -22,7 +22,7 @@ export const useWaypoint = ({ planet }: { planet: string }) => {
 
   return useQuery({
     queryKey: ["waypoint", planet],
-    queryFn: async () => await getWaypoint(),
+    queryFn: getWaypoint,
     select: (res) => res.data,
     enabled: !!token && !!system,
   });
