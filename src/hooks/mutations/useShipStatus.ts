@@ -22,7 +22,7 @@ export const useShipStatus = ({
     miningShipSymbol,
     status,
   }: ShipStatusProps): Promise<{
-    data: NavigationModel;
+    data: { nav: NavigationModel };
     error: CommonError;
   }> => {
     const options = {
@@ -48,7 +48,7 @@ export const useShipStatus = ({
         return updateShip({ message: res.error.message, type: "error" });
       }
       return updateShip({
-        message: `Your ship is now ${res.data.status}`,
+        message: `Your ship is now ${res.data.nav.status}`,
         type: "success",
       });
     },

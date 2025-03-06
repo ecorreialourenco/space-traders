@@ -18,7 +18,7 @@ export const ShipRefuel = ({ ship, disabled, onRefuel }: ShipRefuelProps) => {
   const { mutate: mutateShipStatus } = useShipStatus({ updateShip: onRefuel });
   const { mutate } = useRefuel({ onRefuel });
 
-  const handleRefuelShip = async ({
+  const handleRefuelShip = ({
     miningShipSymbol,
     status,
   }: {
@@ -32,7 +32,9 @@ export const ShipRefuel = ({ ship, disabled, onRefuel }: ShipRefuelProps) => {
       });
     }
 
-    mutate({ miningShipSymbol });
+    setTimeout(() => {
+      mutate({ miningShipSymbol });
+    }, 500);
   };
 
   return (

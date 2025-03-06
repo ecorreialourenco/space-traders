@@ -21,15 +21,16 @@ export const NegociateContractModal = ({
   const { data: shipsData } = useShips({ page: 1 });
 
   const selectedShip = shipId
-    ? shipsData.data.find((ship: MyShipModel) => ship.symbol === shipId)
+    ? shipsData?.data.find((ship: MyShipModel) => ship.symbol === shipId)
     : undefined;
 
-  const options = shipsData?.data.map((ship: MyShipModel) => ({
-    name: ship.symbol,
-    value: ship.symbol,
-  }));
+  const options =
+    shipsData?.data.map((ship: MyShipModel) => ({
+      name: ship.symbol,
+      value: ship.symbol,
+    })) ?? [];
 
-  const isDocked = shipId && selectedShip.nav.status === NavStatusEnum.DOCKED;
+  const isDocked = shipId && selectedShip?.nav.status === NavStatusEnum.DOCKED;
 
   const { mutate: negociateContract } = useContractNegociation({
     shipSymbol: shipId,

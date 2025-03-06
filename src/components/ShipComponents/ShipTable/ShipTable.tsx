@@ -16,12 +16,14 @@ import React, {
   useImperativeHandle,
   useState,
 } from "react";
+import { useDispatch } from "react-redux";
 
 import { NavStatus, Paginator, TableHeaderCell } from "@/components";
 import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
-import { useShips } from "@/hooks";
+import { useAgent, useShips } from "@/hooks";
 import { FeedbackType, MyShipModel } from "@/models";
 import { TableRef } from "@/pages/ships/Ships";
+import { setAgent } from "@/store/slices/uiSlice";
 import { checkMiningLocation } from "@/utils";
 
 import {
@@ -45,8 +47,10 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     const [shipsList, setShipsList] = useState<MyShipModel[]>([]);
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
+    const dispatch = useDispatch();
 
     const { data: shipsData, refetch } = useShips({ page });
+    const { refetch: refetchAgent } = useAgent();
 
     const handleChangePage = (page: number) => {
       if (shipsData && page + 1 > shipsData?.meta.page) {
@@ -56,10 +60,17 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
       }
     };
 
-    const handleUpdateCargo = ({ message, type }: FeedbackType) => {
+    const handleUpdateCargo = async ({ message, type }: FeedbackType) => {
       setInfo({ message, type });
 
-      refetch();
+      setTimeout(async () => {
+        await refetch();
+        const newAgentData = await refetchAgent();
+
+        if (newAgentData.data) {
+          dispatch(setAgent(newAgentData.data));
+        }
+      }, 500);
     };
 
     useImperativeHandle(forwardedRef, () => ({

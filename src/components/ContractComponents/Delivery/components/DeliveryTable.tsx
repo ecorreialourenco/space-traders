@@ -121,6 +121,7 @@ export const DeliveryTable = ({
 
                 const isInContractLocation =
                   ship.nav.waypointSymbol === deliver.destinationSymbol;
+
                 return (
                   <TableRow key={ship.registration.name}>
                     <TableCell>{ship.registration.name}</TableCell>
@@ -132,16 +133,21 @@ export const DeliveryTable = ({
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Tooltip title="Delivery">
-                        <span>
-                          <IconButton
-                            disabled={!isInContractLocation}
-                            onClick={() => handleSend({ ship })}
-                          >
-                            <SoapIcon />
-                          </IconButton>
-                        </span>
-                      </Tooltip>
+                      {isInContractLocation &&
+                        ship.nav.status === NavStatusEnum.DOCKED && (
+                          <Tooltip title="Delivery">
+                            <span>
+                              <IconButton
+                                disabled={
+                                  !isInContractLocation || !contractItem
+                                }
+                                onClick={() => handleSend({ ship })}
+                              >
+                                <SoapIcon />
+                              </IconButton>
+                            </span>
+                          </Tooltip>
+                        )}
 
                       {!isInContractLocation &&
                         (ship.nav.status === NavStatusEnum.IN_TRANSIT ? (

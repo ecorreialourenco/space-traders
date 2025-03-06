@@ -45,7 +45,7 @@ export const useRefuel = ({
         return onRefuel({ message: res.error.message, type: "error" });
       }
       return onRefuel({
-        message: `${res.data.transaction.shipSymbol} refueled with ${res.data.transaction.units}`,
+        message: `${res.data.transaction.shipSymbol} refueled with ${res.data.fuel.consumed.amount}`,
         type: "success",
       });
     },

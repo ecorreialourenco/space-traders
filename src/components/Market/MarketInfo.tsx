@@ -85,11 +85,9 @@ export const MarketInfo = ({
           miningShipSymbol: ship.symbol,
           status: NavActionStatusEnum.DOCKED,
         });
+      }
 
-        setTimeout(() => {
-          handleAction({ action, cargo });
-        }, 500);
-      } else {
+      setTimeout(() => {
         mutate({ miningShipSymbol: ship.symbol, action, cargo });
 
         setTimeout(async () => {
@@ -100,7 +98,7 @@ export const MarketInfo = ({
             dispatch(setAgent(newAgentData.data));
           }
         }, 500);
-      }
+      }, 500);
     }
   };
 
