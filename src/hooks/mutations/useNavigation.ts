@@ -44,7 +44,6 @@ export const useNavigation = ({
   return useMutation({
     mutationFn: handleNavigation,
     onSuccess: (res) => {
-      console.log("🚀 ~ res:", res)
       if (res.error) {
         return updateShip({ message: res.error.message, type: "error" });
       }

@@ -45,7 +45,6 @@ export const useFlightMode = ({
   return useMutation({
     mutationFn: setFlightMode,
     onSuccess: (res) => {
-      console.log("🚀 ~ res:", res);
       if (res.error) {
         return updateShip({ message: res.error.message, type: "error" });
       }

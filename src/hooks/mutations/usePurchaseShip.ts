@@ -44,7 +44,6 @@ export const usePurchaseShip = ({
   return useMutation({
     mutationFn: handlePurchaseShip,
     onSuccess: (res) => {
-      console.log("🚀 ~ res:", res);
       if (res.error) {
         return updateList({ message: res.error.message, type: "error" });
       }

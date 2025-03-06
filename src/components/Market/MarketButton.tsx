@@ -43,6 +43,7 @@ export const MarketButton = ({
 
       <Modal open={isOpen} title="Market" onClose={() => setIsOpen(false)}>
         <div className="m-2">
+          <div className="m-2">Avaliable units: {maxValue}</div>
           <TextField
             label="Units"
             variant="filled"

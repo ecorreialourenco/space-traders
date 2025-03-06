@@ -46,7 +46,6 @@ export const useMarketActions = ({
   return useMutation({
     mutationFn: marketAction,
     onSuccess: (res) => {
-      console.log("🚀 ~ res:", res);
       if (res.error) {
         return updateCargo({ message: res.error.message, type: "error" });
       }

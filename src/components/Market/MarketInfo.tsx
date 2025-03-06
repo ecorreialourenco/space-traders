@@ -11,8 +11,8 @@ import cn from "classnames";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { MarketTypeEnum } from "@/enums";
-import { useAgent, useMarket, useMarketActions } from "@/hooks";
+import { MarketTypeEnum, NavActionStatusEnum, NavStatusEnum } from "@/enums";
+import { useAgent, useMarket, useMarketActions, useShipStatus } from "@/hooks";
 import {
   FeedbackType,
   MarketModel,
@@ -45,6 +45,9 @@ export const MarketInfo = ({
   const { refetch: refetchAgent } = useAgent();
 
   const { mutate } = useMarketActions({ updateCargo });
+  const { mutate: mutateShipStatus } = useShipStatus({
+    updateShip: updateCargo,
+  });
 
   const getInfo = ({
     symbol,
@@ -77,16 +80,27 @@ export const MarketInfo = ({
     };
   }) => {
     if (ship) {
-      mutate({ miningShipSymbol: ship.symbol, action, cargo });
-      refetch();
+      if (ship.nav.status !== NavStatusEnum.DOCKED) {
+        mutateShipStatus({
+          miningShipSymbol: ship.symbol,
+          status: NavActionStatusEnum.DOCKED,
+        });
 
-      setTimeout(async () => {
-        const newAgentData = await refetchAgent();
+        setTimeout(() => {
+          handleAction({ action, cargo });
+        }, 500);
+      } else {
+        mutate({ miningShipSymbol: ship.symbol, action, cargo });
 
-        if (newAgentData.data) {
-          dispatch(setAgent(newAgentData.data));
-        }
-      }, 500);
+        setTimeout(async () => {
+          await refetch();
+          const newAgentData = await refetchAgent();
+
+          if (newAgentData.data) {
+            dispatch(setAgent(newAgentData.data));
+          }
+        }, 500);
+      }
     }
   };
 

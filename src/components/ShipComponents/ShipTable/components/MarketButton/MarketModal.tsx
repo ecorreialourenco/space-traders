@@ -17,18 +17,16 @@ export const MarketModal = ({
   ship,
   onClose,
   updateCargo,
-}: MarketModalProps) => {
-  return (
-    <Modal open={isOpen} title={`Marketplace - ${waypoint}`} onClose={onClose}>
-      <Suspense fallback={<Loading />}>
-        <div className="m-6">
-          <MarketInfo
-            asteroidWaypointSymbol={waypoint}
-            ship={ship}
-            updateCargo={updateCargo}
-          />
-        </div>
-      </Suspense>
-    </Modal>
-  );
-};
+}: MarketModalProps) => (
+  <Modal open={isOpen} title={`Marketplace - ${waypoint}`} onClose={onClose}>
+    <Suspense fallback={<Loading />}>
+      <div className="m-6">
+        <MarketInfo
+          asteroidWaypointSymbol={waypoint}
+          ship={ship}
+          updateCargo={updateCargo}
+        />
+      </div>
+    </Suspense>
+  </Modal>
+);
