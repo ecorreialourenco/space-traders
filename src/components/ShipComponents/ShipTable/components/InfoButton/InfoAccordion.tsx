@@ -1,3 +1,4 @@
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {
   Accordion,
   AccordionDetails,
@@ -5,8 +6,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { ReactNode } from "react";
-
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 interface InfoAccordionProps {
   title: string;

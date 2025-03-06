@@ -1,6 +1,6 @@
 import { TableCell } from "@mui/material";
-import React, { ReactNode } from "react";
 import cn from "classnames";
+import React, { ReactNode } from "react";
 
 import styles from "./TableHeaderCell.module.css";
 

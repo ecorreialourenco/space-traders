@@ -1,9 +1,10 @@
-import { LocalModel } from "@/models";
-import { IconButton, Tooltip } from "@mui/material";
-import React from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
+import { IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
+import React from "react";
 import { useDispatch } from "react-redux";
+
+import { LocalModel } from "@/models";
 import { setCenter, setSelectedMapWaypoint } from "@/store/slices/mapSlice";
 
 export const Navigation = ({ route }: { route: LocalModel }) => {

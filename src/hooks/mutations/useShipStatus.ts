@@ -1,8 +1,9 @@
+import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+
 import { BASE_URL } from "@/constants";
 import { NavActionStatusEnum } from "@/enums";
 import { CommonError, FeedbackType, NavigationModel } from "@/models";
-import { useMutation } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 
 interface ShipStatusProps {
   miningShipSymbol: string;

@@ -1,6 +1,6 @@
+import CloseIcon from "@mui/icons-material/Close";
 import { Dialog, DialogTitle, IconButton, Tooltip } from "@mui/material";
 import React, { ReactNode } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 
 interface ModalProps {
   title: string;

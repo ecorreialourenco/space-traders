@@ -1,6 +1,8 @@
-import React, { useState } from "react";
 import { Button as MButton, TextField } from "@mui/material";
+import React, { useState } from "react";
+
 import { formatCredits } from "@/utils";
+
 import { Button, Modal } from "..";
 
 interface MarketButtonProps {

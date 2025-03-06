@@ -1,8 +1,10 @@
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import { IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
-import StorefrontIcon from "@mui/icons-material/Storefront";
-import { MarketModal } from "./MarketModal";
+
 import { MyShipModel } from "@/models";
+
+import { MarketModal } from "./MarketModal";
 
 interface MarketButtonProps {
   waypoint: string;

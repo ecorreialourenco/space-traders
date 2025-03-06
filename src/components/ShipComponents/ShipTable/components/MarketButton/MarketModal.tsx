@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+
 import { Loading, MarketInfo, Modal } from "@/components";
 import { MyShipModel } from "@/models";
 

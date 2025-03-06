@@ -1,8 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+
 import { BASE_URL } from "@/constants";
 import { AgentModel } from "@/models";
 import { options } from "@/utils/requestOptions";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 
 export const useAgent = () => {
   const { data } = useSession();

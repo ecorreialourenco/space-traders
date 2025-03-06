@@ -1,16 +1,17 @@
-import { MyShipModel } from "@/models/ship.model";
 import { AlertColor } from "@mui/material";
 import React, { Suspense, useRef, useState } from "react";
 
 import {
-  BuyShipModal,
   Feedback,
   Loading,
   NavShipModal,
+  PurchaseShip,
   ShipTable,
   TitleButton,
 } from "@/components";
 import { FeedbackType } from "@/models";
+import { MyShipModel } from "@/models/ship.model";
+
 
 export interface TableRef {
   refetch: () => void;
@@ -66,7 +67,7 @@ export const Ships = () => {
           setInfo={handleInfo}
         />
 
-        <BuyShipModal
+        <PurchaseShip
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           updateList={handleRefetch}

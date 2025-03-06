@@ -1,7 +1,8 @@
-import { BASE_URL, LIMIT } from "@/constants";
-import { options } from "@/utils/requestOptions";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+
+import { BASE_URL, LIMIT } from "@/constants";
+import { options } from "@/utils/requestOptions";
 
 export const useContracts = ({ page }: { page: number }) => {
   const { data } = useSession();

@@ -1,8 +1,8 @@
+import HardwareIcon from "@mui/icons-material/Hardware";
+import { Badge, IconButton, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-import { Badge, IconButton, Tooltip } from "@mui/material";
 import { MyShipModel } from "@/models";
-import HardwareIcon from "@mui/icons-material/Hardware";
 
 interface MiningProps {
   ship: MyShipModel;

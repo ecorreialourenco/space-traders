@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { calculateSecondsLeft } from "@/utils";
 
 interface ArriveCounterPros {

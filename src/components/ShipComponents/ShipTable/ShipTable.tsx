@@ -1,12 +1,6 @@
-import {
-  InfoButton,
-  MarketButton,
-  Navigation,
-  ShipNavigationAnimation,
-  ShipRefuel,
-  Surveying,
-} from "./components";
-import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
+import FlightLandIcon from "@mui/icons-material/FlightLand";
+import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
+import PublicIcon from "@mui/icons-material/Public";
 import {
   Paper,
   Table,
@@ -16,6 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 import React, {
   forwardRef,
   useEffect,
@@ -23,16 +18,22 @@ import React, {
   useState,
 } from "react";
 
-import { Extract } from "./components/Extract";
-import FlightLandIcon from "@mui/icons-material/FlightLand";
-import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
+import { NavStatus, Paginator, TableHeaderCell } from "@/components";
+import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
+import { useShips } from "@/hooks";
 import { FeedbackType, MyShipModel } from "@/models";
-import PublicIcon from "@mui/icons-material/Public";
 import { TableRef } from "@/pages/ships/Ships";
 import { checkMiningLocation } from "@/utils";
-import { useSession } from "next-auth/react";
-import { useShips } from "@/hooks";
-import { NavStatus, Paginator, TableHeaderCell } from "@/components";
+
+import {
+  InfoButton,
+  MarketButton,
+  Navigation,
+  ShipNavigationAnimation,
+  ShipRefuel,
+  Surveying,
+} from "./components";
+import { Extract } from "./components/Extract";
 
 interface ShipTableProps {
   openModal: (val: boolean) => void;

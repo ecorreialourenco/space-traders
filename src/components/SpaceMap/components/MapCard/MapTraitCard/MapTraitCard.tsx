@@ -1,15 +1,15 @@
-import { MarketInfo } from "@/components/Market";
-import { Shipyard } from "@/components/Shipyard";
-import { TraitModel } from "@/models";
-import React, { useState } from "react";
-
 import InfoIcon from "@mui/icons-material/Info";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import { IconButton } from "@mui/material";
+import React, { useState } from "react";
+
+import { MarketInfo } from "@/components/Market";
+import { Shipyard } from "@/components/Shipyard";
+import { TraitEnum } from "@/enums";
+import { TraitModel } from "@/models";
 
 import styles from "./MapTraitCard.module.css";
-import { IconButton } from "@mui/material";
-import { TraitEnum } from "@/enums";
 
 interface MapTraitCardProps {
   traits: TraitModel[];

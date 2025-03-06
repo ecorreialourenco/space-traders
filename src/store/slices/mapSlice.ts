@@ -1,6 +1,7 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { SearchMode } from "@/enums";
 import { PointsModel, SimplePointModel } from "@/models";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface MapState {
   center: SimplePointModel;

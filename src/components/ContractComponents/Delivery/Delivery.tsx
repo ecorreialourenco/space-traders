@@ -1,11 +1,12 @@
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 
 import { Modal } from "@/components";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import { DeliveryShips } from "./components";
-import { DeliverModel } from "@/models/contract.model";
 import { FeedbackType } from "@/models";
+import { DeliverModel } from "@/models/contract.model";
+
+import { DeliveryShips } from "./components";
 
 interface DeliveryProps {
   contractId: string;

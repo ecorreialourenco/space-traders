@@ -1,5 +1,6 @@
-import { AgentModel } from "@/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+import { AgentModel } from "@/models";
 
 interface UiState {
   agent: AgentModel | null;

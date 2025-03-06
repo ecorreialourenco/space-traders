@@ -1,13 +1,15 @@
-import { PointsModel } from "@/models";
 import Konva from "konva";
 import React, { useEffect, useRef, useState } from "react";
-import { Stage, Layer, Circle, Text } from "react-konva";
-import { Grid, MapCard, Orbitals, PointFinder, ZoomButton } from "./components";
+import { Circle, Layer, Stage, Text } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+
 import { TypeEnum } from "@/enums";
-import { handleText } from "@/utils";
+import { PointsModel } from "@/models";
 import { setSelectedPoint } from "@/store/slices/mapSlice";
+import { RootState } from "@/store/store";
+import { handleText } from "@/utils";
+
+import { Grid, MapCard, Orbitals, PointFinder, ZoomButton } from "./components";
 
 export const SpaceMap = () => {
   const dispatch = useDispatch();

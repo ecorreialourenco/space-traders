@@ -1,7 +1,7 @@
 import { FlightModeEnum, NavStatusEnum, TypeEnum } from "@/enums";
 
-import { TraitModel } from "./waypoint.model";
 import { InventoryModel, PaginationModel } from ".";
+import { TraitModel } from "./waypoint.model";
 
 export interface ShipModel {
   type: string;

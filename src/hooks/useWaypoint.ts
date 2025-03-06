@@ -1,10 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useSelector } from "react-redux";
+
 import { BASE_URL } from "@/constants";
 import { WaypointResponse } from "@/models";
 import { RootState } from "@/store/store";
 import { options } from "@/utils/requestOptions";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { useSelector } from "react-redux";
 
 export const useWaypoint = ({ planet }: { planet: string }) => {
   const { system } = useSelector((state: RootState) => state.ui);

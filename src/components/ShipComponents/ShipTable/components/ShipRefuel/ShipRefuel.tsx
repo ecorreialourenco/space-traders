@@ -1,10 +1,11 @@
+import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import { IconButton, Tooltip } from "@mui/material";
 import React from "react";
+
+import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
+import { FeedbackType } from "@/models";
 import { MyShipModel } from "@/models/ship.model";
 import { handleShipStatus, refuelShip } from "@/utils";
-import { IconButton, Tooltip } from "@mui/material";
-import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
-import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
-import { FeedbackType } from "@/models";
 
 export const ShipRefuel = ({
   token,

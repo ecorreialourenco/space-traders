@@ -1,8 +1,9 @@
+import bcrypt from "bcrypt";
+import fs from "fs/promises";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import fs from "fs/promises";
 import path from "path";
-import bcrypt from "bcrypt";
+
 import { User } from "@/models";
 
 export default NextAuth({

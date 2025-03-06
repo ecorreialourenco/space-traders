@@ -1,11 +1,10 @@
-import { Button, Dropdown, Modal, NavStatus } from "@/components";
-import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
+import FlightLandIcon from "@mui/icons-material/FlightLand";
 import React, { useState } from "react";
 
-import FlightLandIcon from "@mui/icons-material/FlightLand";
-import { MyShipModel } from "@/models";
-import { useSession } from "next-auth/react";
+import { Button, Dropdown, Modal, NavStatus } from "@/components";
+import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
 import { useContractNegociation, useShips } from "@/hooks";
+import { MyShipModel } from "@/models";
 
 interface NegociateContractModalProps {
   open: boolean;
@@ -20,8 +19,7 @@ export const NegociateContractModal = ({
 }: NegociateContractModalProps) => {
   const [shipId, setShipId] = useState<string>("");
   const { data: shipsData } = useShips({ page: 1 });
-  const { data } = useSession();
-  const token = data?.token ?? "";
+
   const selectedShip = shipId
     ? shipsData.data.find((ship: MyShipModel) => ship.symbol === shipId)
     : undefined;
@@ -57,7 +55,6 @@ export const NegociateContractModal = ({
           {shipId && !isDocked && (
             <div className="flex items-center">
               <NavStatus
-                token={token}
                 title="Dock"
                 status={NavActionStatusEnum.DOCKED}
                 miningShipSymbol={shipId}

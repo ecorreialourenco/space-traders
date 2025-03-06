@@ -1,9 +1,10 @@
-import React, { FormEvent, useState } from "react";
 import { Typography } from "@mui/material";
-import { FactionModel } from "@/models";
-import { Button, Dropdown, Feedback, Input, InputPassword } from "@/components";
 import { signIn } from "next-auth/react";
+import React, { FormEvent, useState } from "react";
+
+import { Button, Dropdown, Feedback, Input, InputPassword } from "@/components";
 import { useFactions } from "@/hooks";
+import { FactionModel } from "@/models";
 
 export const Signup = () => {
   const [username, setUsername] = useState<string>("");

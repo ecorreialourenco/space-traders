@@ -1,7 +1,8 @@
-import { BASE_URL } from "@/constants";
-import { AgentModel } from "@/models";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+
+import { BASE_URL } from "@/constants";
+import { AgentModel } from "@/models";
 
 export const useContractNegociation = ({
   shipSymbol,

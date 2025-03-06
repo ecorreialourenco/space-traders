@@ -1,8 +1,8 @@
+import InfoIcon from "@mui/icons-material/Info";
+import { IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 
-import { IconButton, Tooltip } from "@mui/material";
 import { MyShipModel } from "@/models";
-import InfoIcon from "@mui/icons-material/Info";
 
 import { InfoModal } from "./InfoModal";
 

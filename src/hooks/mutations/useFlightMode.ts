@@ -1,8 +1,9 @@
+import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+
 import { BASE_URL } from "@/constants";
 import { FlightModeEnum } from "@/enums";
 import { AgentModel, CommonError, FeedbackType } from "@/models";
-import { useMutation } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 
 interface FlightModeProps {
   flightMode: FlightModeEnum;

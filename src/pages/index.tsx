@@ -1,8 +1,9 @@
-import { SpaceMap } from "@/components";
+import NavigateBefore from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { IconButton, Tooltip } from "@mui/material";
 import { useState } from "react";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBefore from "@mui/icons-material/NavigateBefore";
+
+import { SpaceMap } from "@/components";
 import { Legend } from "@/components/SpaceMap/components";
 
 export default function Home() {

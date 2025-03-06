@@ -3,17 +3,18 @@ import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 
 import { BASE_URL } from "@/constants";
+import { ShipyardModel } from "@/models";
 import { RootState } from "@/store/store";
 import { options } from "@/utils/requestOptions";
 
-export const useHeadquarters = () => {
+export const useShipyardFinder = () => {
   const { system } = useSelector((state: RootState) => state.ui);
   const { data } = useSession();
   const token = data?.token ?? "";
 
-  const getMapPoints = async () => {
+  const findShipyard = async (): Promise<{ data: ShipyardModel[] }> => {
     const response = await fetch(
-      `${BASE_URL}/systems/${system}`,
+      `${BASE_URL}/systems/${system}/waypoints?traits=SHIPYARD`,
       options(token)
     );
 
@@ -21,9 +22,8 @@ export const useHeadquarters = () => {
   };
 
   return useQuery({
-    queryKey: ["headquarters"],
-    queryFn: async () => await getMapPoints(),
-    select: (res) => res.data,
-    enabled: !!token && !!system,
+    queryKey: ["findShipyard", system],
+    queryFn: findShipyard,
+    enabled: !!system,
   });
 };

@@ -1,6 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { BASE_URL } from "@/constants";
 import { FactionModel } from "@/models";
-import { useQuery } from "@tanstack/react-query";
 
 export const useFactions = ({ page }: { page: number }) => {
   const getFactions = async (): Promise<{ data: FactionModel[] }> => {

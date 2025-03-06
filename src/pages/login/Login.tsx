@@ -1,8 +1,9 @@
-import React, { FormEvent, useState } from "react";
 import { Typography } from "@mui/material";
-import { Button, Feedback, Input, InputPassword } from "@/components";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import React, { FormEvent, useState } from "react";
+
+import { Button, Feedback, Input, InputPassword } from "@/components";
 
 export const Login = () => {
   const [username, setUsername] = useState<string>("");

@@ -1,6 +1,7 @@
-import { PointsModel } from "@/models";
 import React from "react";
 import { Circle } from "react-konva";
+
+import { PointsModel } from "@/models";
 
 export const Grid = ({ points }: { points: PointsModel[] }) => {
   const maxX = Math.max(...points.map((point) => Math.abs(point.x)));

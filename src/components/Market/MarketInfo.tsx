@@ -7,16 +7,16 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import cn from "classnames";
 import React, { useEffect, useState } from "react";
 
+import { MarketTypeEnum } from "@/enums";
 import { useMarket, useMarketActions } from "@/hooks";
 import { MarketModel, MyShipModel, TradeGoodModel } from "@/models";
-import { MarketTypeEnum } from "@/enums";
-import cn from "classnames";
 
-import styles from "./MarketInfo.module.css";
 import { TableHeaderCell } from "..";
 import { MarketButton } from "./MarketButton";
+import styles from "./MarketInfo.module.css";
 
 interface MarketInfoProps {
   asteroidWaypointSymbol: string;

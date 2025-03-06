@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+
+import { Feedback } from "@/components";
 import { FeedbackType } from "@/models";
 import { DeliverModel } from "@/models/contract.model";
+
 import { DeliveryTable } from "./DeliveryTable";
-import { Feedback } from "@/components";
 
 interface DeliveryShipsProps {
   contractId: string;
@@ -18,7 +20,6 @@ export const DeliveryShips = ({
   const [feedbackMessage, setFeedbackMessage] = useState<string>("");
 
   const handleUpdateContract = ({ message, type }: FeedbackType) => {
-    console.log("🚀 ~ handleUpdateContract ~ message:", message);
     if (type === "error") {
       setFeedbackMessage(message);
     }

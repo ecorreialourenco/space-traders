@@ -1,15 +1,16 @@
-import { PointsModel, WaypointModel } from "@/models";
-import { formatCredits, getSize } from "@/utils";
 import React, { useEffect } from "react";
-import { AgentHeaderItem } from "./AgentHeaderItem";
 import { useDispatch, useSelector } from "react-redux";
-import { setAgent as setAgentStore, setSystem } from "@/store/slices/uiSlice";
+
 import { TypeColorEnum, TypeEnum } from "@/enums";
+import { useAgent, useHeadquarters } from "@/hooks";
+import { PointsModel, WaypointModel } from "@/models";
 import { setCenter, setWaypoints } from "@/store/slices/mapSlice";
+import { setAgent as setAgentStore, setSystem } from "@/store/slices/uiSlice";
+import { RootState } from "@/store/store";
+import { formatCredits, getSize } from "@/utils";
 
 import styles from "./AgentHeader.module.css";
-import { RootState } from "@/store/store";
-import { useAgent, useHeadquarters } from "@/hooks";
+import { AgentHeaderItem } from "./AgentHeaderItem";
 
 export const AgentHeader = () => {
   const dispatch = useDispatch();

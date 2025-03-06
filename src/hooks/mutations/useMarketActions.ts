@@ -1,5 +1,6 @@
-import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+
 import { BASE_URL } from "@/constants";
 
 interface MarketActionsProps {

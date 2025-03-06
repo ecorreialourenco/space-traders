@@ -1,6 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import fs from "fs";
 import bcrypt from "bcrypt";
+import fs from "fs";
+import type { NextApiRequest, NextApiResponse } from "next";
+
 import { BASE_URL, USER_URL } from "@/constants";
 
 type Data = {

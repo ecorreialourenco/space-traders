@@ -1,11 +1,11 @@
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import React from "react";
 import { Label, Layer } from "react-konva";
 import { Html } from "react-konva-utils";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { ZoomTooltipButton } from "./ZoomTooltipButton";
 
 import styles from "./ZoomButton.module.css";
+import { ZoomTooltipButton } from "./ZoomTooltipButton";
 
 interface ZoomButtonProps {
   width: number;

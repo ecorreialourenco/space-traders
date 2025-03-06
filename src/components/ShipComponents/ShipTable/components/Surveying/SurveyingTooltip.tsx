@@ -1,9 +1,9 @@
+import RadarIcon from "@mui/icons-material/Radar";
+import { Badge, IconButton, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-import { MyShipModel } from "@/models/ship.model";
-import { Badge, IconButton, Tooltip } from "@mui/material";
 import { NavStatusEnum } from "@/enums";
-import RadarIcon from "@mui/icons-material/Radar";
+import { MyShipModel } from "@/models/ship.model";
 
 interface SurveyingTooltipProps {
   ship: MyShipModel;

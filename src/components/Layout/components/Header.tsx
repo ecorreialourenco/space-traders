@@ -1,9 +1,9 @@
-import React from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
-import { AgentHeader } from "./AgentHeader";
+import React from "react";
 
+import { AgentHeader } from "./AgentHeader";
 import styles from "./Header.module.css";
 
 export const Header = () => {

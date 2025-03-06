@@ -1,3 +1,4 @@
+import { AlertColor, Autocomplete, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import React, { FormEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -7,7 +8,6 @@ import { FlightModeEnum, NavStatusEnum } from "@/enums";
 import { FeedbackType, MyShipModel } from "@/models";
 import { RootState } from "@/store/store";
 import { navigateToWaypoint } from "@/utils/handleNavigation";
-import { AlertColor, Autocomplete, TextField } from "@mui/material";
 
 interface NavShipModalProps {
   open: boolean;

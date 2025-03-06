@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import PublicIcon from "@mui/icons-material/Public";
-import styles from "./ShipNavigationAnimation.module.css";
-import { MyShipModel, MyShipsResponse } from "@/models";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import React, { useEffect, useMemo, useState } from "react";
+
+import { MyShipModel, MyShipsResponse } from "@/models";
 import { calculateSecondsLeft } from "@/utils";
+
 import { ArriveCounter } from "./ArriveCounter";
+import styles from "./ShipNavigationAnimation.module.css";
 
 interface ShipNavigationAnimationProps {
   ship: MyShipModel;

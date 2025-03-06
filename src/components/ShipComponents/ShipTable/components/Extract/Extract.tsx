@@ -2,6 +2,7 @@ import React from "react";
 
 import { useExtraction } from "@/hooks";
 import { FeedbackType, MyShipModel, SurveysModel } from "@/models";
+
 import { ExtractCountdown } from "./ExtractCountdown";
 
 interface MiningProps {

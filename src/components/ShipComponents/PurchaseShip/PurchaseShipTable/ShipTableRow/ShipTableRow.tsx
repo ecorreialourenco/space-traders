@@ -1,21 +1,22 @@
-import React from "react";
-import { ShipModel } from "@/models";
-import { formatCredits } from "@/utils";
-import { IconButton, TableCell, TableRow, Tooltip } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useDispatch } from "react-redux";
+import { IconButton, TableCell, TableRow, Tooltip } from "@mui/material";
 import cn from "classnames";
+import React from "react";
+import { useDispatch } from "react-redux";
 
-import styles from "./BuyShipTableRow.module.css";
 import { useAgent } from "@/hooks";
+import { ShipModel } from "@/models";
 import { setAgent } from "@/store/slices/uiSlice";
+import { formatCredits } from "@/utils";
+
+import styles from "./ShipTableRow.module.css";
 
 interface Purchase {
   waypoint: string;
   shipType: string;
 }
 
-interface BuyShipTableRowProps {
+interface ShipTableRowProps {
   short?: boolean;
   ship: ShipModel;
   waypoint: string;
@@ -23,13 +24,13 @@ interface BuyShipTableRowProps {
   handlePurchase: ({ waypoint, shipType }: Purchase) => void;
 }
 
-export const BuyShipTableRow = ({
+export const ShipTableRow = ({
   short,
   ship,
   length,
   waypoint,
   handlePurchase,
-}: BuyShipTableRowProps) => {
+}: ShipTableRowProps) => {
   const { data: agent, refetch } = useAgent();
   const dispatch = useDispatch();
 

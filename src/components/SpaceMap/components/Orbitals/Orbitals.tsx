@@ -1,7 +1,8 @@
-import { PointsModel } from "@/models";
-import { handleText } from "@/utils";
 import React, { useEffect, useState } from "react";
 import { Circle, Text } from "react-konva";
+
+import { PointsModel } from "@/models";
+import { handleText } from "@/utils";
 
 interface OrbitalsProps {
   point: PointsModel;

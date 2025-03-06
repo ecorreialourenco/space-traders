@@ -1,4 +1,6 @@
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import {
+  AlertColor,
   IconButton,
   Paper,
   Table,
@@ -8,9 +10,10 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  AlertColor,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import {
   Delivery,
   Feedback,
@@ -19,12 +22,10 @@ import {
   TableHeaderCell,
   TitleButton,
 } from "@/components";
-import { useAcceptContract, useContracts } from "@/hooks";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Navigation } from "@/components/ShipComponents/ShipTable/components/Navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useAcceptContract, useContracts } from "@/hooks";
 import { ContractModel, FeedbackType, LocalModel } from "@/models";
+import { RootState } from "@/store/store";
 
 export const Contracts = () => {
   const [contractList, setContractList] = useState<ContractModel[]>([]);

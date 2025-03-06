@@ -1,9 +1,10 @@
-import React, { ReactNode } from "react";
 import { IconButton, Tooltip } from "@mui/material";
-import { NavActionStatusEnum } from "@/enums";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import { MyShipsResponse } from "@/models/ship.model";
+import React, { ReactNode } from "react";
+
+import { NavActionStatusEnum } from "@/enums";
 import { useShipStatus } from "@/hooks";
+import { MyShipsResponse } from "@/models/ship.model";
 
 export const NavStatus = ({
   title,

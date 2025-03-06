@@ -1,8 +1,6 @@
-import {
-  clearSelectedMapWaypoint,
-  setCenter,
-  setSelectedMapWaypoint,
-} from "@/store/slices/mapSlice";
+import MapIcon from "@mui/icons-material/Map";
+import PlaceIcon from "@mui/icons-material/Place";
+import { Autocomplete, IconButton, TextField, Tooltip } from "@mui/material";
 import React, {
   FormEvent,
   useCallback,
@@ -13,16 +11,18 @@ import React, {
 import { Label, Layer } from "react-konva";
 import { Html } from "react-konva-utils";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Input } from "@/components/Form";
-import { RootState } from "@/store/store";
-import { Autocomplete, IconButton, TextField, Tooltip } from "@mui/material";
-import { PointsModel } from "@/models";
 
-import PlaceIcon from "@mui/icons-material/Place";
-import MapIcon from "@mui/icons-material/Map";
+import { Button, Input } from "@/components/Form";
+import { SearchMode } from "@/enums";
+import { PointsModel } from "@/models";
+import {
+  clearSelectedMapWaypoint,
+  setCenter,
+  setSelectedMapWaypoint,
+} from "@/store/slices/mapSlice";
+import { RootState } from "@/store/store";
 
 import styles from "./PointFinder.module.css";
-import { SearchMode } from "@/enums";
 
 interface PointFinderProps {
   width: number;

@@ -1,8 +1,9 @@
-import { useShipyard } from "@/hooks";
 import React, { Suspense } from "react";
-import { BuyShipTable } from "../ShipComponents/BuyShipModal/BuyShipTable";
-import { useSession } from "next-auth/react";
+
+import { useShipyard } from "@/hooks";
+
 import { Loading } from "../Loading";
+import { PurchaseShipTable } from "../ShipComponents/PurchaseShip";
 
 interface ShipyardProps {
   asteroidWaypointSymbol: string;
@@ -10,8 +11,6 @@ interface ShipyardProps {
 
 export const Shipyard = ({ asteroidWaypointSymbol }: ShipyardProps) => {
   const { data: shipyardData } = useShipyard({ asteroidWaypointSymbol });
-  const { data } = useSession();
-  const token = data?.token ?? "";
 
   if (!shipyardData.data.ships) {
     shipyardData.data.ships = [];
@@ -19,12 +18,7 @@ export const Shipyard = ({ asteroidWaypointSymbol }: ShipyardProps) => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <BuyShipTable
-        short
-        token={token}
-        waypoints={[shipyardData.data]}
-        updateList={() => {}}
-      />
+      <PurchaseShipTable short updateList={() => {}} />
     </Suspense>
   );
 };

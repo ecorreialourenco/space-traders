@@ -1,8 +1,9 @@
+import CloseIcon from "@mui/icons-material/Close";
+import { IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Label } from "react-konva";
 import { Html } from "react-konva-utils";
-import { IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+
 import { useWaypoint } from "@/hooks";
 import { PointsModel, TraitModel } from "@/models";
 

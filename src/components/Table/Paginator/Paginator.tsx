@@ -1,6 +1,7 @@
-import React from "react";
-import { LIMIT } from "@/constants";
 import { TablePagination } from "@mui/material";
+import React from "react";
+
+import { LIMIT } from "@/constants";
 
 interface PaginatorProps {
   page: number;
