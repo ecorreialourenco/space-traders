@@ -1,6 +1,6 @@
 import { FlightModeEnum, NavStatusEnum, TypeEnum } from "@/enums";
 
-import { InventoryModel, PaginationModel } from ".";
+import { AgentModel, InventoryModel, PaginationModel } from ".";
 import { TraitModel } from "./waypoint.model";
 
 export interface ShipModel {
@@ -226,4 +226,19 @@ export interface LocalModel {
 export interface MyShipsResponse {
   data: MyShipModel[];
   meta: PaginationModel;
+}
+
+export interface RefuelModel {
+  agent: AgentModel;
+  fuel: FuelModel;
+  transaction: {
+    waypointSymbol: string;
+    shipSymbol: string;
+    tradeSymbol: string;
+    type: string;
+    units: number;
+    pricePerUnit: number;
+    totalPrice: number;
+    timestamp: string;
+  };
 }

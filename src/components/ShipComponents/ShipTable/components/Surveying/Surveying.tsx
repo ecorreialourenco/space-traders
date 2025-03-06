@@ -1,31 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import { useSurvey } from "@/hooks";
 import { FeedbackType, MyShipModel, SurveyingModel } from "@/models";
-import { checkMiningLocation, getSurvey } from "@/utils";
+import { checkMiningLocation } from "@/utils";
 
 import { SurveyingModal } from "./SurveyingModal";
 import { SurveyingTooltip } from "./SurveyingTooltip";
 
 interface SurveyingProps {
-  token: string;
   ship: MyShipModel;
   updateCargo: ({ message, type }: FeedbackType) => void;
 }
 
-export const Surveying = ({ token, ship, updateCargo }: SurveyingProps) => {
+export const Surveying = ({ ship, updateCargo }: SurveyingProps) => {
   const [surveyingData, setSurveyingData] = useState<SurveyingModel>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { data, mutate } = useSurvey({ shipId: ship.symbol, updateCargo });
+
+  useEffect(() => {
+    if (data?.data || data?.error) {
+      setSurveyingData(data.data ?? data.error.data);
+    }
+  }, [data]);
 
   if (!checkMiningLocation(ship.nav.route.destination.type)) {
     return null;
   }
 
   const handleSuvvey = async () => {
-    const response = await getSurvey({ token, shipId: ship.symbol });
-
-    setSurveyingData(response.data ?? response.error.data);
+    mutate();
     setIsOpen(true);
-    updateCargo({ message: "Survey successfully completed", type: "success" });
   };
 
   return (

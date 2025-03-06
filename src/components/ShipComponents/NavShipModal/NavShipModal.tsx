@@ -1,13 +1,17 @@
-import { AlertColor, Autocomplete, TextField } from "@mui/material";
-import { useSession } from "next-auth/react";
+import {
+  Autocomplete,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import React, { FormEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Button, Dropdown, Feedback, Modal } from "@/components";
-import { FlightModeEnum, NavStatusEnum } from "@/enums";
+import { Button, Modal } from "@/components";
+import { FlightModeEnum } from "@/enums";
+import { useFlightMode, useNavigation } from "@/hooks";
 import { FeedbackType, MyShipModel } from "@/models";
 import { RootState } from "@/store/store";
-import { navigateToWaypoint } from "@/utils/handleNavigation";
 
 interface NavShipModalProps {
   open: boolean;
@@ -24,11 +28,12 @@ export const NavShipModal = ({
 }: NavShipModalProps) => {
   const [place, setPlace] = useState<string>("");
   const [speed, setSpeed] = useState<FlightModeEnum>(ship.nav.flightMode);
-  const [feedbackMessage, setFeedbackMessage] = useState<string>("");
-  const [feedbackType, setFeedbackType] = useState<AlertColor>("error");
   const { waypoints } = useSelector((state: RootState) => state.map);
-  const { data } = useSession();
-  const token = data?.token ?? "";
+
+  const { mutate: flightModeMutation } = useFlightMode({
+    updateShip: updateList,
+  });
+  const { mutate } = useNavigation({ updateShip: updateList });
 
   const navOptions = waypoints
     .map((item) => ({
@@ -56,78 +61,72 @@ export const NavShipModal = ({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const navData = await navigateToWaypoint({
-      token,
-      flightMode: speed,
+
+    mutate({
       waypointSymbol: place,
       shipId: ship.symbol,
     });
 
-    if (navData.data?.nav.status === NavStatusEnum.IN_TRANSIT) {
-      updateList({
-        message: `Your ship is now going to ${navData.data.nav.route.destination.symbol}`,
-        type: "success",
-      });
-
-      setTimeout(() => onClose(), 500);
-    } else {
-      setFeedbackType("error");
-      setFeedbackMessage("Navigation fail");
-    }
+    onClose();
   };
 
   useEffect(() => {
     if (speed !== ship.nav.flightMode) {
       setSpeed(ship.nav.flightMode);
     }
-  }, [ship.nav.flightMode, speed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ship]);
 
   return (
     <Modal open={open} title="Navigation" onClose={onClose}>
-      <div>
-        <Feedback
-          isOpen={!!feedbackMessage}
-          severity={feedbackType}
-          message={feedbackMessage}
-          onClose={() => setFeedbackMessage("")}
-        />
-        <form onSubmit={handleSubmit}>
-          <div className="m-2">
-            <Autocomplete
-              disablePortal
-              options={navOptions}
-              sx={{ width: 300 }}
-              onChange={(e, value) => setPlace(value?.id ?? "")}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="filled"
-                  label="Place"
-                  value={place}
-                />
-              )}
+      <form onSubmit={handleSubmit}>
+        <div className="m-2">
+          <ToggleButtonGroup
+            value={speed}
+            exclusive
+            onChange={(e, flightMode) => {
+              if (flightMode !== null) {
+                flightModeMutation({ shipId: ship.symbol, flightMode });
+                setSpeed(flightMode);
+              }
+            }}
+          >
+            {options.map((op) => (
+              <ToggleButton key={op.value} value={op.value}>
+                {op.name}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        </div>
+        <div className="m-2">
+          <Autocomplete
+            disablePortal
+            options={navOptions}
+            sx={{ width: 300 }}
+            onChange={(e, value) => setPlace(value?.id ?? "")}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="filled"
+                label="Place"
+                value={place}
+              />
+            )}
+          />
+        </div>
+        <div className="flex justify-between gap-2">
+          <div className="w-full">
+            <Button
+              label="Cancel"
+              className="bg-gray-400 hover:bg-gray-600"
+              onClick={onClose}
             />
           </div>
-          <Dropdown
-            label="Speed"
-            value={speed}
-            options={options}
-            onChange={(op) => setSpeed(op.target.value as FlightModeEnum)}
-          />
-          <div className="flex justify-between gap-2">
-            <div className="w-full">
-              <Button
-                label="Cancel"
-                className="bg-gray-400 hover:bg-gray-600"
-                onClick={onClose}
-              />
-            </div>
-            <div className="w-full">
-              <Button label="Navigate" type="submit" />
-            </div>
+          <div className="w-full">
+            <Button label="Navigate" type="submit" />
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </Modal>
   );
 };

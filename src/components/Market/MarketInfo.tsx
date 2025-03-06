@@ -30,6 +30,7 @@ export const MarketInfo = ({
   ship,
 }: MarketInfoProps) => {
   const [market, setMarket] = useState<MarketModel | null>(null);
+  // TODO: Need to refetch market data and ships
   const { data } = useMarket({ asteroidWaypointSymbol });
 
   const { mutate } = useMarketActions();

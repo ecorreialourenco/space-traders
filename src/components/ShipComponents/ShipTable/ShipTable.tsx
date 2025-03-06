@@ -10,7 +10,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useSession } from "next-auth/react";
 import React, {
   forwardRef,
   useEffect,
@@ -46,8 +45,6 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
     const [shipsList, setShipsList] = useState<MyShipModel[]>([]);
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-    const { data } = useSession();
-    const token = data?.token ?? "";
 
     const { data: shipsData, refetch } = useShips({ page });
 
@@ -112,11 +109,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                     <ShipNavigationAnimation ship={ship} refetch={refetch} />
                   ) : (
                     <>
-                      <ShipRefuel
-                        token={token}
-                        ship={ship}
-                        onRefuel={handleUpdateCargo}
-                      />
+                      <ShipRefuel ship={ship} onRefuel={handleUpdateCargo} />
                       {ship.nav.status === NavStatusEnum.DOCKED ? (
                         <NavStatus
                           title="Orbit"
@@ -156,7 +149,6 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                               (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
                             ) && (
                               <Surveying
-                                token={token}
                                 ship={ship}
                                 updateCargo={handleUpdateCargo}
                               />
