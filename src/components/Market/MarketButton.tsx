@@ -70,7 +70,10 @@ export const MarketButton = ({
               <Button
                 label={action.toUpperCase()}
                 disabled={!value}
-                onClick={() => onClick({ units: value })}
+                onClick={() => {
+                  onClick({ units: value });
+                  setIsOpen(false);
+                }}
               />
             </div>
           </div>

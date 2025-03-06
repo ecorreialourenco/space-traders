@@ -109,7 +109,11 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                     <ShipNavigationAnimation ship={ship} refetch={refetch} />
                   ) : (
                     <>
-                      <ShipRefuel ship={ship} onRefuel={handleUpdateCargo} />
+                      <ShipRefuel
+                        ship={ship}
+                        disabled={ship.fuel.current === ship.fuel.capacity}
+                        onRefuel={handleUpdateCargo}
+                      />
                       {ship.nav.status === NavStatusEnum.DOCKED ? (
                         <NavStatus
                           title="Orbit"
@@ -167,6 +171,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                       <MarketButton
                         waypoint={ship.nav.route.destination.symbol}
                         ship={ship}
+                        updateCargo={handleUpdateCargo}
                       />
                     </>
                   )}

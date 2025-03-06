@@ -2,16 +2,21 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import { IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 
-import { MyShipModel } from "@/models";
+import { FeedbackType, MyShipModel } from "@/models";
 
 import { MarketModal } from "./MarketModal";
 
 interface MarketButtonProps {
   waypoint: string;
   ship: MyShipModel;
+  updateCargo: ({ message, type }: FeedbackType) => void;
 }
 
-export const MarketButton = ({ waypoint, ship }: MarketButtonProps) => {
+export const MarketButton = ({
+  waypoint,
+  ship,
+  updateCargo,
+}: MarketButtonProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -28,6 +33,7 @@ export const MarketButton = ({ waypoint, ship }: MarketButtonProps) => {
         isOpen={isOpen}
         ship={ship}
         onClose={() => setIsOpen(false)}
+        updateCargo={updateCargo}
       />
     </>
   );

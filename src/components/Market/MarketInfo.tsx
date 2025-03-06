@@ -9,10 +9,17 @@ import {
 } from "@mui/material";
 import cn from "classnames";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { MarketTypeEnum } from "@/enums";
-import { useMarket, useMarketActions } from "@/hooks";
-import { MarketModel, MyShipModel, TradeGoodModel } from "@/models";
+import { useAgent, useMarket, useMarketActions } from "@/hooks";
+import {
+  FeedbackType,
+  MarketModel,
+  MyShipModel,
+  TradeGoodModel,
+} from "@/models";
+import { setAgent } from "@/store/slices/uiSlice";
 
 import { TableHeaderCell } from "..";
 import { MarketButton } from "./MarketButton";
@@ -22,18 +29,22 @@ interface MarketInfoProps {
   asteroidWaypointSymbol: string;
   short?: boolean;
   ship?: MyShipModel;
+  updateCargo: ({ message, type }: FeedbackType) => void;
 }
 
 export const MarketInfo = ({
   asteroidWaypointSymbol,
   short,
   ship,
+  updateCargo,
 }: MarketInfoProps) => {
   const [market, setMarket] = useState<MarketModel | null>(null);
-  // TODO: Need to refetch market data and ships
-  const { data } = useMarket({ asteroidWaypointSymbol });
+  const dispatch = useDispatch();
 
-  const { mutate } = useMarketActions();
+  const { data, refetch } = useMarket({ asteroidWaypointSymbol });
+  const { refetch: refetchAgent } = useAgent();
+
+  const { mutate } = useMarketActions({ updateCargo });
 
   const getInfo = ({
     symbol,
@@ -67,6 +78,15 @@ export const MarketInfo = ({
   }) => {
     if (ship) {
       mutate({ miningShipSymbol: ship.symbol, action, cargo });
+      refetch();
+
+      setTimeout(async () => {
+        const newAgentData = await refetchAgent();
+
+        if (newAgentData.data) {
+          dispatch(setAgent(newAgentData.data));
+        }
+      }, 500);
     }
   };
 

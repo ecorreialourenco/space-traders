@@ -1,13 +1,14 @@
 import React, { Suspense } from "react";
 
 import { Loading, MarketInfo, Modal } from "@/components";
-import { MyShipModel } from "@/models";
+import { FeedbackType, MyShipModel } from "@/models";
 
 interface MarketModalProps {
   waypoint: string;
   isOpen: boolean;
   ship?: MyShipModel;
   onClose: () => void;
+  updateCargo: ({ message, type }: FeedbackType) => void;
 }
 
 export const MarketModal = ({
@@ -15,12 +16,17 @@ export const MarketModal = ({
   isOpen,
   ship,
   onClose,
+  updateCargo,
 }: MarketModalProps) => {
   return (
     <Modal open={isOpen} title={`Marketplace - ${waypoint}`} onClose={onClose}>
       <Suspense fallback={<Loading />}>
         <div className="m-6">
-          <MarketInfo asteroidWaypointSymbol={waypoint} ship={ship} />
+          <MarketInfo
+            asteroidWaypointSymbol={waypoint}
+            ship={ship}
+            updateCargo={updateCargo}
+          />
         </div>
       </Suspense>
     </Modal>

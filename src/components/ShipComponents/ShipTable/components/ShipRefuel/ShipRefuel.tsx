@@ -10,10 +10,11 @@ import { MyShipModel } from "@/models/ship.model";
 
 interface ShipRefuelProps {
   ship: MyShipModel;
+  disabled: boolean;
   onRefuel: ({ message, type }: FeedbackType) => void;
 }
 
-export const ShipRefuel = ({ ship, onRefuel }: ShipRefuelProps) => {
+export const ShipRefuel = ({ ship, disabled, onRefuel }: ShipRefuelProps) => {
   const { mutate: mutateShipStatus } = useShipStatus({ updateShip: onRefuel });
   const { mutate } = useRefuel({ onRefuel });
 
@@ -38,6 +39,7 @@ export const ShipRefuel = ({ ship, onRefuel }: ShipRefuelProps) => {
     <Tooltip title="Refuel">
       <span>
         <IconButton
+          disabled={disabled}
           onClick={() =>
             handleRefuelShip({
               miningShipSymbol: ship.symbol,

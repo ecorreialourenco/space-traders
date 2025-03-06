@@ -15,6 +15,9 @@ export const Feedback = ({
   onClose,
 }: FeedbackProps) => (
   <Snackbar
+    sx={{
+      "&.MuiSnackbar-root": { top: "100px" },
+    }}
     anchorOrigin={{ vertical: "top", horizontal: "right" }}
     open={isOpen}
     autoHideDuration={6000}
