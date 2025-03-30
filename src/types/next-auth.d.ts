@@ -3,11 +3,7 @@ import NextAuth, { type DefaultSession } from "next-auth/next";
 
 declare module "next-auth" {
   interface Session {
-    user: {
-      username: string;
-      password: string;
-      token: string;
-    };
+    user: User;
     token: string;
   }
 
@@ -15,5 +11,12 @@ declare module "next-auth" {
     username: string;
     password: string;
     token: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+  interface JWT {
+    expire: string;
   }
 }

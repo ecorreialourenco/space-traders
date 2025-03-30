@@ -12,20 +12,17 @@ import {
   Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 import {
-  Delivery,
+  ContractActions,
   Feedback,
   NegociateContractModal,
   Paginator,
   TableHeaderCell,
   TitleButton,
 } from "@/components";
-import { Navigation } from "@/components/ShipComponents/ShipTable/components/Navigation";
-import { useAcceptContract, useContracts } from "@/hooks";
-import { ContractModel, FeedbackType, LocalModel } from "@/models";
-import { RootState } from "@/store/store";
+import { useAcceptContract, useContracts, useFullfillContract } from "@/hooks";
+import { ContractModel, FeedbackType } from "@/models";
 
 export const Contracts = () => {
   const [contractList, setContractList] = useState<ContractModel[]>([]);
@@ -35,9 +32,6 @@ export const Contracts = () => {
   const [feedbackOpen, setFeedbackOpen] = useState<boolean>(false);
   const [feedbackType, setFeedbackType] = useState<AlertColor>("error");
   const [feedbackMessage, setFeedbackMessage] = useState<string>("");
-
-  const { waypoints } = useSelector((state: RootState) => state.map);
-  const { system } = useSelector((state: RootState) => state.ui);
 
   const handleUpdateContract = ({ message, type }: FeedbackType) => {
     setFeedbackType(type);
@@ -53,6 +47,9 @@ export const Contracts = () => {
   const { mutate } = useAcceptContract({
     updateContract: handleUpdateContract,
   });
+  const { mutate: fullfillMutatio } = useFullfillContract({
+    updateContract: handleUpdateContract,
+  });
 
   const handleClick = async (id: string) => mutate({ contractId: id });
 
@@ -64,9 +61,27 @@ export const Contracts = () => {
     }
   };
 
+  const handleFullfill = (contract: string) => {
+    fullfillMutatio({ contract });
+
+    setTimeout(() => {
+      refetch();
+    }, 100);
+  };
+
   const handleCloseFeedback = () => {
     setFeedbackMessage("");
     setFeedbackOpen(false);
+  };
+
+  const handleContractSTatus = (contract: ContractModel) => {
+    if (contract.fulfilled) {
+      return "Completed";
+    } else if (contract.accepted) {
+      return "Accepted";
+    }
+
+    return "Pending";
   };
 
   useEffect(() => {
@@ -81,7 +96,7 @@ export const Contracts = () => {
       <TitleButton
         title=" Contracts"
         btnText="Negociate contract"
-        hideButton={contractList.length !== 0}
+        //hideButton={contractList.length !== 0}
         onClick={() => setIsModalOpen(true)}
       />
 
@@ -134,48 +149,24 @@ export const Contracts = () => {
                     </p>
                   </>
                 </TableCell>
+                <TableCell>{handleContractSTatus(contract)}</TableCell>
                 <TableCell>
-                  {contract.accepted ? "Accepted" : "Pending"}
-                </TableCell>
-                <TableCell>
-                  {!contract.accepted ? (
-                    <Tooltip title="Accept contract">
-                      <span>
-                        <IconButton onClick={() => handleClick(contract.id)}>
-                          <AssignmentTurnedInIcon />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  ) : (
-                    <>
-                      {contract.terms.deliver.map((point) => {
-                        const selectedWaypoint = waypoints.find(
-                          (waypoint) =>
-                            waypoint.symbol === point.destinationSymbol
-                        );
-
-                        if (!selectedWaypoint) {
-                          return null;
-                        }
-
-                        const route: LocalModel = {
-                          systemSymbol: system,
-                          symbol: selectedWaypoint.symbol,
-                          type: selectedWaypoint.type,
-                          x: selectedWaypoint.x,
-                          y: selectedWaypoint.y,
-                        };
-
-                        return <Navigation key={route.symbol} route={route} />;
-                      })}
-
-                      <Delivery
-                        contractId={contract.id}
-                        deliver={contract.terms.deliver}
+                  {!contract.fulfilled &&
+                    (!contract.accepted ? (
+                      <Tooltip title="Accept contract">
+                        <span>
+                          <IconButton onClick={() => handleClick(contract.id)}>
+                            <AssignmentTurnedInIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    ) : (
+                      <ContractActions
+                        contract={contract}
                         updateContract={handleUpdateContract}
+                        onFullfill={handleFullfill}
                       />
-                    </>
-                  )}
+                    ))}
                 </TableCell>
               </TableRow>
             ))}

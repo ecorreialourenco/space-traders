@@ -2,15 +2,16 @@ import InfoIcon from "@mui/icons-material/Info";
 import { IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 
-import { MyShipModel } from "@/models";
+import { FeedbackType, MyShipModel } from "@/models";
 
 import { InfoModal } from "./InfoModal";
 
 interface InfoButtonProps {
   ship: MyShipModel;
+  updateCargo: ({ message, type }: FeedbackType) => void;
 }
 
-export const InfoButton = ({ ship }: InfoButtonProps) => {
+export const InfoButton = ({ ship, updateCargo }: InfoButtonProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -23,7 +24,12 @@ export const InfoButton = ({ ship }: InfoButtonProps) => {
         </span>
       </Tooltip>
 
-      <InfoModal ship={ship} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <InfoModal
+        ship={ship}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        updateCargo={updateCargo}
+      />
     </>
   );
 };

@@ -63,58 +63,61 @@ export const SpaceMap = () => {
   }, [stageRef, center, scale]);
 
   return (
-    <Stage ref={stageRef} width={size.width} height={size.height - 104}>
-      <PointFinder width={size.width} />
-      <ZoomButton width={size.width} zoom={scale} changeZoom={setScale} />
-      <Layer
-        offsetX={offset.x}
-        offsetY={offset.y}
-        scaleX={scale}
-        scaleY={scale}
-        draggable
-        onClick={handleClick}
-      >
-        <Grid points={waypoints} />
-        <Circle x={0} y={0} radius={5} fill="yellow" />
+    <>
+      <Stage ref={stageRef} width={size.width} height={size.height - 104}>
+        <PointFinder width={size.width} />
+        <ZoomButton width={size.width} zoom={scale} changeZoom={setScale} />
+        <Layer
+          offsetX={offset.x}
+          offsetY={offset.y}
+          scaleX={scale}
+          scaleY={scale}
+          draggable
+          onClick={handleClick}
+        >
+          <Grid points={waypoints} />
+          <Circle x={0} y={0} radius={5} fill="yellow" />
 
-        {waypoints
-          .filter(
-            (point) =>
-              point.type !== TypeEnum.MOON &&
-              point.type !== TypeEnum.ORBITAL_STATION
-          )
-          .map((point) => (
-            <React.Fragment key={`${point.type}-${point.x}-${point.y}`}>
-              <Circle
-                x={point.x}
-                y={point.y}
-                radius={point.size}
-                fill={point.color}
-                onClick={() => handleSelect(point)}
-              />
-              <Orbitals
-                point={point}
-                points={waypoints}
-                setSelectedPoint={handleSelect}
-              />
-              <Text
-                x={point.x + 5}
-                y={point.y + 5}
-                text={handleText(point.symbol)}
-                scaleX={0.2}
-                scaleY={0.2}
-                fill={point.color}
-              />
-            </React.Fragment>
-          ))}
-
-        {selectedPoint && (
-          <MapCard
-            selectedPoint={selectedPoint}
-            onClose={() => dispatch(setSelectedPoint(null))}
-          />
-        )}
-      </Layer>
-    </Stage>
+          {waypoints
+            .filter(
+              (point) =>
+                point.type !== TypeEnum.MOON &&
+                point.type !== TypeEnum.ORBITAL_STATION
+            )
+            .map((point) => (
+              <React.Fragment key={`${point.type}-${point.x}-${point.y}`}>
+                <Circle
+                  x={point.x}
+                  y={point.y}
+                  radius={point.size}
+                  fill={point.color}
+                  stroke={point.symbol === selectedPoint?.symbol ? "red": ""}
+                  strokeWidth={1}
+                  onClick={() => handleSelect(point)}
+                />
+                <Orbitals
+                  point={point}
+                  points={waypoints}
+                  setSelectedPoint={handleSelect}
+                />
+                <Text
+                  x={point.x + 3}
+                  y={point.y + 3}
+                  text={handleText(point.symbol)}
+                  scaleX={0.2}
+                  scaleY={0.2}
+                  fill={point.color}
+                />
+              </React.Fragment>
+            ))}
+        </Layer>
+      </Stage>
+      {selectedPoint && (
+        <MapCard
+          selectedPoint={selectedPoint}
+          onClose={() => dispatch(setSelectedPoint(null))}
+        />
+      )}
+    </>
   );
 };

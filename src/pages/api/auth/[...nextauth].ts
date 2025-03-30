@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import fs from "fs/promises";
+import { verify } from "jsonwebtoken";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import path from "path";
@@ -20,9 +21,22 @@ export default NextAuth({
 
         const filePath = path.join(process.cwd(), "public", "users.json");
         const fileContent = await fs.readFile(filePath, "utf8");
-        const users = JSON.parse(fileContent);
+        const userTokens: string[] = JSON.parse(fileContent);
 
-        const user = users.find((user: User) => user.username === username);
+        const userToken = userTokens.find((token: string) => {
+          const user = verify(
+            token,
+            process.env.NEXT_PUBLIC_JWT_SECRET ?? ""
+          ) as User;
+          return (
+            user.username === username && new Date() < new Date(user.expire)
+          );
+        });
+
+        const user = verify(
+          userToken ?? "",
+          process.env.NEXT_PUBLIC_JWT_SECRET ?? ""
+        ) as User;
 
         const match = user && (await bcrypt.compare(password, user.password));
         if (!match) {
@@ -40,15 +54,16 @@ export default NextAuth({
     signOut: "/register",
   },
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, user }) {
       if (account) {
         token.accessToken = account.access_token;
       }
-      return token;
+      return { ...token, ...user };
     },
     async session({ session, token, user }) {
       session.user = user;
       session.token = token.sub ?? "";
+      session.expires = token.expire;
       return session;
     },
   },

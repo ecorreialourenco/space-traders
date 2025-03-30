@@ -24,7 +24,7 @@ import { useAgent, useShips } from "@/hooks";
 import { FeedbackType, MyShipModel } from "@/models";
 import { TableRef } from "@/pages/ships/Ships";
 import { setAgent } from "@/store/slices/uiSlice";
-import { checkMiningLocation } from "@/utils";
+import { checkMiningLocation, checkSiphonLocation } from "@/utils";
 
 import {
   InfoButton,
@@ -32,6 +32,7 @@ import {
   Navigation,
   ShipNavigationAnimation,
   ShipRefuel,
+  Siphoning,
   Surveying,
 } from "./components";
 import { Extract } from "./components/Extract";
@@ -103,7 +104,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
             {shipsList.map((ship: MyShipModel) => (
               <TableRow key={ship.registration.name}>
                 <TableCell sx={{ padding: 0 }}>
-                  <InfoButton ship={ship} />
+                  <InfoButton ship={ship} updateCargo={handleUpdateCargo} />
                 </TableCell>
                 <TableCell>{ship.registration.name}</TableCell>
                 <TableCell>{ship.registration.role}</TableCell>
@@ -173,6 +174,15 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                               ship.nav.route.destination.type
                             ) && (
                               <Extract
+                                ship={ship}
+                                updateCargo={handleUpdateCargo}
+                              />
+                            )}
+                          {ship.nav.status === NavStatusEnum.IN_ORBIT &&
+                            checkSiphonLocation(
+                              ship.nav.route.destination.type
+                            ) && (
+                              <Siphoning
                                 ship={ship}
                                 updateCargo={handleUpdateCargo}
                               />

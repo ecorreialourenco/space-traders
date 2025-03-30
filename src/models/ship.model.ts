@@ -1,6 +1,6 @@
 import { FlightModeEnum, NavStatusEnum, TypeEnum } from "@/enums";
 
-import { AgentModel, InventoryModel, PaginationModel } from ".";
+import { AgentModel, CooldownModel, InventoryModel, PaginationModel } from ".";
 import { TraitModel } from "./waypoint.model";
 
 export interface ShipModel {
@@ -191,13 +191,6 @@ interface RegistrationModel {
   name: string;
   factionSymbol: string;
   role: string;
-}
-
-interface CooldownModel {
-  expiration: string;
-  shipSymbol: string;
-  totalSeconds: number;
-  remainingSeconds: number;
 }
 
 export interface NavigationModel {

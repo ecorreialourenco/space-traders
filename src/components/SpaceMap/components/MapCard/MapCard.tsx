@@ -1,8 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Label } from "react-konva";
-import { Html } from "react-konva-utils";
 
 import { useWaypoint } from "@/hooks";
 import { PointsModel, TraitModel } from "@/models";
@@ -28,34 +26,23 @@ export const MapCard = ({ selectedPoint, onClose }: MapCardProps) => {
   }, [waypointData]);
 
   return (
-    <Label
-      x={selectedPoint.x + 10}
-      y={selectedPoint.y - 10}
-      scaleX={0.4}
-      scaleY={0.4}
-    >
-      <Html>
-        <div className={styles.mapCardWrapper}>
-          <div className="w-full inline-flex justify-between">
-            <div>
-              <div className={styles.symbol}>{selectedPoint.symbol}</div>
-              <div className={styles.coords}>
-                Coords: {Math.ceil(selectedPoint.x)},{" "}
-                {Math.ceil(selectedPoint.y)}
-              </div>
-            </div>
-            <IconButton className={styles.closeButton} onClick={onClose}>
-              <CloseIcon />
-            </IconButton>
+    <div className={styles.mapCardWrapper}>
+      <div className="w-full inline-flex justify-between">
+        <div className="mb-2">
+          <div className={styles.symbol}>
+            {selectedPoint.symbol} ({selectedPoint.type})
           </div>
-          <div className={styles.traits}>
-            <MapTraitCard
-              traits={traits}
-              selectedSymbol={selectedPoint.symbol}
-            />
+          <div className={styles.coords}>
+            Coords: {Math.ceil(selectedPoint.x)}, {Math.ceil(selectedPoint.y)}
           </div>
         </div>
-      </Html>
-    </Label>
+        <IconButton className={styles.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <div className={styles.traits}>
+        <MapTraitCard traits={traits} selectedSymbol={selectedPoint.symbol} />
+      </div>
+    </div>
   );
 };

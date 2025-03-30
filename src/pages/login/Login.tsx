@@ -42,7 +42,7 @@ export const Login = () => {
         <div>
           <Typography
             variant="h3"
-            className={"pollarOne"}
+            className="font-pollar-one"
             style={{ textAlign: "center" }}
           >
             Login

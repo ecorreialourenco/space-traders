@@ -4,4 +4,5 @@ export * from "./MarketButton";
 export * from "./Navigation";
 export * from "./ShipNavigationAnimation";
 export * from "./ShipRefuel";
+export * from "./Siphoning";
 export * from "./Surveying";

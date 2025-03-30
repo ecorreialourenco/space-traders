@@ -110,6 +110,7 @@ export const MapTraitCard = ({ traits, selectedSymbol }: MapTraitCardProps) => {
       )}
 
       <IconButton
+        className="mb-2"
         color={selectedTrait === "INFO" ? "primary" : "default"}
         onClick={() => setSelectedTrait("INFO")}
       >
@@ -153,6 +154,7 @@ export const MapTraitCard = ({ traits, selectedSymbol }: MapTraitCardProps) => {
             value={currentShip}
             exclusive
             size="small"
+            className="mb-2"
             onChange={(e, op) => {
               if (op !== null) {
                 setCurrentShip(op);

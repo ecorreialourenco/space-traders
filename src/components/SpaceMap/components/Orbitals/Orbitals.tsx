@@ -27,7 +27,7 @@ export const Orbitals = ({
         const currentOrbital = points.filter(
           (item) => item.symbol === point.orbitals[i].symbol
         );
-        const radius = point.size + 2 * currentOrbital[0].size;
+        const radius = point.size + 5 * currentOrbital[0].size;
         const newX = point.x + radius * Math.cos(angle * i);
         const newY = point.y + radius * Math.sin(angle * i);
 
@@ -52,8 +52,9 @@ export const Orbitals = ({
         onClick={() => setSelectedPoint(orbital)}
       />
       <Text
-        x={orbital.x + 2}
+        x={point.x < orbital.x ? orbital.x + 2 : orbital.x - 6}
         y={orbital.y - 1}
+        align="left"
         text={handleText(orbital.symbol)}
         scaleX={0.2}
         scaleY={0.2}

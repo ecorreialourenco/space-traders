@@ -19,7 +19,7 @@ export const MarketButton = ({
   onClick,
 }: MarketButtonProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<number>(0);
+  const [value, setValue] = useState<number>(maxValue);
 
   const handleChange = (val: number) => {
     if (val > maxValue) {

@@ -39,6 +39,9 @@ export const NegociateContractModal = ({
 
   const handleNegociation = async () => {
     negociateContract();
+    setTimeout(() => {
+      onClose();
+    }, 100);
   };
 
   return (

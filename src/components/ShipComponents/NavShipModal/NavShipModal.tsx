@@ -13,6 +13,8 @@ import { useFlightMode, useNavigation } from "@/hooks";
 import { FeedbackType, MyShipModel } from "@/models";
 import { RootState } from "@/store/store";
 
+import styles from "./NavShipModal.module.css";
+
 interface NavShipModalProps {
   open: boolean;
   ship: MyShipModel;
@@ -38,7 +40,7 @@ export const NavShipModal = ({
   const navOptions = waypoints
     .map((item) => ({
       key: item.symbol,
-      label: item.symbol,
+      label: `${item.symbol} - ${item.type}`,
       id: item.symbol,
     }))
     .filter((item) => item.id !== ship.nav.waypointSymbol);
@@ -78,12 +80,18 @@ export const NavShipModal = ({
   }, [ship]);
 
   return (
-    <Modal open={open} title="Navigation" onClose={onClose}>
+    <Modal
+      open={open}
+      title="Navigation"
+      onClose={onClose}
+      className={styles.navShipModal}
+    >
       <form onSubmit={handleSubmit}>
         <div className="m-2">
           <ToggleButtonGroup
             value={speed}
             exclusive
+            className="w-full flex"
             onChange={(e, flightMode) => {
               if (flightMode !== null) {
                 flightModeMutation({ shipId: ship.symbol, flightMode });
@@ -92,7 +100,7 @@ export const NavShipModal = ({
             }}
           >
             {options.map((op) => (
-              <ToggleButton key={op.value} value={op.value}>
+              <ToggleButton key={op.value} value={op.value} className="flex-1">
                 {op.name}
               </ToggleButton>
             ))}
@@ -102,7 +110,6 @@ export const NavShipModal = ({
           <Autocomplete
             disablePortal
             options={navOptions}
-            sx={{ width: 300 }}
             onChange={(e, value) => setPlace(value?.id ?? "")}
             renderInput={(params) => (
               <TextField

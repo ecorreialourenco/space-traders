@@ -11,7 +11,7 @@ import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Provider } from "react-redux";
 
-import { Layout } from "@/components";
+import { AuthProvider, Layout } from "@/components";
 import store from "@/store/store";
 
 const pollerOne = Poller_One({
@@ -23,18 +23,24 @@ export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <SessionProvider>
-      <QueryClientProvider client={queryClient}>
-        <HydrationBoundary state={pageProps.dehydratedState}>
-          <Provider store={store}>
-            <main className={pollerOne.className}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </main>
-          </Provider>
-        </HydrationBoundary>
-      </QueryClientProvider>
+    <SessionProvider
+      session={pageProps.session}
+      refetchOnWindowFocus={false}
+      refetchInterval={60}
+    >
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
+            <Provider store={store}>
+              <main className={pollerOne.className}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </main>
+            </Provider>
+          </HydrationBoundary>
+        </QueryClientProvider>
+      </AuthProvider>
     </SessionProvider>
   );
 }

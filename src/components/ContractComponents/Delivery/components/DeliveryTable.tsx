@@ -149,25 +149,29 @@ export const DeliveryTable = ({
                           </Tooltip>
                         )}
 
-                      {!isInContractLocation &&
-                        (ship.nav.status === NavStatusEnum.IN_TRANSIT ? (
-                          <ShipNavigationAnimation
-                            ship={ship}
-                            refetch={refetch}
-                          />
-                        ) : (
-                          <Tooltip title="Navigate">
-                            <span>
-                              <IconButton
-                                disabled={ship.fuel.current === 0}
-                                onClick={() => handleNavigate({ ship })}
-                              >
-                                <FlightTakeoffIcon />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                        ))}
+                      {ship.nav.status === NavStatusEnum.IN_TRANSIT && (
+                        <ShipNavigationAnimation
+                          ship={ship}
+                          refetch={refetch}
+                        />
+                      )}
+
+                      {!isInContractLocation && (
+                        <Tooltip title="Navigate">
+                          <span>
+                            <IconButton
+                              disabled={
+                                !contractItem || contractItem?.units === 0
+                              }
+                              onClick={() => handleNavigate({ ship })}
+                            >
+                              <FlightTakeoffIcon />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                      )}
                       {isInContractLocation &&
+                        ship.nav.status !== NavStatusEnum.IN_TRANSIT &&
                         ship.nav.status !== NavStatusEnum.DOCKED && (
                           <NavStatus
                             title="Dock"

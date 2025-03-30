@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { signIn } from "next-auth/react";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 import { Button, Dropdown, Feedback, Input, InputPassword } from "@/components";
 import { useFactions } from "@/hooks";
@@ -12,10 +12,12 @@ export const Signup = () => {
   const [password2, setPassword2] = useState<string>("");
   const [faction, setFaction] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const { data } = useFactions({ page: 1 });
+  const { data, error: factionsError } = useFactions({ page: 1 });
+  console.log("🚀 ~ Signup ~ factionsError:", factionsError);
+  console.log("🚀 ~ Signup ~ data:", data);
 
-  const formatedList = data
-    ? data.map((item: FactionModel) => ({
+  const formatedList = data?.data
+    ? data.data.map((item: FactionModel) => ({
         value: item.symbol,
         name: item.name,
       }))
@@ -62,6 +64,12 @@ export const Signup = () => {
       setError("Passwords doesn't match!");
     }
   };
+
+  useEffect(() => {
+    if (data?.error) {
+      setError(data.error.message);
+    }
+  }, [data]);
 
   return (
     <div className="h-full flex justify-center items-center">

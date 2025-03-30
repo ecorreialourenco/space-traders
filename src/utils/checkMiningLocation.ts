@@ -9,3 +9,9 @@ export const checkMiningLocation = (type: TypeEnum) => {
 
   return availableTyles.includes(type);
 };
+
+export const checkSiphonLocation = (type: TypeEnum) => {
+  const availableTyles = [TypeEnum.GAS_GIANT];
+
+  return availableTyles.includes(type);
+};
