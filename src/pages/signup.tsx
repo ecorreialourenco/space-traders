@@ -1,20 +1,18 @@
-import { Typography } from "@mui/material";
 import { signIn } from "next-auth/react";
 import React, { FormEvent, useEffect, useState } from "react";
 
+import { Typography } from "@mui/material";
 import { Button, Dropdown, Feedback, Input, InputPassword } from "@/components";
 import { useFactions } from "@/hooks";
 import { FactionModel } from "@/models";
 
-export const Signup = () => {
+export default function Signup() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [password2, setPassword2] = useState<string>("");
   const [faction, setFaction] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { data, error: factionsError } = useFactions({ page: 1 });
-  console.log("🚀 ~ Signup ~ factionsError:", factionsError);
-  console.log("🚀 ~ Signup ~ data:", data);
 
   const formatedList = data?.data
     ? data.data.map((item: FactionModel) => ({
@@ -113,4 +111,4 @@ export const Signup = () => {
       </div>
     </div>
   );
-};
+}

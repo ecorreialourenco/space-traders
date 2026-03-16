@@ -12,12 +12,11 @@ import {
 import { FeedbackType } from "@/models";
 import { MyShipModel } from "@/models/ship.model";
 
-
 export interface TableRef {
   refetch: () => void;
 }
 
-export const Ships = () => {
+export default function Ships() {
   const tableRef = useRef<TableRef>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNavModalOpen, setIsNavModalOpen] = useState<boolean>(false);
@@ -84,4 +83,4 @@ export const Ships = () => {
       </div>
     </Suspense>
   );
-};
+}

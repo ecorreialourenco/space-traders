@@ -6,14 +6,14 @@ import { Loading } from "@/components";
 import { useAgent, useFactions } from "@/hooks";
 import { formatCredits } from "@/utils";
 
-export const Profile = () => {
+export default function Profile() {
   const { data: sessionData } = useSession();
   const { data: userData } = useAgent();
   const { data: factionData } = useFactions({ page: 1 });
 
   const expireDate = new Date(sessionData?.expires ?? "").toDateString();
   const userFaction = factionData?.data.find(
-    (faction) => faction.symbol === userData?.startingFaction
+    (faction) => faction.symbol === userData?.startingFaction,
   );
   return (
     <Suspense fallback={<Loading />}>
@@ -67,4 +67,4 @@ export const Profile = () => {
       </div>
     </Suspense>
   );
-};
+}

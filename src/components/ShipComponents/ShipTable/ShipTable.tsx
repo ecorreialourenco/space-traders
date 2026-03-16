@@ -22,7 +22,7 @@ import { NavStatus, Paginator, TableHeaderCell } from "@/components";
 import { NavActionStatusEnum, NavStatusEnum } from "@/enums";
 import { useAgent, useShips } from "@/hooks";
 import { FeedbackType, MyShipModel } from "@/models";
-import { TableRef } from "@/pages/ships/Ships";
+import { TableRef } from "@/pages/ships";
 import { setAgent } from "@/store/slices/uiSlice";
 import { checkMiningLocation, checkSiphonLocation } from "@/utils";
 
@@ -162,7 +162,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                         <>
                           {ship.nav.status === NavStatusEnum.IN_ORBIT &&
                             ship.mounts.some(
-                              (mount) => mount.symbol === "MOUNT_SURVEYOR_II"
+                              (mount) => mount.symbol === "MOUNT_SURVEYOR_II",
                             ) && (
                               <Surveying
                                 ship={ship}
@@ -171,7 +171,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                             )}
                           {ship.nav.status === NavStatusEnum.IN_ORBIT &&
                             checkMiningLocation(
-                              ship.nav.route.destination.type
+                              ship.nav.route.destination.type,
                             ) && (
                               <Extract
                                 ship={ship}
@@ -180,7 +180,7 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
                             )}
                           {ship.nav.status === NavStatusEnum.IN_ORBIT &&
                             checkSiphonLocation(
-                              ship.nav.route.destination.type
+                              ship.nav.route.destination.type,
                             ) && (
                               <Siphoning
                                 ship={ship}
@@ -205,5 +205,5 @@ export const ShipTable = forwardRef<TableRef, ShipTableProps>(
         <Paginator page={page} total={total} onPageChange={handleChangePage} />
       </TableContainer>
     );
-  }
+  },
 );

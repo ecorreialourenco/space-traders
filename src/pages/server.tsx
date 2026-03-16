@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 import { Leaderboard, Loading } from "@/components";
 import { useServerInfo } from "@/hooks";
 
-export const Server = () => {
+export default function Server() {
   const { data } = useServerInfo();
 
   const handleDate = (date: string) => {
@@ -79,4 +79,4 @@ export const Server = () => {
       </div>
     </Suspense>
   );
-};
+}

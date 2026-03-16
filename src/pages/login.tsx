@@ -5,7 +5,7 @@ import React, { FormEvent, useState } from "react";
 
 import { Button, Feedback, Input, InputPassword } from "@/components";
 
-export const Login = () => {
+export default function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -66,4 +66,4 @@ export const Login = () => {
       </div>
     </>
   );
-};
+}

@@ -24,7 +24,7 @@ import {
 import { useAcceptContract, useContracts, useFullfillContract } from "@/hooks";
 import { ContractModel, FeedbackType } from "@/models";
 
-export const Contracts = () => {
+export default function Contracts() {
   const [contractList, setContractList] = useState<ContractModel[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
@@ -183,4 +183,4 @@ export const Contracts = () => {
       />
     </div>
   );
-};
+}

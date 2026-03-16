@@ -58,15 +58,12 @@ export default NextAuth({
       if (account) {
         token.accessToken = account.access_token;
       }
-      console.log("🚀 ~ token:", token);
-      console.log("🚀 ~ user:", user);
       return { ...token, ...user };
     },
     async session({ session, token, user }) {
       session.user = user;
       session.token = token.sub ?? "";
       session.expires = token.expire;
-      console.log("🚀 ~ session:", session);
       return session;
     },
   },
