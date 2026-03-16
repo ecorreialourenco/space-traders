@@ -3,7 +3,7 @@ import { getToken } from "next-auth/jwt";
 
 const publicRoutes = ["/login", "/signup"];
 
-const middleware = async (req: NextRequest) => {
+const proxy = async (req: NextRequest) => {
   const path = req.nextUrl.pathname;
   const token = await getToken({ req }).then((res) => res?.sub);
 
@@ -25,4 +25,4 @@ export const config = {
   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };
 
-export default middleware;
+export default proxy;

@@ -26,7 +26,7 @@ export default NextAuth({
         const userToken = userTokens.find((token: string) => {
           const user = verify(
             token,
-            process.env.NEXT_PUBLIC_JWT_SECRET ?? ""
+            process.env.NEXT_PUBLIC_JWT_SECRET ?? "",
           ) as User;
           return (
             user.username === username && new Date() < new Date(user.expire)
@@ -35,7 +35,7 @@ export default NextAuth({
 
         const user = verify(
           userToken ?? "",
-          process.env.NEXT_PUBLIC_JWT_SECRET ?? ""
+          process.env.NEXT_PUBLIC_JWT_SECRET ?? "",
         ) as User;
 
         const match = user && (await bcrypt.compare(password, user.password));
@@ -58,12 +58,15 @@ export default NextAuth({
       if (account) {
         token.accessToken = account.access_token;
       }
+      console.log("🚀 ~ token:", token);
+      console.log("🚀 ~ user:", user);
       return { ...token, ...user };
     },
     async session({ session, token, user }) {
       session.user = user;
       session.token = token.sub ?? "";
       session.expires = token.expire;
+      console.log("🚀 ~ session:", session);
       return session;
     },
   },
